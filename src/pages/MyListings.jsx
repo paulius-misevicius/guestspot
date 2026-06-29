@@ -1,4 +1,4 @@
-import ArtistListing from "./ArtistListing.jsx"
+import ArtistListing from "../components/ArtistListing.jsx"
 import { artistListingsData } from "../listings-data.js"
 
 export default function MyListings() {

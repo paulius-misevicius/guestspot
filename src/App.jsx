@@ -1,15 +1,22 @@
-import MyListings from "./components/MyListings"
-import Sidebar from "./components/Sidebar"
 import { BrowserRouter, Routes, Route } from "react-router"
+
+import Layout from "./components/Layout"
+
+import MyListings from "./pages/MyListings"
+import Browse from "./pages/Browse"
+import Profile from "./pages/Profile"
 
 export default function App() {
 
   return (
-    <>
-      <Sidebar />
-      <section className="app-content">
-        <MyListings />
-      </section>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<MyListings />}/>
+          <Route path="browse" element={<Browse />}/>
+          <Route path="profile" element={<Profile />}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
