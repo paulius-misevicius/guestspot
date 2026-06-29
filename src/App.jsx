@@ -1,37 +1,23 @@
-import { artistListingsData } from "./listings-data"
-import ArtistListing from "./components/ArtistListing"
+import Sidebar from "./components/Sidebar/SidebarIndex"
+import Content from "./components/Content/Content"
+import MyListings from "./components/Content/MyListings/MyListings"
 
 export default function App() {
 
-  const displayArtistListings = artistListingsData.map(item => 
-    <ArtistListing place={item.place} dateRange={item.dateRange}/>
-  )
-
   return (
-    <main>
-      <section className="app-sidebar">
-        <h1>Guestspot app</h1>
-        <div className="app-sidebar-profile">
-          <p>Vardenis Pavardenis</p>
-        </div>
-        <nav className="app-sidebar-nav">
-            <a href="#">My listings</a>
-            <a href="#">Browse</a>
-            <a href="#">Profile</a>
-        </nav>
-      </section>
-      <section className="app-content">
-        <div className="app-content-header">
-          <div>
-            <h2>My travel plans</h2>
-            <p>Cities and dates you're available to guest</p>
-          </div>
-          <span>+</span>
-        </div>
-        <section className="app-content-listings">
-          {displayArtistListings}
-        </section>
-      </section>
-    </main>
+    <>
+      <Sidebar>
+        <Sidebar.Logo>Guestspot app</Sidebar.Logo>
+        <Sidebar.Profile>Vardenis Pavardenis</Sidebar.Profile>
+        <Sidebar.Menu>
+            <Sidebar.Menu.Item>My listings</Sidebar.Menu.Item>
+            <Sidebar.Menu.Item>Browse</Sidebar.Menu.Item>
+            <Sidebar.Menu.Item>Profile</Sidebar.Menu.Item>
+        </Sidebar.Menu>
+      </Sidebar>
+      <Content>
+        <MyListings />
+      </Content>
+    </>
   )
 }
