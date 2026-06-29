@@ -1,23 +1,15 @@
-import Sidebar from "./components/Sidebar/SidebarIndex"
-import Content from "./components/Content/Content"
-import MyListings from "./components/Content/MyListings/MyListings"
+import MyListings from "./components/MyListings"
+import Sidebar from "./components/Sidebar"
+import { BrowserRouter, Routes, Route } from "react-router"
 
 export default function App() {
 
   return (
     <>
-      <Sidebar>
-        <Sidebar.Logo>Guestspot app</Sidebar.Logo>
-        <Sidebar.Profile>Vardenis Pavardenis</Sidebar.Profile>
-        <Sidebar.Menu>
-            <Sidebar.Menu.Item>My listings</Sidebar.Menu.Item>
-            <Sidebar.Menu.Item>Browse</Sidebar.Menu.Item>
-            <Sidebar.Menu.Item>Profile</Sidebar.Menu.Item>
-        </Sidebar.Menu>
-      </Sidebar>
-      <Content>
+      <Sidebar />
+      <section className="app-content">
         <MyListings />
-      </Content>
+      </section>
     </>
   )
 }
