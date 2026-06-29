@@ -7,6 +7,7 @@ export default function Layout() {
             <Sidebar />
             <section className="app-content">
                 <Outlet />
+                <div id="portal"></div>
             </section>
         </main>
     )
