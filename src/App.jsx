@@ -3,6 +3,10 @@ import ArtistListing from "./components/ArtistListing"
 
 export default function App() {
 
+  const displayArtistListings = artistListingsData.map(item => 
+    <ArtistListing place={item.place} dateRange={item.dateRange}/>
+  )
+
   return (
     <main>
       <section className="app-sidebar">
@@ -24,9 +28,9 @@ export default function App() {
           </div>
           <span>+</span>
         </div>
-          <ArtistListing />
-          <ArtistListing />
-          <ArtistListing />
+        <section className="app-content-listings">
+          {displayArtistListings}
+        </section>
       </section>
     </main>
   )

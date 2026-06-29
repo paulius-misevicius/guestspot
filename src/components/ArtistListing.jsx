@@ -1,9 +1,9 @@
-export default function ArtistListing() {
+export default function ArtistListing({place, dateRange}) {
     return (
-        <div className="app-content-listing">
+        <div className="listing">
           <div className="listing-details">
-            <h3>Riga, Latvia</h3>
-            <p>Sept 5 - 12, 2026</p>
+            <h3>{place}</h3>
+            <p>{dateRange}</p>
           </div>
           <div className="listing-matches">
             <p>See matches</p>

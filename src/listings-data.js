@@ -14,5 +14,9 @@ export const artistListingsData = [
     {
         place: "Vilnius, Lithuania",
         dateRange: "Dec 20 - 24, 2026"
+    },
+    {
+        place: "Warsaw, Poland",
+        dateRange: "Jan 12- 16, 2027"
     }
 ]

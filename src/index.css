@@ -39,6 +39,8 @@ p, span {
 
 main {
   display: flex;
+  min-height: 100dvh;
+  max-height: 100dvh;
 }
 .app-sidebar {
   display: flex;
@@ -52,7 +54,6 @@ main {
   flex-direction: column;
   gap: 28px;
   flex: 1;
-  min-height: 100dvh;
   padding: 28px 40px;
   background-color: var(--surface-1);
   border-radius: 40px 0px 0px 40px;
@@ -85,7 +86,14 @@ main {
   font-size: 1rem;
   background-color: var(--surface-2);
 }
-.app-content-listing {
+
+.app-content-listings {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  gap: 20px;
+}
+.listing {
   background-color: var(--surface-2);
   padding: 24px;
   border-radius: 20px;
