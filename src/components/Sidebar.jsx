@@ -1,3 +1,5 @@
+import { NavLink } from "react-router"
+
 export default function Sidebar() {
     return (
         <section className="app-sidebar">
@@ -6,9 +8,18 @@ export default function Sidebar() {
                 <p>Vardenis Pavardenis</p>
             </div>
             <nav className="app-sidebar-nav">
-                <a href="#">My listings</a>
-                <a href="#">Browse</a>
-                <a href="#">Profile</a>
+                <NavLink 
+                    to="."
+                    className={({ isActive }) => isActive ? "active-tab" : null}
+                    >My listings</NavLink>
+                <NavLink 
+                    to="browse"
+                    className={({ isActive }) => isActive ? "active-tab" : null}
+                    >Browse</NavLink>
+                <NavLink 
+                    to="profile"
+                    className={({ isActive }) => isActive ? "active-tab" : null}
+                    >Profile</NavLink>
             </nav>
         </section>
     )

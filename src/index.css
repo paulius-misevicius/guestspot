@@ -74,6 +74,9 @@ main {
   color: var(--text-muted);
   text-decoration: none;
 }
+.app-sidebar-nav > .active-tab {
+  color: var(--text-primary);
+}
 
 .app-content-header {
   display: flex;
