@@ -2,7 +2,7 @@ import { useState, useContext } from "react"
 
 import { ListingsContext } from "../App.jsx"
 import ArtistListing from "../components/ArtistListing.jsx"
-import NewListingModal from "../components/NewListingModal.jsx"
+import NewListingModal from "../components/NewListingModal/NewListingModal.jsx"
 
 export default function MyListings() {
 
