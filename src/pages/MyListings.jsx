@@ -11,7 +11,6 @@ export default function MyListings() {
   const displayArtistListings = artistListingsData.map(item => 
       <ArtistListing key={item.id} place={item.place} dateRange={item.dateRange}/>
   )
-  console.log(isModalOpen)
 
   return (
       <>

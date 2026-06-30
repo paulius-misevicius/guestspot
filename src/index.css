@@ -183,3 +183,20 @@ main {
   border-radius: 40px 0px 0px 40px;
   background-color: #000000a1;
 }
+
+.rdp-root {
+  --rdp-accent-background-color: var(--text-muted) !important;
+}
+
+.date-picker-fields {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+.date-field {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  background-color: var(--surface-1);
+}
