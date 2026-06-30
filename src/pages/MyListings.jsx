@@ -1,14 +1,16 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 
+import { ListingsContext } from "../App.jsx"
 import ArtistListing from "../components/ArtistListing.jsx"
-import { artistListingsData } from "../listings-data.js"
 import NewListingModal from "../components/NewListingModal.jsx"
 
 export default function MyListings() {
 
+  const { allListings } = useContext(ListingsContext)
+
   const [isModalOpen, setModalOpen] = useState(false)
 
-  const displayArtistListings = artistListingsData.map(item => 
+  const displayArtistListings = allListings.map(item => 
       <ArtistListing key={item.id} place={item.place} dateRange={item.dateRange}/>
   )
 
