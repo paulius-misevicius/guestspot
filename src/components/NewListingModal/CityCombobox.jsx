@@ -26,12 +26,31 @@ export default function CityCombobox({setListingData}) {
         function handleClickOutside(event) {
             if (containerRef.current && !containerRef.current.contains(event.target)) {
                 setIsComboboxOpen(false)
-
+                checkInputAgainstCities()
             }
         }
         document.addEventListener("mousedown", handleClickOutside)
         return () => document.removeEventListener("mousedown", handleClickOutside)
-    }, [])
+    }, [inputValue])
+
+    function checkInputAgainstCities() {
+        const foundResult = lithuanianCities.find(item => toEnglishChars(item.city.toLowerCase()) === toEnglishChars(inputValue.toLowerCase()))
+
+        if (lithuanianCities.some(item => toEnglishChars(item.city.toLowerCase()) === toEnglishChars(inputValue.toLowerCase()))) {
+            setInputValue(foundResult.city)
+            setListingData(prev => ({...prev, city: `${foundResult.city}, ${foundResult.country}`}))
+        } else {
+            setInputValue("")
+            setListingData(prev => ({...prev, city: ""}))
+        }
+
+    }
+
+    function toEnglishChars(string) {
+        return string
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+    }
 
     function clearInput() {
         setInputValue("")
@@ -79,6 +98,7 @@ export default function CityCombobox({setListingData}) {
                     setInputValue(event.target.value)
                     setIsComboboxOpen(true)
                     setHighlightedIndex(-1)
+                    setListingData(prev => ({...prev, city: ""}))
                 }}
                 onFocus={() => setIsComboboxOpen(true)}
                 onKeyDown={handleKeyDown}

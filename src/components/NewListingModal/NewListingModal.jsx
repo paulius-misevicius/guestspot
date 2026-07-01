@@ -1,6 +1,7 @@
 import { createPortal } from "react-dom"
 import { useState, useContext } from "react"
 import { nanoid } from "nanoid"
+import { X } from "lucide-react"
 
 import { ListingsContext } from "../../App"
 import DatePicker from "./DatePicker"
@@ -15,8 +16,12 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
     console.log(listingData)
     function createListing(event) {
         event.preventDefault()
-        console.log("submitted")
-        
+
+        if (listingData.city === "" || listingData.dateRange === "") {
+            console.log("Please fill out the required fields!")
+            return
+        }
+
         setAllListings(prev => [listingData, ...prev])
         setIsModalOpen(false)
     }
@@ -31,7 +36,7 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
             <form onSubmit={createListing} className="new-listing-modal">
                 <div className="modal-header">
                     <h3>New listing</h3>
-                    <button className="close-modal-btn" onClick={() => setIsModalOpen(false)}>x</button>
+                    <button className="close-modal-btn" onClick={() => setIsModalOpen(false)}><X className="close-modal-icon"/></button>
                 </div>
                 <CityCombobox setListingData={setListingData} />
                 <div className="modal-dates">
