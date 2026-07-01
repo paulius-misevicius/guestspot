@@ -11,7 +11,7 @@ export default function MyListings() {
   const [isModalOpen, setModalOpen] = useState(false)
 
   const displayArtistListings = allListings.map(item => 
-      <ArtistListing key={item.id} place={item.place} dateRange={item.dateRange}/>
+      <ArtistListing key={item.id} city={item.city} dateRange={item.dateRange}/>
   )
 
   return (

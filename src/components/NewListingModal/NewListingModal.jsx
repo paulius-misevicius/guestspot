@@ -11,7 +11,7 @@ export default function NewListingModal({isOpen, setIsOpen}) {
     if(!isOpen) return
 
     const { setAllListings } = useContext(ListingsContext)
-    const [listingData, setListingData] = useState({id: nanoid(), place: "", dateRange: ""})
+    const [listingData, setListingData] = useState({id: nanoid(), city: "", dateRange: ""})
 
     console.log(listingData)
 
@@ -35,11 +35,7 @@ export default function NewListingModal({isOpen, setIsOpen}) {
                     <h3>New listing</h3>
                     <button className="close-modal-btn" onClick={() => setIsOpen(false)}>x</button>
                 </div>
-                <CityCombobox />
-                {/* <div className="modal-city">
-                    <label htmlFor="city">City:</label>
-                    <input name="new-listing" id="city" type="text" value={listingData.place} onChange={handleInputChange}/>
-                </div> */}
+                <CityCombobox setListingData={setListingData} />
                 <div className="modal-dates">
                     <DatePicker setListingData={setListingData} />
                 </div>

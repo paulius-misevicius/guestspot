@@ -1,8 +1,8 @@
-export default function ArtistListing({place, dateRange}) {
+export default function ArtistListing({city, dateRange}) {
     return (
         <div className="listing">
           <div className="listing-details">
-            <h3>{place}</h3>
+            <h3>{city}</h3>
             <p>{dateRange}</p>
           </div>
           <div className="listing-matches">

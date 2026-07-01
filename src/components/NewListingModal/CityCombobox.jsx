@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react"
-import { lithuanianCities } from "../../listings-data"
+import { lithuanianCities } from "../../data"
 
-export default function CityCombobox() {
+export default function CityCombobox({setListingData}) {
 
     const [inputValue, setInputValue] = useState("")
     const [isOpen, setIsOpen] = useState(false)
@@ -9,7 +9,7 @@ export default function CityCombobox() {
 
     const searchResults = lithuanianCities.filter(item => item.toLowerCase().includes(inputValue.toLowerCase()))
 
-    const displayCities = searchResults.map(item => <li>{item}</li>)
+    const displayCities = searchResults.map(item => <li key={item}>{item}</li>)
 
     return (
         <div className="modal-city">
@@ -19,6 +19,7 @@ export default function CityCombobox() {
                 type="text" 
                 value={inputValue}
                 onChange={event => {
+                    setListingData(prev => ({...prev, city: event.target.value}))
                     setInputValue(event.target.value)
                     setIsOpen(true)
                 }} 

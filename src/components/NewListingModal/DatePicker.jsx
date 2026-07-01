@@ -44,7 +44,7 @@ export default function DatePicker({setListingData}) {
     }
 
     return (
-        <div>
+        <div className="date-picker">
             <div className="date-picker-fields">
                 <div className="date-field">
                     <p>{dateFrom}</p>
@@ -56,6 +56,8 @@ export default function DatePicker({setListingData}) {
             <DayPicker 
                 mode="range" 
                 navLayout="around"
+                showOutsideDays
+                weekStartsOn={1}
                 disabled={{before: today}}
                 selected={selected}
                 onSelect={handleSelect}

@@ -3,7 +3,7 @@ import { useState, createContext } from "react"
 
 import Layout from "./components/Layout"
 
-import { artistListingsData } from "./listings-data"
+import { artistListingsData } from "./data"
 
 import MyListings from "./pages/MyListings"
 import Browse from "./pages/Browse"
