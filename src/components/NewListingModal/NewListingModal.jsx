@@ -6,21 +6,19 @@ import { ListingsContext } from "../../App"
 import DatePicker from "./DatePicker"
 import CityCombobox from "./CityCombobox"
 
-export default function NewListingModal({isOpen, setIsOpen}) {
+export default function NewListingModal({isModalOpen, setIsModalOpen}) {
     
-    if(!isOpen) return
+    if(!isModalOpen) return
 
     const { setAllListings } = useContext(ListingsContext)
     const [listingData, setListingData] = useState({id: nanoid(), city: "", dateRange: ""})
-
-    console.log(listingData)
-
+    
     function createListing(event) {
         event.preventDefault()
         console.log("submitted")
         
         setAllListings(prev => [listingData, ...prev])
-        setIsOpen(false)
+        setIsModalOpen(false)
     }
 
     function handleInputChange(event) {
@@ -33,7 +31,7 @@ export default function NewListingModal({isOpen, setIsOpen}) {
             <form onSubmit={createListing} className="new-listing-modal">
                 <div className="modal-header">
                     <h3>New listing</h3>
-                    <button className="close-modal-btn" onClick={() => setIsOpen(false)}>x</button>
+                    <button className="close-modal-btn" onClick={() => setIsModalOpen(false)}>x</button>
                 </div>
                 <CityCombobox setListingData={setListingData} />
                 <div className="modal-dates">

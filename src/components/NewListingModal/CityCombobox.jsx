@@ -3,30 +3,34 @@ import { lithuanianCities } from "../../data"
 
 export default function CityCombobox({setListingData}) {
 
-    const [inputValue, setInputValue] = useState("")
-    const [isOpen, setIsOpen] = useState(false)
     const containerRef = useRef(null)
+    const [isComboboxOpen, setIsComboboxOpen] = useState(false)
+    const [inputValue, setInputValue] = useState("")
 
-    const searchResults = lithuanianCities.filter(item => item.toLowerCase().includes(inputValue.toLowerCase()))
+    const searchResults = lithuanianCities.filter(item => item.city.toLowerCase().includes(inputValue.toLowerCase()))
 
-    const displayCities = searchResults.map(item => <li key={item}>{item}</li>)
+    const displayCities = searchResults.map(item => 
+        <li key={item.city}>{item.city}<span className="combobox-country">, {item.country}</span></li>
+    )
 
     return (
         <div className="modal-city">
-            <label htmlFor="city">City:</label>
+            <label className="sr-only" htmlFor="city">City</label>
             <input 
+                className="city-combobox"
+                placeholder="Pick a city"
                 id="city" 
                 type="text" 
                 value={inputValue}
                 onChange={event => {
                     setListingData(prev => ({...prev, city: event.target.value}))
                     setInputValue(event.target.value)
-                    setIsOpen(true)
+                    setIsComboboxOpen(true)
                 }} 
             />
-            {isOpen && inputValue.length > 0 &&
+            {isComboboxOpen && inputValue.length > 0 &&
                 <ul>
-                    {displayCities.slice(0, 5)}
+                    {displayCities.slice(0, 3)}
                 </ul>}
         </div>
     )

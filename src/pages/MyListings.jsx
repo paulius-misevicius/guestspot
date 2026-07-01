@@ -8,7 +8,7 @@ export default function MyListings() {
 
   const { allListings } = useContext(ListingsContext)
 
-  const [isModalOpen, setModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const displayArtistListings = allListings.map(item => 
       <ArtistListing key={item.id} city={item.city} dateRange={item.dateRange}/>
@@ -16,13 +16,13 @@ export default function MyListings() {
 
   return (
       <>
-        <NewListingModal isOpen={isModalOpen} setIsOpen={setModalOpen}/>
+        <NewListingModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
         <div className="app-content-header">
           <div>
             <h2>My travel plans</h2>
             <p>Cities and dates you're available to guest</p>
           </div>
-          <button onClick={() => setModalOpen(true)}>+</button>
+          <button onClick={() => setIsModalOpen(true)}>+</button>
         </div>
         <section className="app-content-listings">
           {displayArtistListings}

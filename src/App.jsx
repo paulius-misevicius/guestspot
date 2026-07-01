@@ -14,7 +14,6 @@ export const ListingsContext = createContext()
 export default function App() {
 
   const [allListings, setAllListings] = useState([...artistListingsData])
-  console.log(allListings)
 
   return (
     <ListingsContext.Provider value={{allListings, setAllListings}}>
