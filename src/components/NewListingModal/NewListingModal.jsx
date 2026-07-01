@@ -12,7 +12,7 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
 
     const { setAllListings } = useContext(ListingsContext)
     const [listingData, setListingData] = useState({id: nanoid(), city: "", dateRange: ""})
-    
+    console.log(listingData)
     function createListing(event) {
         event.preventDefault()
         console.log("submitted")

@@ -5,14 +5,16 @@ import { format } from "date-fns"
 import { DayPicker } from "@daypicker/react"
 import "@daypicker/react/style.css"
 
+import { CalendarDays, MoveRight } from "lucide-react"
+
 export default function DatePicker({setListingData}) {
 
     const today = new Date()
 
     const [selected, setSelected] = useState(undefined)
 
-    const dateFrom = selected?.from ? format(selected.from, "MMM d, yyyy") : "Pick a date"
-    const dateTo = selected?.to ? format(selected.to, "MMM d, yyyy") : "Pick a date"
+    const dateFrom = selected?.from ? format(selected.from, "MMM d, yyyy") : ""
+    const dateTo = selected?.to ? format(selected.to, "MMM d, yyyy") : ""
 
     function handleSelect(selected) {
         if (!selected) return
@@ -47,10 +49,19 @@ export default function DatePicker({setListingData}) {
         <div className="date-picker">
             <div className="date-picker-fields">
                 <div className="date-field">
-                    <p>{dateFrom}</p>
+                    <label htmlFor="date-from">From</label>
+                    <div className="date-input-container">
+                        <input id="date-from" readOnly placeholder="From" value={dateFrom}/>
+                        <CalendarDays className="calendar-icon" />
+                    </div>
                 </div>
+                <MoveRight className="arrow-icon"/>
                 <div className="date-field">
-                    <p>{dateTo}</p>
+                    <label htmlFor="date-to">To</label>
+                    <div className="date-input-container">
+                        <input id="date-to" readOnly placeholder="To" value={dateTo}/>
+                        <CalendarDays className="calendar-icon"/>
+                    </div>
                 </div>
             </div>
             <DayPicker 
