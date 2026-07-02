@@ -52,15 +52,15 @@ export default function DatePicker({setListingData}) {
                     <label htmlFor="date-from">From</label>
                     <div className="date-field_input-container">
                         <input id="date-from" readOnly placeholder="From" value={dateFrom}/>
-                        <CalendarDays className="calendar-icon" />
+                        <CalendarDays className="date-field_calendar-icon" />
                     </div>
                 </div>
-                <MoveRight className="arrow-icon"/>
+                <MoveRight className="date-fields_arrow-icon"/>
                 <div className="date-picker_date-field">
                     <label htmlFor="date-to">To</label>
                     <div className="date-field_input-container">
                         <input id="date-to" readOnly placeholder="To" value={dateTo}/>
-                        <CalendarDays className="calendar-icon"/>
+                        <CalendarDays className="date-field_calendar-icon"/>
                     </div>
                 </div>
             </div>

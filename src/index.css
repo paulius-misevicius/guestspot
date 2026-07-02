@@ -268,24 +268,6 @@ main {
   transform: translateY(-50%);
 }
 
-.calendar-icon {
-  position: absolute;
-  color: var(--text-muted);
-  width: 14px;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.arrow-icon {
-  color: var(--text-muted);
-  width: 20px;
-  margin-bottom: -24px;
-}
-.create-listing-btn {
-  padding-block: 12px;
-  width: 100%;
-  border-radius: 12px;
-}
 .date-picker {
   display: flex;
   flex-direction: column;
@@ -299,6 +281,11 @@ main {
   gap: 12px;
   margin-bottom: 24px;
 }
+.date-fields_arrow-icon {
+  color: var(--text-muted);
+  width: 20px;
+  margin-bottom: -24px;
+}
 .date-picker_date-field {
   display: flex;
   flex-direction: column;
@@ -306,6 +293,14 @@ main {
 .date-field_input-container {
   position: relative;
   margin-top: 8px;
+}
+.date-field_calendar-icon {
+  position: absolute;
+  color: var(--text-muted);
+  width: 14px;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .date-picker_date-field input {
   width: 100%;
@@ -384,6 +379,12 @@ main {
 }
 .date-picker .rdp-chevron:hover {
   fill: var(--text-primary);
+}
+
+.listing-modal_create-btn {
+  padding-block: 12px;
+  width: 100%;
+  border-radius: 12px;
 }
 
 .sr-only {
