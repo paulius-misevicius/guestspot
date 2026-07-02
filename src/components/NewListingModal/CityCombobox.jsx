@@ -11,7 +11,7 @@ export default function CityCombobox({ setListingData }) {
     const [highlightedIndex, setHighlightedIndex] = useState(-1)
 
     const searchResults = lithuanianCities.filter(item => 
-        item.city.toLowerCase().includes(inputValue.toLowerCase())
+        toEnglishChars(item.city.toLowerCase()).includes(inputValue.toLowerCase())
     )
 
     const showDropdown = isComboboxOpen && searchResults.length > 0 && inputValue.length > 0
@@ -61,7 +61,8 @@ export default function CityCombobox({ setListingData }) {
             setHighlightedIndex(prev => Math.max(prev - 1, 0))
         } 
         else if (event.key === "Enter" && highlightedIndex >= 0) {
-                commitCity(searchResults[highlightedIndex])
+            event.preventDefault()
+            commitCity(searchResults[highlightedIndex])
         } 
         else if (event.key === "Escape") {
             setIsComboboxOpen(false)
@@ -76,6 +77,9 @@ export default function CityCombobox({ setListingData }) {
             <label htmlFor="city">City</label>
             <Search className="combobox-city_search-icon"/>
             <input 
+                aria-activedescendant={highlightedIndex >= 0 
+                    ? `city-option-${highlightedIndex}` 
+                    : undefined}
                 autoComplete="off"
                 className="combobox-city"
                 placeholder="I'm looking to guestspot in..."
@@ -95,7 +99,9 @@ export default function CityCombobox({ setListingData }) {
                 <ul>
                     {searchResults.slice(0, 5).map((item, index) => 
                         <li 
-                            key={item.city} 
+                            className={index === highlightedIndex ? "highlight-li" : undefined}
+                            key={item.city}
+                            id={`city-option-${highlightedIndex}`} 
                             onMouseDown={() => commitCity(item)}
                             onMouseEnter={() => setHighlightedIndex(index)}
                         >

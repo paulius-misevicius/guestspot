@@ -215,9 +215,13 @@ main {
   position: relative;
   list-style-type: none;
   background-color: var(--surface-1);
+  border: 1px solid var(--surface-1);
   padding: 12px 36px;
   font-size: var(--font-size-s);
   cursor: pointer;
+}
+.listing-modal_city-field .highlight-li {
+  border: 1px solid var(--border-strong);
 }
 
 .combobox-city {
@@ -232,7 +236,7 @@ main {
   border-radius: 12px;
 }
 .combobox-city:focus {
-  background-color: var(--surface-1) !important;
+  background-color: var(--surface-1);
   outline: 1px solid var(--border-strong);
 }
 .combobox-city_country {

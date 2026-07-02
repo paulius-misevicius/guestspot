@@ -25,10 +25,6 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
         setIsModalOpen(false)
     }
 
-    function handleInputChange(event) {
-        setListingData(prev => ({...prev, place: event.target.value}))
-    }
-
     return createPortal(
         <>
             <div className="content_overlay"/>
