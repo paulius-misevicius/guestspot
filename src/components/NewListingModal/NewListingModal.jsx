@@ -5,24 +5,26 @@ import { X } from "lucide-react"
 import { ListingsContext } from "../../App"
 import DatePicker from "./DatePicker"
 import CityCombobox from "./CityCombobox"
+import { addToFirebase } from "../../utils"
 
 export default function NewListingModal({isModalOpen, setIsModalOpen}) {
     
     if(!isModalOpen) return
 
     const { setAllListings } = useContext(ListingsContext)
-    const [listingData, setListingData] = useState({id: nanoid(), city: "", dateRange: ""})
+    const [listingData, setListingData] = useState({})
     const [error, setError] = useState(null)
 
     function createListing(event) {
         event.preventDefault()
 
-        if (listingData.city === "" || listingData.dateRange === "") {
+        if (!listingData.city || listingData.dateFrom === undefined) {
             setError("Please fill out the required fields!")
             return
         }
         setError(null)
         setAllListings(prev => [listingData, ...prev])
+        addToFirebase("listings", listingData)
         setIsModalOpen(false)
     }
 

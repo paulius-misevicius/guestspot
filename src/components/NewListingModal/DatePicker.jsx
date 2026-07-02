@@ -24,29 +24,29 @@ export default function DatePicker({setListingData}) {
     function handleSelect(selected) {
         if (!selected) return
 
-        const fromDay = format(selected.from, "d")
-        const fromMonth = format(selected.from, "MMM")
-        const fromYear = format(selected.from, "yyyy")
+        // const fromDay = format(selected.from, "d")
+        // const fromMonth = format(selected.from, "MMM")
+        // const fromYear = format(selected.from, "yyyy")
 
-        const toDay = format(selected.to, "d")
-        const toMonth = format(selected.to, "MMM")
-        const toYear = format(selected.to, "yyyy")
+        // const toDay = format(selected.to, "d")
+        // const toMonth = format(selected.to, "MMM")
+        // const toYear = format(selected.to, "yyyy")
 
-        let selectedDates
-        if (fromYear !== toYear) {
-            selectedDates = `${fromMonth} ${fromDay}, ${fromYear} - ${toMonth} ${toDay}, ${toYear}`
-        }
-        if (fromYear === toYear) {
-            selectedDates = `${fromMonth} ${fromDay} - ${toMonth} ${toDay}, ${fromYear}`
-        }
-        if (fromMonth === toMonth && fromYear === toYear) {
-            selectedDates = `${fromMonth} ${fromDay} - ${toDay}, ${fromYear}`
-        }
-        if (fromDay === toDay && fromMonth === toMonth && fromYear === toYear) {
-            selectedDates = `${fromMonth} ${fromDay}, ${fromYear}`
-        }
+        // let selectedDates
+        // if (fromYear !== toYear) {
+        //     selectedDates = `${fromMonth} ${fromDay}, ${fromYear} - ${toMonth} ${toDay}, ${toYear}`
+        // }
+        // if (fromYear === toYear) {
+        //     selectedDates = `${fromMonth} ${fromDay} - ${toMonth} ${toDay}, ${fromYear}`
+        // }
+        // if (fromMonth === toMonth && fromYear === toYear) {
+        //     selectedDates = `${fromMonth} ${fromDay} - ${toDay}, ${fromYear}`
+        // }
+        // if (fromDay === toDay && fromMonth === toMonth && fromYear === toYear) {
+        //     selectedDates = `${fromMonth} ${fromDay}, ${fromYear}`
+        // }
 
-        setListingData(prev => ({...prev, dateRange: selectedDates}))
+        setListingData(prev => ({...prev, dateFrom: selected.from, dateTo: selected.to}))
         setSelected(selected)
     }
 

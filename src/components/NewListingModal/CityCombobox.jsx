@@ -19,7 +19,11 @@ export default function CityCombobox({ setListingData }) {
     function commitCity(item) {
         setInputValue(item ? item.city : "")
         setListingData(prev => (
-            {...prev, city: item ? `${item.city}, ${item.country}` : ""}
+            {
+                ...prev, 
+                city: item ? item.city : null, 
+                country: item ? item.country : null
+            }
         ))
         setIsComboboxOpen(false)
         setHighlightedIndex(-1)
@@ -46,7 +50,7 @@ export default function CityCombobox({ setListingData }) {
         setInputValue(event.target.value)
         setIsComboboxOpen(true)
         setHighlightedIndex(-1)
-        setListingData(prev => ({...prev, city: ""}))
+        setListingData(prev => ({...prev, city: null, country: null}))
     }
 
     function handleKeyDown(event) {
