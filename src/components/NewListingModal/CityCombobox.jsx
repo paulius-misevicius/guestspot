@@ -64,6 +64,10 @@ export default function CityCombobox({ setListingData }) {
             event.preventDefault()
             commitCity(searchResults[highlightedIndex])
         } 
+        else if (event.key === "Enter") {
+            event.preventDefault()
+            commitCity(searchResults[highlightedIndex + 1])
+        } 
         else if (event.key === "Escape") {
             setIsComboboxOpen(false)
         }
@@ -84,9 +88,11 @@ export default function CityCombobox({ setListingData }) {
                     ? `city-option-${highlightedIndex}` 
                     : undefined}
                 autoComplete="off"
+                required
                 className="combobox-city"
                 placeholder="I'm looking to guestspot in..."
                 id="city" 
+                name="city"
                 type="text" 
                 value={inputValue}
                 onChange={handleInputChange}

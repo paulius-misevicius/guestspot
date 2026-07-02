@@ -46,6 +46,7 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
                 <DatePicker setListingData={setListingData} />
 
                 <button 
+                    type="submit"
                     className="listing-modal_create-btn"
                 >
                     Create listing
