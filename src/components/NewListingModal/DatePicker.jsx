@@ -5,13 +5,14 @@ import { format } from "date-fns"
 import { DayPicker } from "@daypicker/react"
 import "@daypicker/react/style.css"
 
-import { CalendarDays, MoveRight } from "lucide-react"
+import { CalendarDays, MoveRight, ChevronDown, ChevronUp } from "lucide-react"
 
 export default function DatePicker({setListingData}) {
 
     const today = new Date()
 
     const [selected, setSelected] = useState(undefined)
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false)
 
     const dateFrom = selected?.from ? format(selected.from, "MMM d, yyyy") : ""
     const dateTo = selected?.to ? format(selected.to, "MMM d, yyyy") : ""
@@ -54,9 +55,9 @@ export default function DatePicker({setListingData}) {
                         <input 
                             id="date-from" 
                             name="date-from"
-                            readOnly 
                             placeholder="From" 
                             value={dateFrom}
+                            readOnly
                         />
                         <CalendarDays className="date-field_calendar-icon" />
                     </div>
@@ -68,26 +69,39 @@ export default function DatePicker({setListingData}) {
                         <input 
                             id="date-to" 
                             name="date-to"
-                            readOnly 
                             placeholder="To" 
                             value={dateTo}
+                            readOnly
                         />
                         <CalendarDays className="date-field_calendar-icon"/>
                     </div>
                 </div>
             </div>
-            <DayPicker 
-                mode="range" 
-                navLayout="around"
-                captionLayout="dropdown"
-                startMonth={today}
-                endMonth={new Date(2028, 11)}
-                showOutsideDays
-                weekStartsOn={1}
-                disabled={{before: today}}
-                selected={selected}
-                onSelect={handleSelect}
-            />
+            <button 
+                className="date-picker_toggle-calendar-btn"
+                type="button"
+                onClick={() => setIsCalendarOpen(prev => !prev)}
+            >
+                {isCalendarOpen ? "Hide" : "Show"} calendar
+                {isCalendarOpen 
+                    ? <ChevronUp className="toggle-calendar-btn_chevron-icon" /> 
+                    : <ChevronDown className="toggle-calendar-btn_chevron-icon" />
+                    }
+            </button>
+            {isCalendarOpen &&
+                <DayPicker 
+                    mode="range" 
+                    navLayout="around"
+                    captionLayout="dropdown"
+                    startMonth={today}
+                    endMonth={new Date(2028, 11)}
+                    showOutsideDays
+                    weekStartsOn={1}
+                    disabled={{before: today}}
+                    selected={selected}
+                    onSelect={handleSelect}
+                />
+                }
         </div>
     )
 }
