@@ -147,7 +147,7 @@ main {
 .listing-modal {
   position: fixed;
   display: flex;
-  width: 375px;
+  width: 370px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -309,6 +309,10 @@ main {
   display: flex;
   flex-direction: column;
 }
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
 .date-field_input-container {
   position: relative;
   margin-top: 8px;
@@ -327,7 +331,7 @@ main {
   border-radius: 12px;
   background-color: var(--surface-1);
   color: var(--text-secondary);
-  cursor: default;
+  cursor: pointer;
 }
 .date-picker_date-field input:focus {
   background-color: var(--surface-1);
@@ -407,6 +411,10 @@ main {
   margin-top: 20px;
 }
 
+.error-msg {
+  color: crimson;
+  margin-top: 12px;
+}
 .sr-only {
   position: absolute;
   width: 1px;

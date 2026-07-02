@@ -88,7 +88,6 @@ export default function CityCombobox({ setListingData }) {
                     ? `city-option-${highlightedIndex}` 
                     : undefined}
                 autoComplete="off"
-                required
                 className="combobox-city"
                 placeholder="I'm looking to guestspot in..."
                 id="city" 

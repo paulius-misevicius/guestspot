@@ -12,15 +12,16 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
 
     const { setAllListings } = useContext(ListingsContext)
     const [listingData, setListingData] = useState({id: nanoid(), city: "", dateRange: ""})
+    const [error, setError] = useState(null)
 
     function createListing(event) {
         event.preventDefault()
 
         if (listingData.city === "" || listingData.dateRange === "") {
-            console.log("Please fill out the required fields!")
+            setError("Please fill out the required fields!")
             return
         }
-
+        setError(null)
         setAllListings(prev => [listingData, ...prev])
         setIsModalOpen(false)
     }
@@ -51,6 +52,7 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
                 >
                     Create listing
                 </button>
+                {error && <p className="error-msg">{error}</p>}
             </form>
         </>,
         document.getElementById("portal")

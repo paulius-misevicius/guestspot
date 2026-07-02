@@ -17,6 +17,10 @@ export default function DatePicker({setListingData}) {
     const dateFrom = selected?.from ? format(selected.from, "MMM d, yyyy") : ""
     const dateTo = selected?.to ? format(selected.to, "MMM d, yyyy") : ""
 
+    function handleEnterKey(event) {
+        event.preventDefault()
+    }
+
     function handleSelect(selected) {
         if (!selected) return
 
@@ -57,6 +61,8 @@ export default function DatePicker({setListingData}) {
                             name="date-from"
                             placeholder="From" 
                             value={dateFrom}
+                            onKeyDown={handleEnterKey}
+                            onClick={() => setIsCalendarOpen(true)}
                             readOnly
                         />
                         <CalendarDays className="date-field_calendar-icon" />
@@ -71,6 +77,8 @@ export default function DatePicker({setListingData}) {
                             name="date-to"
                             placeholder="To" 
                             value={dateTo}
+                            onKeyDown={handleEnterKey}
+                            onClick={() => setIsCalendarOpen(true)}
                             readOnly
                         />
                         <CalendarDays className="date-field_calendar-icon"/>
