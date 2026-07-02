@@ -32,16 +32,14 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
 
     return createPortal(
         <>
-            <div className="content-overlay"/>
-            <form onSubmit={createListing} className="new-listing-modal">
-                <div className="modal-header">
+            <div className="content_overlay"/>
+            <form onSubmit={createListing} className="listing-modal">
+                <div className="listing-modal_header">
                     <h3>New listing</h3>
-                    <button className="close-modal-btn" onClick={() => setIsModalOpen(false)}><X className="close-modal-icon"/></button>
+                    <button className="listing-modal_close-btn" onClick={() => setIsModalOpen(false)}><X className="listing-modal_close-icon"/></button>
                 </div>
                 <CityCombobox setListingData={setListingData} />
-                <div className="modal-dates">
-                    <DatePicker setListingData={setListingData} />
-                </div>
+                <DatePicker setListingData={setListingData} />
                 <button className="create-listing-btn">Create listing</button>
             </form>
         </>,

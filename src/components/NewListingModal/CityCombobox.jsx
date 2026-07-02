@@ -17,8 +17,8 @@ export default function CityCombobox({setListingData}) {
             onMouseDown={() => handleSelect(item)}
             onMouseEnter={() => setHighlightedIndex(index)}
         >
-            <MapPin className="map-pin-icon"/>
-            {item.city}<span className="combobox-country">, {item.country}</span>
+            <MapPin className="combobox-city_map-pin-icon"/>
+            {item.city}<span className="combobox-city_country">, {item.country}</span>
         </li>
     )
 
@@ -84,12 +84,12 @@ export default function CityCombobox({setListingData}) {
     }
 
     return (
-        <div ref={containerRef} className="modal-city">
+        <div ref={containerRef} className="listing-modal_city-field">
             <label htmlFor="city">City</label>
-            <Search className="search-icon"/>
+            <Search className="combobox-city_search-icon"/>
             <input 
                 autoComplete="off"
-                className="city-combobox"
+                className="combobox-city"
                 placeholder="I'm looking to guestspot in..."
                 id="city" 
                 type="text" 
@@ -103,7 +103,7 @@ export default function CityCombobox({setListingData}) {
                 onFocus={() => setIsComboboxOpen(true)}
                 onKeyDown={handleKeyDown}
             />
-            {inputValue.length > 0 && <X className="clear-icon" onClick={clearInput}/>}
+            {inputValue.length > 0 && <X className="combobox-city_clear-icon" onClick={clearInput}/>}
             {isComboboxOpen && searchResults.length > 0 && inputValue.length > 0 &&
                 <ul>
                     {displayCities.slice(0, 5)}

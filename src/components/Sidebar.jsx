@@ -2,12 +2,12 @@ import { NavLink } from "react-router"
 
 export default function Sidebar() {
     return (
-        <section className="app-sidebar">
+        <section className="sidebar">
             <h1>Guestspot app</h1>
-            <div className="app-sidebar-profile">
+            <div className="sidebar_profile">
                 <p>Vardenis Pavardenis</p>
             </div>
-            <nav className="app-sidebar-nav">
+            <nav className="sidebar_nav">
                 <NavLink 
                     to="."
                     className={({ isActive }) => isActive ? "active-tab" : null}

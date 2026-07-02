@@ -17,14 +17,14 @@ export default function MyListings() {
   return (
       <>
         <NewListingModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
-        <div className="app-content-header">
+        <div className="content_header">
           <div>
             <h2>My travel plans</h2>
             <p>Cities and dates you're available to guest</p>
           </div>
           <button onClick={() => setIsModalOpen(true)}>+</button>
         </div>
-        <section className="app-content-listings">
+        <section className="content_listings">
           {displayArtistListings}
         </section>
       </>

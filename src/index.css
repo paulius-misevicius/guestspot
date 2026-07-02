@@ -17,6 +17,9 @@
   --text-muted: #7a7a7a;
   --text-secondary: #b0b0b0;
   --text-primary: #f2f2f0;
+
+  --font-size-s: 0.875rem;
+  --font-size-xs: 0.75rem;
 }
 
 body {
@@ -33,13 +36,20 @@ h3 {
   font-weight: 600;
 }
 p, span {
-  font-size: 0.875rem;
+  font-size: var(--font-size-s);
   color: var(--text-secondary);
 }
 button {
   font-family: 'Inter', sans-serif;
   border: none;
   cursor: pointer;
+  background-color: var(--surface-3);
+  color: var(--text-primary);
+}
+input {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--font-size-s);
+  border: none;
 }
 
 main {
@@ -47,14 +57,34 @@ main {
   min-height: 100dvh;
   max-height: 100dvh;
 }
-.app-sidebar {
+
+.sidebar {
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 300px;
   padding: 28px;
 }
-.app-content {
+.sidebar_profile {
+  background-color: var(--surface-1);
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.sidebar_nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sidebar_nav > a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.sidebar_nav > .active-tab {
+  color: var(--text-primary);
+}
+
+.content {
   position: relative;
   transform: translateZ(0);
   display: flex;
@@ -65,47 +95,34 @@ main {
   background-color: var(--surface-1);
   border-radius: 40px 0px 0px 40px;
 }
-
-.app-sidebar-profile {
-  background-color: var(--surface-1);
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+.content_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+  border-radius: 40px 0px 0px 40px;
+  background-color: #000000a1;
 }
-.app-sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.app-sidebar-nav > a {
-  color: var(--text-muted);
-  text-decoration: none;
-}
-.app-sidebar-nav > .active-tab {
-  color: var(--text-primary);
-}
-
-.app-content-header {
+.content_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.app-content-header > button {
+.content_header > button {
   padding: 8px 12px;
   border-radius: 999px;
-  font-size: 1rem;
   background-color: var(--surface-2);
   color: var(--text-primary);
-  cursor: pointer;
-  border: none;
 }
-
-.app-content-listings {
+.content_listings {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
   gap: 20px;
 }
+
 .listing {
   background-color: var(--surface-2);
   padding: 24px;
@@ -114,19 +131,19 @@ main {
   flex-direction: column;
   gap: 16px;
 }
-.listing-details {
+.listing_details {
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--border);
   padding-bottom: 16px;
 }
-.listing-matches {
+.listing_matches {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.new-listing-modal {
+.listing-modal {
   position: fixed;
   display: flex;
   max-width: min-content;
@@ -141,97 +158,88 @@ main {
   transform: translate(-50%, -50%);
   border-radius: 20px;
 }
-.new-listing-modal label {
+.listing-modal label {
   margin-right: 8px;
 }
-.modal-header {
+.listing-modal_header {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
-.modal-header > h3 {
+.listing-modal_header > h3 {
   margin-bottom: 0;
 }
-.close-modal-btn {
+.listing-modal_close-btn {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 32px;
   height: 32px;
-  border: none;
   border-radius: 999px;
-  cursor: pointer;
-  background-color: var(--surface-3);
-  color: var(--text-primary);
 }
-.close-modal-icon {
+.listing-modal_close-icon {
   width: 14px;
 }
-.modal-dates {
-  display: flex;
-  margin-bottom: 20px;
-  gap: 20px;
-}
-.modal-city {
+.listing-modal_city-field {
   position: relative;
   margin-bottom: 24px;
   width: 100%;
 }
-.modal-city label,
-.date-picker label {
+.listing-modal label {
   font-size: 0.625rem;
   font-weight: 500;
   letter-spacing: 8%;
   color: var(--text-secondary);
 }
-.modal-city ul {
+.listing-modal_city-field ul {
   margin-top: 8px;
   width: 100%;
   overflow: hidden;
   position: absolute;
   z-index: 10;
 }
-.modal-city li:first-of-type {
+.listing-modal_city-field li:first-of-type {
   border-radius: 12px 12px 0px 0px;
 }
-.modal-city li:last-of-type {
+.listing-modal_city-field li:last-of-type {
   border-radius: 0px 0px 12px 12px;
   margin-bottom: 0;
 }
-.modal-city li:only-of-type {
+.listing-modal_city-field li:only-of-type {
   border-radius: 12px;
   margin-bottom: 0;
 }
-.modal-city li {
+.listing-modal_city-field li {
   position: relative;
   list-style-type: none;
   background-color: var(--surface-1);
   padding: 12px 36px;
-  font-size: 0.875rem;
+  font-size: var(--font-size-s);
   cursor: pointer;
 }
-.combobox-country {
-  font-size: 0.75rem;
-  color: var(--text-muted)
-}
-.city-combobox {
+
+.combobox-city {
   position: relative;
   width: 100%;
   background-color: var(--surface-1);
   color: var(--text-primary);
-  font-size: 0.875rem;
+  font-size: var(--font-size-s);
   border: none;
   padding: 12px 36px;
   margin-top: 8px;
   border-radius: 12px;
 }
-.city-combobox:focus {
+.combobox-city:focus {
   background-color: var(--surface-1) !important;
   outline: 1px solid var(--border-strong);
 }
-.search-icon {
+.combobox-city_country {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+.combobox-city_search-icon {
   position: absolute;
   width: 14px;
   left: 12px;
@@ -239,7 +247,7 @@ main {
   color: var(--text-muted);
   z-index: 100;
 }
-.clear-icon {
+.combobox-city_clear-icon {
   position: absolute;
   width: 16px;
   right: 12px;
@@ -248,10 +256,10 @@ main {
   cursor: pointer;
   z-index: 100;
 }
-.clear-icon:hover {
+.combobox-city_clear-icon:hover {
   color: var(--text-secondary);
 }
-.map-pin-icon {
+.combobox-city_map-pin-icon {
   position: absolute;
   color: var(--text-muted);
   width: 14px;
@@ -259,10 +267,7 @@ main {
   top: 50%;
   transform: translateY(-50%);
 }
-.date-input-container {
-  position: relative;
-  margin-top: 8px;
-}
+
 .calendar-icon {
   position: absolute;
   color: var(--text-muted);
@@ -277,21 +282,9 @@ main {
   margin-bottom: -24px;
 }
 .create-listing-btn {
-  background-color: var(--surface-3);
-  color: var(--text-primary);
   padding-block: 12px;
   width: 100%;
   border-radius: 12px;
-}
-.content-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 100;
-  border-radius: 40px 0px 0px 40px;
-  background-color: #000000a1;
 }
 .date-picker {
   display: flex;
@@ -299,32 +292,34 @@ main {
   justify-content: center;
   align-items: center;
 }
-.date-picker-fields {
+.date-picker_date-fields {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
   margin-bottom: 24px;
 }
-.date-field {
+.date-picker_date-field {
   display: flex;
   flex-direction: column;
 }
-.date-field input {
+.date-field_input-container {
+  position: relative;
+  margin-top: 8px;
+}
+.date-picker_date-field input {
   width: 100%;
-  font-size: 0.875rem;
   padding: 12px 8px 12px 36px;
   border-radius: 12px;
   background-color: var(--surface-1);
   color: var(--text-secondary);
   cursor: default;
-  border: none;
 }
-.date-field input:focus {
-  background-color: var(--surface-1) !important;
+.date-picker_date-field input:focus {
+  background-color: var(--surface-1);
   outline: 1px solid var(--border-strong);
 }
-.date-field > p {
+.date-picker_date-field > p {
   color: var(--text-primary);
   text-wrap: nowrap;
 }
@@ -348,7 +343,7 @@ main {
   color: var(--text-secondary);
 }
 .date-picker .rdp-day_button {
-  font-size: 0.875rem;
+  font-size: var(--font-size-s);
   font-weight: 400;
 }
 .date-picker .rdp-day_button:hover {
@@ -377,10 +372,10 @@ main {
 }
 .rdp-month table {
   border-collapse: separate;
-  border-spacing: 0px 12px;
+  border-spacing: 0px 8px;
 }
 .date-picker .rdp-weekday {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: 400;
 }
 .date-picker .rdp-chevron {
@@ -404,7 +399,7 @@ main {
 }
 
 @media (max-width: 600px) {
-  .app-sidebar {
+  .sidebar {
     display: none;
   }
 }

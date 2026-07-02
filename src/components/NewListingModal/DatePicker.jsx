@@ -47,18 +47,18 @@ export default function DatePicker({setListingData}) {
 
     return (
         <div className="date-picker">
-            <div className="date-picker-fields">
-                <div className="date-field">
+            <div className="date-picker_date-fields">
+                <div className="date-picker_date-field">
                     <label htmlFor="date-from">From</label>
-                    <div className="date-input-container">
+                    <div className="date-field_input-container">
                         <input id="date-from" readOnly placeholder="From" value={dateFrom}/>
                         <CalendarDays className="calendar-icon" />
                     </div>
                 </div>
                 <MoveRight className="arrow-icon"/>
-                <div className="date-field">
+                <div className="date-picker_date-field">
                     <label htmlFor="date-to">To</label>
-                    <div className="date-input-container">
+                    <div className="date-field_input-container">
                         <input id="date-to" readOnly placeholder="To" value={dateTo}/>
                         <CalendarDays className="calendar-icon"/>
                     </div>
@@ -67,6 +67,9 @@ export default function DatePicker({setListingData}) {
             <DayPicker 
                 mode="range" 
                 navLayout="around"
+                captionLayout="dropdown"
+                startMonth={today}
+                endMonth={new Date(2028, 11)}
                 showOutsideDays
                 weekStartsOn={1}
                 disabled={{before: today}}

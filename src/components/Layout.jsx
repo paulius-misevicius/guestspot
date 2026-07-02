@@ -5,7 +5,7 @@ export default function Layout() {
     return (
         <main>
             <Sidebar />
-            <section className="app-content">
+            <section className="content">
                 <Outlet />
                 <div id="portal"></div>
             </section>
