@@ -77,6 +77,9 @@ export default function CityCombobox({ setListingData }) {
             <label htmlFor="city">City</label>
             <Search className="combobox-city_search-icon"/>
             <input 
+                role="combobox"
+                aria-expanded={showDropdown}
+                aria-controls="city-listbox"
                 aria-activedescendant={highlightedIndex >= 0 
                     ? `city-option-${highlightedIndex}` 
                     : undefined}
@@ -96,12 +99,14 @@ export default function CityCombobox({ setListingData }) {
                 }
 
             {showDropdown &&
-                <ul>
+                <ul id="city-listbox" role="listbox">
                     {searchResults.slice(0, 5).map((item, index) => 
                         <li 
                             className={index === highlightedIndex ? "highlight-li" : undefined}
                             key={item.city}
                             id={`city-option-${highlightedIndex}`} 
+                            role="option"
+                            aria-selected={index === highlightedIndex}
                             onMouseDown={() => commitCity(item)}
                             onMouseEnter={() => setHighlightedIndex(index)}
                         >
