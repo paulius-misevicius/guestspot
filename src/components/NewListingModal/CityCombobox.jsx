@@ -1,16 +1,21 @@
 import { useState, useRef, useEffect } from "react"
-import { lithuanianCities } from "../../data"
 import { Search, X, MapPin } from "lucide-react"
-import { toEnglishChars } from "../../utils"
+import { getCollectionFromFirebase, toEnglishChars } from "../../utils"
 
 export default function CityCombobox({ setListingData }) {
 
     const containerRef = useRef(null)
     const [isComboboxOpen, setIsComboboxOpen] = useState(false)
+    const [comboboxLocations, setComboboxLocations] = useState([])
     const [inputValue, setInputValue] = useState("")
     const [highlightedIndex, setHighlightedIndex] = useState(-1)
 
-    const searchResults = lithuanianCities.filter(item => 
+    useEffect(() => {
+        getCollectionFromFirebase("locations")
+            .then(data => setComboboxLocations(data))
+    }, [])
+
+    const searchResults = comboboxLocations.filter(item => 
         toEnglishChars(item.city.toLowerCase()).includes(inputValue.toLowerCase())
     )
 
@@ -30,7 +35,7 @@ export default function CityCombobox({ setListingData }) {
     }
 
     function commitTypedValue() {
-        const match = lithuanianCities.find(item => 
+        const match = comboboxLocations.find(item => 
             toEnglishChars(item.city.toLowerCase()) === toEnglishChars(inputValue.toLowerCase())
         )
         commitCity(match)

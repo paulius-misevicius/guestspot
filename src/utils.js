@@ -15,7 +15,14 @@ export async function deleteFromFirebase(myCollection, myDocumentId) {
     await deleteDoc(doc(db, myCollection, myDocumentId))
 }
 
-export function getCollectionFromFirebase(myCollection, onData) {
+export async function getCollectionFromFirebase(myCollection) {
+    const querySnapshot = await getDocs(collection(db, myCollection))
+    const queryData = querySnapshot.docs.map(item => ({id: item.id, ...item.data()}))
+
+    return queryData
+}
+
+export function getRealTimeCollectionFromFirebase(myCollection, onData) {
 
     const q = query(collection(db, myCollection), orderBy("createdAt", "desc"))
 

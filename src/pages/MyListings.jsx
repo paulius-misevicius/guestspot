@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
-
+import { Plus } from "lucide-react"
 import Listing from "../components/Listing.jsx"
 import NewListingModal from "../components/NewListingModal/NewListingModal.jsx"
-import { getCollectionFromFirebase } from "../utils.js"
+import { getRealTimeCollectionFromFirebase } from "../utils.js"
 
 export default function MyListings() {
 
@@ -10,7 +10,7 @@ export default function MyListings() {
   const [artistListings, setArtistListings] = useState([])
 
   useEffect(() => {
-    const unsubscribe = getCollectionFromFirebase("listings", setArtistListings)
+    const unsubscribe = getRealTimeCollectionFromFirebase("listings", setArtistListings)
 
     return () => unsubscribe()
   }, [])
@@ -28,7 +28,12 @@ export default function MyListings() {
             <h2>My travel plans</h2>
             <p>Cities and dates you're available to guest</p>
           </div>
-          <button onClick={() => setIsModalOpen(true)}>+</button>
+          <button 
+            className="header_create-btn"
+            onClick={() => setIsModalOpen(true)}
+          >
+            <Plus className="create-btn_plus-icon" />
+          </button>
         </div>
         <section className="content_listings">
           {artistListings.map(item => 
