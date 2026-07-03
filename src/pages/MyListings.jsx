@@ -34,6 +34,7 @@ export default function MyListings() {
           {artistListings.map(item => 
             <Listing 
               key={item.id} 
+              id={item.id}
               city={item.city}
               country={item.country}
               dateFrom={item.dateFrom}

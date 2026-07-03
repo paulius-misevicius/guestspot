@@ -1,6 +1,8 @@
 import { format } from "date-fns"
+import { Trash2 } from "lucide-react"
+import { deleteFromFirebase } from "../utils"
 
-export default function Listing({city, country, dateFrom, dateTo}) {
+export default function Listing({id, city, country, dateFrom, dateTo}) {
 
   const fromDay = format(dateFrom, "d")
   const fromMonth = format(dateFrom, "MMM")
@@ -27,8 +29,16 @@ export default function Listing({city, country, dateFrom, dateTo}) {
   return (
       <div className="listing">
         <div className="listing_details">
-          <h3>{city}, {country}</h3>
-          <p>{dateRange}</p>
+          <div>
+            <h3>{city}, {country}</h3>
+            <p>{dateRange}</p>
+          </div>
+          <button 
+            className="listing_delete-btn"
+            onClick={() => deleteFromFirebase("listings", id)}
+          >
+            <Trash2 className="delete-btn_trash-icon"/>
+          </button>
         </div>
         <div className="listing_matches">
           <p>See matches</p>

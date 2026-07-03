@@ -134,9 +134,19 @@ main {
 }
 .listing_details {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   border-bottom: 1px solid var(--border);
   padding-bottom: 16px;
+}
+.listing_delete-btn {
+  background-color: transparent;
+}
+.delete-btn_trash-icon {
+  width: 20px;
+  color: var(--text-muted)
+}
+.delete-btn_trash-icon:hover {
+  color: crimson;
 }
 .listing_matches {
   display: flex;

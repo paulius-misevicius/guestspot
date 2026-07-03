@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, query, orderBy, onSnapshot } from "firebase/firestore"
+import { collection, addDoc, getDocs, query, orderBy, onSnapshot, doc, deleteDoc } from "firebase/firestore"
 import { db } from "./firebase"
 
 export function toEnglishChars(string) {
@@ -9,6 +9,10 @@ export function toEnglishChars(string) {
 
 export async function addToFirebase(myCollection, myDocument) {
     const docRef = await addDoc(collection(db, myCollection), myDocument)
+}
+
+export async function deleteFromFirebase(myCollection, myDocumentId) {
+    await deleteDoc(doc(db, myCollection, myDocumentId))
 }
 
 export function getCollectionFromFirebase(myCollection, onData) {
