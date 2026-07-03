@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs } from "firebase/firestore"
+import { collection, addDoc, getDocs, query, orderBy, onSnapshot } from "firebase/firestore"
 import { db } from "./firebase"
 
 export function toEnglishChars(string) {
@@ -11,20 +11,22 @@ export async function addToFirebase(myCollection, myDocument) {
     const docRef = await addDoc(collection(db, myCollection), myDocument)
 }
 
-export async function getCollectionFromFirebase(myCollection) {
-    const querySnapshot = await getDocs(collection(db, myCollection))
-    const dataArray = querySnapshot.docs.map(item => {
+export function getCollectionFromFirebase(myCollection, onData) {
 
-        const itemDateFrom = item.data().dateFrom
-        const itemDateTo = item.data().dateTo
-        
-        return {
-            ...item.data(),
-            id: item.id, 
-            dateFrom: itemDateFrom.toDate(),
-            dateTo: itemDateTo.toDate()
-        }
-    })
+    return onSnapshot(collection(db, myCollection), querySnapshot => {
+
+        const dataArray = querySnapshot.docs.map(item => {
     
-    return dataArray
+            const itemDateFrom = item.data().dateFrom
+            const itemDateTo = item.data().dateTo
+            
+            return {
+                ...item.data(),
+                id: item.id, 
+                dateFrom: itemDateFrom.toDate(),
+                dateTo: itemDateTo.toDate()
+            }
+        })
+        onData(dataArray)
+    })
 }

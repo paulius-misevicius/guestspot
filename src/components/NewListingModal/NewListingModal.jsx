@@ -5,6 +5,7 @@ import { X } from "lucide-react"
 import DatePicker from "./DatePicker"
 import CityCombobox from "./CityCombobox"
 import { addToFirebase } from "../../utils"
+import { serverTimestamp } from "firebase/firestore"
 
 export default function NewListingModal({isModalOpen, setIsModalOpen}) {
     
@@ -21,7 +22,7 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
             return
         }
         setError(null)
-        addToFirebase("listings", listingData)
+        addToFirebase("listings", {...listingData, createdAt: serverTimestamp()})
         setIsModalOpen(false)
     }
 

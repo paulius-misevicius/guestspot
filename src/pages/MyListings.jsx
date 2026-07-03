@@ -10,15 +10,17 @@ export default function MyListings() {
   const [artistListings, setArtistListings] = useState([])
 
   useEffect(() => {
-    getCollectionFromFirebase("listings")
-      .then(data => setArtistListings(data))
+    getCollectionFromFirebase("listings", setArtistListings)
   }, [])
 
   console.log(artistListings)
 
   return (
       <>
-        <NewListingModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+        <NewListingModal 
+          isModalOpen={isModalOpen} 
+          setIsModalOpen={setIsModalOpen}
+        />
         <div className="content_header">
           <div>
             <h2>My travel plans</h2>
