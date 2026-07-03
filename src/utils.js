@@ -13,7 +13,9 @@ export async function addToFirebase(myCollection, myDocument) {
 
 export function getCollectionFromFirebase(myCollection, onData) {
 
-    return onSnapshot(collection(db, myCollection), querySnapshot => {
+    const q = query(collection(db, myCollection), orderBy("createdAt", "desc"))
+
+    return onSnapshot(q, querySnapshot => {
 
         const dataArray = querySnapshot.docs.map(item => {
     

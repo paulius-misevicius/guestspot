@@ -10,7 +10,9 @@ export default function MyListings() {
   const [artistListings, setArtistListings] = useState([])
 
   useEffect(() => {
-    getCollectionFromFirebase("listings", setArtistListings)
+    const unsubscribe = getCollectionFromFirebase("listings", setArtistListings)
+
+    return () => unsubscribe()
   }, [])
 
   console.log(artistListings)
