@@ -1,18 +1,20 @@
-import { useState, useContext } from "react"
+import { useState, useEffect } from "react"
 
-import { ListingsContext } from "../App.jsx"
 import ArtistListing from "../components/ArtistListing.jsx"
 import NewListingModal from "../components/NewListingModal/NewListingModal.jsx"
+import { getCollectionFromFirebase } from "../utils.js"
 
 export default function MyListings() {
 
-  const { allListings } = useContext(ListingsContext)
-
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [artistListings, setArtistListings] = useState([])
 
-  const displayArtistListings = allListings.map(item => 
-      <ArtistListing key={item.id} city={item.city} dateRange={item.dateRange}/>
-  )
+  useEffect(() => {
+    getCollectionFromFirebase("listings")
+      .then(data => setArtistListings(data))
+  }, [])
+
+  console.log(artistListings)
 
   return (
       <>
@@ -25,7 +27,14 @@ export default function MyListings() {
           <button onClick={() => setIsModalOpen(true)}>+</button>
         </div>
         <section className="content_listings">
-          {displayArtistListings}
+          {artistListings.map(item => 
+            <ArtistListing 
+              key={item.id} 
+              city={item.city}
+              country={item.country}
+              dateRange="testDate"
+            />
+          )}
         </section>
       </>
     )

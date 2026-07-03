@@ -2,7 +2,6 @@ import { createPortal } from "react-dom"
 import { useState, useContext } from "react"
 import { nanoid } from "nanoid"
 import { X } from "lucide-react"
-import { ListingsContext } from "../../App"
 import DatePicker from "./DatePicker"
 import CityCombobox from "./CityCombobox"
 import { addToFirebase } from "../../utils"
@@ -11,7 +10,6 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
     
     if(!isModalOpen) return
 
-    const { setAllListings } = useContext(ListingsContext)
     const [listingData, setListingData] = useState({})
     const [error, setError] = useState(null)
 
@@ -23,7 +21,6 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
             return
         }
         setError(null)
-        setAllListings(prev => [listingData, ...prev])
         addToFirebase("listings", listingData)
         setIsModalOpen(false)
     }
