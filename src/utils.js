@@ -13,9 +13,18 @@ export async function addToFirebase(myCollection, myDocument) {
 
 export async function getCollectionFromFirebase(myCollection) {
     const querySnapshot = await getDocs(collection(db, myCollection))
-    const dataArray = querySnapshot.docs.map(item => (
-        {id: item.id, ...item.data()}
-    ))
+    const dataArray = querySnapshot.docs.map(item => {
+
+        const itemDateFrom = item.data().dateFrom
+        const itemDateTo = item.data().dateTo
+        
+        return {
+            ...item.data(),
+            id: item.id, 
+            dateFrom: itemDateFrom.toDate(),
+            dateTo: itemDateTo.toDate()
+        }
+    })
     
     return dataArray
 }

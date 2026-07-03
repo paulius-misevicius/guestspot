@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-import ArtistListing from "../components/ArtistListing.jsx"
+import Listing from "../components/Listing.jsx"
 import NewListingModal from "../components/NewListingModal/NewListingModal.jsx"
 import { getCollectionFromFirebase } from "../utils.js"
 
@@ -28,11 +28,12 @@ export default function MyListings() {
         </div>
         <section className="content_listings">
           {artistListings.map(item => 
-            <ArtistListing 
+            <Listing 
               key={item.id} 
               city={item.city}
               country={item.country}
-              dateRange="testDate"
+              dateFrom={item.dateFrom}
+              dateTo={item.dateTo}
             />
           )}
         </section>
