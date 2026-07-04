@@ -5,6 +5,7 @@ import Layout from "./components/Layout"
 import MyListings from "./pages/MyListings"
 import Browse from "./pages/Browse"
 import Profile from "./pages/Profile"
+import Signup from "./pages/Signup"
 
 export default function App() {
 
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="browse" element={<Browse />}/>
           <Route path="profile" element={<Profile />}/>
         </Route>
+        <Route path="sign-up" element={<Signup />} />
       </Routes>
     </BrowserRouter>
   )

@@ -47,14 +47,42 @@ button {
   background-color: var(--surface-3);
   color: var(--text-primary);
 }
+.input-container {
+  position: relative;
+}
+.input-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 12px;
+  color: var(--text-muted);
+}
 input {
   font-family: 'Inter', sans-serif;
   font-size: var(--font-size-s);
   border: none;
+  width: 100%;
+  padding: 12px 8px 12px 36px;
+  border-radius: 12px;
+  background-color: var(--surface-1);
+  color: var(--text-secondary);
+}
+input:focus {
+  background-color: var(--surface-1);
+  outline: 1px solid var(--border-strong);
+}
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 8%;
+  color: var(--text-secondary);
 }
 
 main {
   display: flex;
+  justify-content: center;
   min-height: 100dvh;
   max-height: 100dvh;
 }
@@ -177,9 +205,6 @@ main {
   transform: translate(-50%, -50%);
   border-radius: 20px;
 }
-.listing-modal label {
-  margin-right: 8px;
-}
 .listing-modal_header {
   display: flex;
   width: 100%;
@@ -205,12 +230,6 @@ main {
   position: relative;
   margin-bottom: 24px;
   width: 100%;
-}
-.listing-modal label {
-  font-size: 0.625rem;
-  font-weight: 500;
-  letter-spacing: 8%;
-  color: var(--text-secondary);
 }
 .listing-modal_city-field ul {
   margin-top: 8px;
@@ -243,41 +262,18 @@ main {
   border: 1px solid var(--border-strong);
 }
 
-.combobox-city {
-  position: relative;
-  width: 100%;
-  background-color: var(--surface-1);
-  color: var(--text-primary);
-  font-size: var(--font-size-s);
-  border: none;
-  padding: 12px 36px;
-  margin-top: 8px;
-  border-radius: 12px;
-}
-.combobox-city:focus {
-  background-color: var(--surface-1);
-  outline: 1px solid var(--border-strong);
-}
 .combobox-city_country {
   font-size: var(--font-size-xs);
   color: var(--text-muted);
 }
 .combobox-city_search-icon {
-  position: absolute;
   width: 14px;
-  left: 12px;
-  top: 35px;
-  color: var(--text-muted);
-  z-index: 100;
 }
 .combobox-city_clear-icon {
-  position: absolute;
   width: 16px;
+  left: unset;
   right: 12px;
-  top: 35.5px;
-  color: var(--text-muted);
   cursor: pointer;
-  z-index: 100;
 }
 .combobox-city_clear-icon:hover {
   color: var(--text-secondary);
@@ -331,29 +327,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
 }
-.date-field_input-container {
-  position: relative;
-  margin-top: 8px;
-}
 .date-field_calendar-icon {
-  position: absolute;
-  color: var(--text-muted);
   width: 14px;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
 }
 .date-picker_date-field input {
-  width: 100%;
-  padding: 12px 8px 12px 36px;
-  border-radius: 12px;
-  background-color: var(--surface-1);
-  color: var(--text-secondary);
   cursor: pointer;
-}
-.date-picker_date-field input:focus {
-  background-color: var(--surface-1);
-  outline: 1px solid var(--border-strong);
 }
 .date-picker_date-field > p {
   color: var(--text-primary);
@@ -422,7 +400,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   fill: var(--text-primary);
 }
 
-.listing-modal_create-btn {
+.listing-modal_create-btn, .sign-up_button {
   padding-block: 12px;
   width: 100%;
   border-radius: 12px;
@@ -443,6 +421,36 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.sign-up {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+  background-color: var(--surface-1);
+}
+.sign-up_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  height: fit-content;
+  background-color: var(--surface-2);
+  padding: 20px 28px;
+  border-radius: 20px;
+}
+.sign-up_fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.sign-up_mail-icon {
+  width: 14px;
+}
+.sign-up_password-icon {
+  width: 14px;
 }
 
 @media (max-width: 600px) {

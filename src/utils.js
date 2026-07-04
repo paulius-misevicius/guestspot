@@ -1,5 +1,6 @@
 import { collection, addDoc, getDocs, query, orderBy, onSnapshot, doc, deleteDoc } from "firebase/firestore"
-import { db } from "./firebase"
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { db, auth } from "./firebase"
 
 export function toEnglishChars(string) {
     return string
@@ -42,4 +43,14 @@ export function getRealTimeCollectionFromFirebase(myCollection, onData) {
         })
         onData(dataArray)
     })
+}
+
+export function addUserToFirebase(email, password) {
+    createUserWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+            const user = userCredential.user
+        })
+        .catch(error => {
+            console.error(error.message)
+        })
 }

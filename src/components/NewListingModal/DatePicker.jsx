@@ -34,7 +34,7 @@ export default function DatePicker({setListingData}) {
             <div className="date-picker_date-fields">
                 <div className="date-picker_date-field">
                     <label htmlFor="date-from">From</label>
-                    <div className="date-field_input-container">
+                    <div className="input-container">
                         <input 
                             id="date-from" 
                             name="date-from"
@@ -44,13 +44,13 @@ export default function DatePicker({setListingData}) {
                             onClick={() => setIsCalendarOpen(true)}
                             readOnly
                         />
-                        <CalendarDays className="date-field_calendar-icon" />
+                        <CalendarDays className="input-icon date-field_calendar-icon" />
                     </div>
                 </div>
                 <MoveRight className="date-fields_arrow-icon"/>
                 <div className="date-picker_date-field">
                     <label htmlFor="date-to">To</label>
-                    <div className="date-field_input-container">
+                    <div className="input-container">
                         <input 
                             id="date-to" 
                             name="date-to"
@@ -60,7 +60,7 @@ export default function DatePicker({setListingData}) {
                             onClick={() => setIsCalendarOpen(true)}
                             readOnly
                         />
-                        <CalendarDays className="date-field_calendar-icon"/>
+                        <CalendarDays className="input-icon date-field_calendar-icon"/>
                     </div>
                 </div>
             </div>

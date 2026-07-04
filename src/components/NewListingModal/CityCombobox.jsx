@@ -88,29 +88,34 @@ export default function CityCombobox({ setListingData }) {
             ref={containerRef} 
         >
             <label htmlFor="city">City</label>
-            <Search className="combobox-city_search-icon"/>
-            <input 
-                role="combobox"
-                aria-expanded={showDropdown}
-                aria-controls="city-listbox"
-                aria-activedescendant={highlightedIndex >= 0 
-                    ? `city-option-${highlightedIndex}` 
-                    : undefined}
-                autoComplete="off"
-                className="combobox-city"
-                placeholder="I'm looking to guestspot in..."
-                id="city" 
-                name="city"
-                type="text" 
-                value={inputValue}
-                onChange={handleInputChange}
-                onFocus={() => setIsComboboxOpen(true)}
-                onKeyDown={handleKeyDown}
-            />
+            <div className="input-container">
+                <Search className="input-icon combobox-city_search-icon"/>
+                <input
+                    role="combobox"
+                    aria-expanded={showDropdown}
+                    aria-controls="city-listbox"
+                    aria-activedescendant={highlightedIndex >= 0
+                        ? `city-option-${highlightedIndex}`
+                        : undefined}
+                    autoComplete="off"
+                    className="combobox-city"
+                    placeholder="I'm looking to guestspot in..."
+                    id="city"
+                    name="city"
+                    type="text"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    onFocus={() => setIsComboboxOpen(true)}
+                    onKeyDown={handleKeyDown}
+                />
+                {inputValue.length > 0 && 
+                    <X 
+                        className="input-icon combobox-city_clear-icon" 
+                        onClick={() => commitCity(null)}
+                    />
+                    }
+            </div>
 
-            {inputValue.length > 0 && 
-                <X className="combobox-city_clear-icon" onClick={() => commitCity(null)}/>
-                }
 
             {showDropdown &&
                 <ul id="city-listbox" role="listbox">
