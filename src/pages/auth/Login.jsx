@@ -1,14 +1,21 @@
 import { Mail, Lock } from "lucide-react"
 import { signInExistingUser } from "../../utils"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 
 export default function Login() {
 
-    function loginToAccount(formData) {
+    const navigate = useNavigate()
+
+    async function loginToAccount(formData) {
         const email = formData.get("email")
         const password = formData.get("password")
 
-        signInExistingUser(email, password)
+        try {
+            await signInExistingUser(email, password)
+            navigate("/")
+        } catch(error) {
+            console.error(error.message)
+        }
     }
 
     return (

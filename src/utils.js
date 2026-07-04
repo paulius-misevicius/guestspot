@@ -1,12 +1,16 @@
 import { collection, addDoc, getDocs, query, orderBy, onSnapshot, doc, deleteDoc } from "firebase/firestore"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth"
 import { db, auth } from "./firebase"
+
+// General functions
 
 export function toEnglishChars(string) {
     return string
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
 }
+
+// Firebase functions
 
 export async function addToFirebase(myCollection, myDocument) {
     const docRef = await addDoc(collection(db, myCollection), myDocument)
@@ -46,28 +50,13 @@ export function getRealTimeCollectionFromFirebase(myCollection, onData) {
 }
 
 export function signUpNewUser(email, password) {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-            const user = userCredential.user
-        })
-        .catch(error => {
-            console.error(error.message)
-        })
+    return createUserWithEmailAndPassword(auth, email, password)
 }
+
 export function signInExistingUser(email, password) {
-    signInWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-            const user = userCredential.user
-        })
-        .catch(error => {
-            console.error(error.message)
-        })
+    return signInWithEmailAndPassword(auth, email, password)
 }
+
 export function signOutUser() {
-    signOut(auth).then(() => {
-        console.log("signed out")
-    })
-    .catch(error => {
-        console.error(error.message)
-    })
+    return signOut(auth)
 }

@@ -4,13 +4,21 @@ import { signOutUser } from "../utils"
 
 export default function Sidebar() {
 
+    async function logoutFromAccount() {
+        try {
+            await signOutUser()
+        } catch (error) {
+            console.error(error.message)
+        }
+    }
+
     return (
         <section className="sidebar">
             <h1>Guestspot app</h1>
             <div className="sidebar_profile">
                 <p>Vardenis Pavardenis</p>
                 <button 
-                    onClick={signOutUser} 
+                    onClick={logoutFromAccount} 
                     className="log-out_btn"
                 >
                     <LogOut className="log-out_icon" />

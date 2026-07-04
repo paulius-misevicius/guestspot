@@ -4,11 +4,15 @@ import { Link } from "react-router"
 
 export default function Signup() {
 
-    function createNewAccount(formData) {
+    async function createNewAccount(formData) {
         const email = formData.get("email")
         const password = formData.get("password")
 
-        signUpNewUser(email, password)
+        try { 
+            signUpNewUser(email, password)
+        } catch (error) {
+            console.error(error.message)
+        }
     }
 
     return (
