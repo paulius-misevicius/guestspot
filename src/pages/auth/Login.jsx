@@ -1,4 +1,5 @@
 import { Mail, Lock } from "lucide-react"
+import { signInExistingUser } from "../../utils"
 import { Link } from "react-router"
 
 export default function Login() {
@@ -6,14 +7,14 @@ export default function Login() {
     function loginToAccount(formData) {
         const email = formData.get("email")
         const password = formData.get("password")
+
+        signInExistingUser(email, password)
     }
 
     return (
         <form action={loginToAccount} className="auth_form">
-            <div>
-                <h2>Login with email</h2>
-                <p>Enter your email and password.</p>
-            </div>
+            <h2>Login with email</h2>
+            <p>Enter your email and password.</p>
             <div className="auth_fields">
                 <div className="auth_field">
                     <label htmlFor="email">Email</label>

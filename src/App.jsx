@@ -15,11 +15,15 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<AppLayout />}>
-          <Route index element={<MyListings />}/>
-          <Route path="browse" element={<Browse />}/>
-          <Route path="profile" element={<Profile />}/>
-        </Route>
+
+        {/* <Route element={<AuthRequired />}> */}
+          <Route path="/" element={<AppLayout />}>
+            <Route index element={<MyListings />}/>
+            <Route path="browse" element={<Browse />}/>
+            <Route path="profile" element={<Profile />}/>
+          </Route>
+        {/* </Route> */}
+
         <Route element={<AuthLayout />}>
           <Route path="sign-up" element={<Signup />}/>
           <Route path="log-in" element={<Login />}/>

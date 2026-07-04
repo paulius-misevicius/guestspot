@@ -1,5 +1,5 @@
 import { Mail, Lock } from "lucide-react"
-import { addUserToFirebase } from "../../utils"
+import { signUpNewUser } from "../../utils"
 import { Link } from "react-router"
 
 export default function Signup() {
@@ -8,15 +8,13 @@ export default function Signup() {
         const email = formData.get("email")
         const password = formData.get("password")
 
-        addUserToFirebase(email, password)
+        signUpNewUser(email, password)
     }
 
     return (
         <form action={createNewAccount} className="auth_form">
-            <div>
-                <h2>Create a new account</h2>
-                <p>Enter your email and choose a password.</p>
-            </div>
+            <h2>Create a new account</h2>
+            <p>Enter your email and choose a password.</p>
             <div className="auth_fields">
                 <div className="auth_field">
                     <label htmlFor="email">Email</label>

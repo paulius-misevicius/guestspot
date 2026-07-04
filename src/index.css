@@ -95,10 +95,24 @@ main {
   padding: 28px;
 }
 .sidebar_profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: var(--surface-1);
   padding: 12px;
   border: 1px solid var(--border);
   border-radius: 12px;
+}
+.log-out_btn {
+  display: flex;
+  background-color: transparent;
+}
+.log-out_icon {
+  width: 20px;
+  color: var(--text-muted)
+}
+.log-out_icon:hover {
+  color: var(--text-primary)
 }
 .sidebar_nav {
   display: flex;
@@ -472,7 +486,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .auth_account-ask {
   text-align: center;
-  margin-top: 12px;
+  margin-top: 16px;
 }
 
 @media (max-width: 600px) {

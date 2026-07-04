@@ -1,5 +1,5 @@
 import { collection, addDoc, getDocs, query, orderBy, onSnapshot, doc, deleteDoc } from "firebase/firestore"
-import { createUserWithEmailAndPassword } from "firebase/auth"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
 import { db, auth } from "./firebase"
 
 export function toEnglishChars(string) {
@@ -45,7 +45,7 @@ export function getRealTimeCollectionFromFirebase(myCollection, onData) {
     })
 }
 
-export function addUserToFirebase(email, password) {
+export function signUpNewUser(email, password) {
     createUserWithEmailAndPassword(auth, email, password)
         .then(userCredential => {
             const user = userCredential.user
@@ -53,4 +53,21 @@ export function addUserToFirebase(email, password) {
         .catch(error => {
             console.error(error.message)
         })
+}
+export function signInExistingUser(email, password) {
+    signInWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+            const user = userCredential.user
+        })
+        .catch(error => {
+            console.error(error.message)
+        })
+}
+export function signOutUser() {
+    signOut(auth).then(() => {
+        console.log("signed out")
+    })
+    .catch(error => {
+        console.error(error.message)
+    })
 }
