@@ -1,23 +1,29 @@
 import { BrowserRouter, Routes, Route } from "react-router"
 import { useState } from "react"
 
-import Layout from "./components/Layout"
+import AppLayout from "./components/AppLayout"
+import AuthLayout from "./components/AuthLayout"
+
 import MyListings from "./pages/MyListings"
 import Browse from "./pages/Browse"
 import Profile from "./pages/Profile"
-import Signup from "./pages/Signup"
+import Signup from "./pages/auth/Signup"
+import Login from "./pages/auth/Login"
 
 export default function App() {
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<AppLayout />}>
           <Route index element={<MyListings />}/>
           <Route path="browse" element={<Browse />}/>
           <Route path="profile" element={<Profile />}/>
         </Route>
-        <Route path="sign-up" element={<Signup />} />
+        <Route element={<AuthLayout />}>
+          <Route path="sign-up" element={<Signup />}/>
+          <Route path="log-in" element={<Login />}/>
+        </Route>
       </Routes>
     </BrowserRouter>
   )
