@@ -1,5 +1,5 @@
 import { collection, addDoc, getDocs, query, orderBy, onSnapshot, doc, deleteDoc } from "firebase/firestore"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup } from "firebase/auth"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, sendEmailVerification } from "firebase/auth"
 import { db, auth, provider } from "./firebase"
 
 // General functions
@@ -71,4 +71,8 @@ export function signOutUser() {
 
 export function signInWithGoogle() {
     return signInWithPopup(auth, provider)
+}
+
+export function verifyEmail() {
+    return sendEmailVerification(auth.currentUser)
 }

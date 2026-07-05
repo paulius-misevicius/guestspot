@@ -13,13 +13,15 @@ import Browse from "./pages/Browse"
 import Profile from "./pages/Profile"
 import Signup from "./pages/auth/Signup"
 import Login from "./pages/auth/Login"
+import Onboarding from "./pages/Onboarding"
 
-export const UserAuthContext = createContext()
+export const UserContext = createContext()
 
 export default function App() {
 
   const [user, setUser] = useState(null)
   const [isAuthLoading, setIsAuthLoading] = useState(true)
+  const [isProfileCompleted, setIsProfileCompleted] = useState(true)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -30,7 +32,7 @@ export default function App() {
   }, [])
 
   return (
-    <UserAuthContext.Provider value={{user, isAuthLoading}}>
+    <UserContext.Provider value={{user, isAuthLoading, isProfileCompleted}}>
       <BrowserRouter>
         <Routes>
 
@@ -40,14 +42,17 @@ export default function App() {
               <Route path="browse" element={<Browse />}/>
               <Route path="profile" element={<Profile />}/>
             </Route>
+
+            <Route path="onboarding" element={<Onboarding />}/>
           </Route>
 
           <Route element={<AuthLayout />}>
             <Route path="sign-up" element={<Signup />}/>
             <Route path="log-in" element={<Login />}/>
           </Route>
+
         </Routes>
       </BrowserRouter>
-    </UserAuthContext.Provider>
+    </UserContext.Provider>
   )
 }

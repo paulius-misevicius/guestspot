@@ -1,5 +1,5 @@
 import { Mail, Lock } from "lucide-react"
-import { signUpNewUser } from "../../utils"
+import { signUpNewUser, verifyEmail } from "../../utils"
 import { Link, useNavigate } from "react-router"
 
 export default function Signup() {
@@ -12,6 +12,7 @@ export default function Signup() {
 
         try { 
             await signUpNewUser(email, password)
+            await verifyEmail()
             navigate("/")
         } catch (error) {
             console.error(error.message)

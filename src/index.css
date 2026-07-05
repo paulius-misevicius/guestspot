@@ -97,11 +97,25 @@ main {
   max-height: 100dvh;
 }
 
-.loading-screen {
+.loading-screen, .onboarding-screen {
   height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.onboarding-screen {
+  background-color: var(--surface-2);
+  display: flex;
+  flex-direction: column;
+}
+.onboarding_which-one {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+.onboarding_which-one_btn {
+  padding: 40px;
+  border-radius: 12px;
 }
 
 .sidebar {
