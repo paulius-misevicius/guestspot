@@ -97,6 +97,13 @@ main {
   max-height: 100dvh;
 }
 
+.loading-screen {
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;

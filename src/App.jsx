@@ -19,17 +19,18 @@ export const UserAuthContext = createContext()
 export default function App() {
 
   const [user, setUser] = useState(null)
+  const [isAuthLoading, setIsAuthLoading] = useState(true)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
       setUser(user)
+      setIsAuthLoading(false)
     })
-
     return () => unsubscribe()
   }, [])
 
   return (
-    <UserAuthContext.Provider value={user}>
+    <UserAuthContext.Provider value={{user, isAuthLoading}}>
       <BrowserRouter>
         <Routes>
 
