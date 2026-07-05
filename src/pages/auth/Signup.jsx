@@ -1,15 +1,18 @@
 import { Mail, Lock } from "lucide-react"
 import { signUpNewUser } from "../../utils"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 
 export default function Signup() {
+
+    const navigate = useNavigate()
 
     async function createNewAccount(formData) {
         const email = formData.get("email")
         const password = formData.get("password")
 
         try { 
-            signUpNewUser(email, password)
+            await signUpNewUser(email, password)
+            navigate("/")
         } catch (error) {
             console.error(error.message)
         }

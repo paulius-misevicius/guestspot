@@ -10,6 +10,14 @@ export function toEnglishChars(string) {
         .replace(/[\u0300-\u036f]/g, "")
 }
 
+export function checkErrorMessage(error) {
+    if (error.message === "Firebase: Error (auth/invalid-credential).") {
+        return "Incorrect email or password."
+    } else if (error.message === "Firebase: Error (auth/network-request-failed).") {
+        return "Please check your internet connection."
+    } else return error.message
+}
+
 // Firebase functions
 
 export async function addToFirebase(myCollection, myDocument) {

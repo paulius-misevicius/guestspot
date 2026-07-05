@@ -18,6 +18,8 @@
   --text-secondary: #b0b0b0;
   --text-primary: #f2f2f0;
 
+  --failure: crimson;
+
   --font-size-s: 0.875rem;
   --font-size-xs: 0.75rem;
 }
@@ -196,7 +198,7 @@ main {
   color: var(--text-muted)
 }
 .delete-btn_trash-icon:hover {
-  color: crimson;
+  color: var(--failure);
 }
 .listing_matches {
   display: flex;
@@ -422,7 +424,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .error-msg {
-  color: crimson;
+  color: var(--failure);
+  text-align: center;
   margin-top: 12px;
 }
 .sr-only {
