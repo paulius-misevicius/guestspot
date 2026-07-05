@@ -6,6 +6,7 @@ import DatePicker from "./DatePicker"
 import CityCombobox from "./CityCombobox"
 import { addToFirebase } from "../../utils"
 import { serverTimestamp } from "firebase/firestore"
+import { UserContext } from "../../App"
 
 export default function NewListingModal({isModalOpen, setIsModalOpen}) {
     
@@ -13,6 +14,7 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
 
     const [listingData, setListingData] = useState({})
     const [error, setError] = useState(null)
+    const { user } = useContext(UserContext)
 
     function createListing(event) {
         event.preventDefault()
@@ -22,7 +24,7 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
             return
         }
         setError(null)
-        addToFirebase("listings", {...listingData, createdAt: serverTimestamp()})
+        addToFirebase("listings", {...listingData, createdAt: serverTimestamp(), userId: user.uid})
         setIsModalOpen(false)
     }
 

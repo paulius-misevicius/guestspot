@@ -1,8 +1,12 @@
 import { NavLink } from "react-router"
 import { LogOut } from "lucide-react"
 import { signOutUser } from "../utils"
+import { UserContext } from "../App"
+import { useContext } from "react"
 
 export default function Sidebar() {
+
+    const { user } = useContext(UserContext)
 
     async function logoutFromAccount() {
         try {
@@ -16,7 +20,7 @@ export default function Sidebar() {
         <section className="sidebar">
             <h1>Guestspot app</h1>
             <div className="sidebar_profile">
-                <p>Vardenis Pavardenis</p>
+                <p>{user.email}</p>
                 <button 
                     onClick={logoutFromAccount} 
                     className="log-out_btn"
