@@ -489,7 +489,33 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .auth_account-ask {
   text-align: center;
-  margin-top: 16px;
+  margin-top: 24px;
+}
+
+.auth_divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+.auth_divider_line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--border);
+}
+
+.auth-btn_google {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding-block: 12px;
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 24px;
+}
+.google-icon {
+  width: 22px;
 }
 
 @media (max-width: 600px) {
