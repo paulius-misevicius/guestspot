@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Mail, Lock } from "lucide-react"
+import { Mail, Lock, Eye, EyeOff } from "lucide-react"
 import { signInExistingUser, checkErrorMessage, signInWithGoogle } from "../../utils"
 import { Link, useNavigate } from "react-router"
 
@@ -8,6 +8,7 @@ export default function Login() {
     const [error, setError] = useState(null)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
     const navigate = useNavigate()
 
@@ -65,8 +66,18 @@ export default function Login() {
                             onChange={event => setPassword(event.target.value)}
                             name="password" 
                             id="password" 
-                            type="password" 
+                            type={isPasswordVisible ? "text" : "password"}
                         />
+                        {isPasswordVisible 
+                            ? <EyeOff 
+                                className="input-icon input-icon_right-side auth_password-toggle-icon"
+                                onClick={() => setIsPasswordVisible(prev => !prev)} 
+                                /> 
+                            : <Eye 
+                                className="input-icon input-icon_right-side auth_password-toggle-icon"
+                                onClick={() => setIsPasswordVisible(prev => !prev)} 
+                                />
+                            }
                     </div>
                 </div>
             </div>

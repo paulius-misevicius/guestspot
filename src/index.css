@@ -59,6 +59,14 @@ button {
   left: 12px;
   color: var(--text-muted);
 }
+.input-icon_right-side {
+  left: unset;
+  right: 12px;
+  cursor: pointer;
+}
+.input-icon_right-side:hover {
+  color: var(--text-secondary);
+}
 input {
   font-family: 'Inter', sans-serif;
   font-size: var(--font-size-s);
@@ -287,12 +295,6 @@ main {
 }
 .combobox-city_clear-icon {
   width: 16px;
-  left: unset;
-  right: 12px;
-  cursor: pointer;
-}
-.combobox-city_clear-icon:hover {
-  color: var(--text-secondary);
 }
 .combobox-city_map-pin-icon {
   position: absolute;
@@ -480,6 +482,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .auth_password-icon {
   width: 14px;
+}
+.auth_password-toggle-icon {
+  width: 16px;
 }
 .auth_submit-button {
   padding-block: 12px;

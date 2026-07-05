@@ -110,7 +110,7 @@ export default function CityCombobox({ setListingData }) {
                 />
                 {inputValue.length > 0 && 
                     <X 
-                        className="input-icon combobox-city_clear-icon" 
+                        className="input-icon input-icon_right-side combobox-city_clear-icon" 
                         onClick={() => commitCity(null)}
                     />
                     }
