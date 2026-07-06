@@ -1,6 +1,7 @@
 import { collection, addDoc, getDocs, query, orderBy, onSnapshot, doc, deleteDoc, where } from "firebase/firestore"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, sendEmailVerification } from "firebase/auth"
-import { db, auth, provider } from "./firebase"
+import { uploadBytes, ref, getDownloadURL } from "firebase/storage"
+import { db, auth, provider, storage } from "./firebase"
 
 // General functions
 
@@ -75,4 +76,16 @@ export function signInWithGoogle() {
 
 export function verifyEmail() {
     return sendEmailVerification(auth.currentUser)
+}
+
+export function uploadImageToFirebase(file, path) {
+    const storageRef = ref(storage, path)
+
+    return uploadBytes(storageRef, file)
+}
+
+export function downloadImageFromFirebase(path) {
+    const storageRef = ref(storage, path)
+
+    return getDownloadURL(storageRef)
 }

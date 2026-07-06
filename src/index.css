@@ -544,10 +544,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width: 22px;
 }
 
-.onboarding_profile-pic {
+.onboarding_profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100px;
   height: 100px;
   border-radius: 999px;
+  overflow: hidden;
+}
+.onboarding_profile-pic {
+  width: 100%;
+}
+.onboarding_avatar-icon {
+  width: 75%;
+  height: 75%;
 }
 
 @media (max-width: 600px) {
