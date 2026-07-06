@@ -1,16 +1,20 @@
 import { signInWithGoogle } from "../utils"
 import { useNavigate } from "react-router"
+import { checkErrorMessage } from "../utils"
 
-export default function AuthGoogle() {
+export default function AuthGoogle({setError}) {
 
     const navigate = useNavigate()
 
     async function ContinueWithGoogle() {
+        setError(null)
+
         try {
             await signInWithGoogle()
             navigate("/")
         } catch (error) {
-            console.error(error)
+            const translatedError = checkErrorMessage(error)
+            setError(translatedError)
         }
     }
 

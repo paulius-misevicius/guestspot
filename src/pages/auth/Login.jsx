@@ -4,10 +4,12 @@ import { Link, useNavigate } from "react-router"
 import Email from "../../components/inputs/email"
 import Password from "../../components/inputs/Password"
 import AuthGoogle from "../../components/AuthGoogle"
+import { TailSpin } from "react-loader-spinner"
 
 export default function Login() {
 
     const [error, setError] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
@@ -16,13 +18,16 @@ export default function Login() {
     async function logInWithEmailAndPassword(event) {
         event.preventDefault()
         setError(null)
+        setIsLoading(true)
 
         try {
             await signInExistingUser(email, password)
+            setIsLoading(false)
             navigate("/")
         } catch(error) {
             const translatedError = checkErrorMessage(error)
             setError(translatedError)
+            setIsLoading(false)
         }
     }
 
@@ -33,30 +38,40 @@ export default function Login() {
             <div className="auth_fields">
                 <Email 
                     value={email}
-                    onChange={event => setEmail(event.target.value)}
+                    onChange={event => {
+                        setEmail(event.target.value)
+                        setError(null)
+                    }}
                 />
                 <Password 
                     value={password}
-                    onChange={event => setPassword(event.target.value)}
+                    onChange={event => {
+                        setPassword(event.target.value)
+                        setError(null)
+                    }}
                     password={password}
                 />
             </div>
-            <Link 
-                className="auth_forgot-password"
-                to="../password-reset"
-            >
-                Forgot your password?
-            </Link>
+            <div className="auth_forgot-password">
+                <Link to="../password-reset">
+                    Forgot your password?
+                </Link>
+            </div>
             {error && 
                 <p className="error-msg">{error}</p>
                 }
-            <button className="auth_submit-button">Log in</button>
+            <button className="auth_submit-button">
+                {isLoading 
+                    ? <TailSpin width="32" height="32" color="var(--text-muted)"/> 
+                    : "Log in"
+                }
+            </button>
             <div className="auth_divider">
                 <span className="auth_divider_line"></span>
                 <span className="auth_divider_text">or</span>
                 <span className="auth_divider_line"></span>
             </div>
-            <AuthGoogle />
+            <AuthGoogle setError={setError} />
             <p className="auth_account-ask">Don't have an account? <Link to="../sign-up">Sign up</Link> </p>
         </form>
     )
