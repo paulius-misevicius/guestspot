@@ -13,6 +13,7 @@ import Browse from "./pages/Browse"
 import Profile from "./pages/Profile"
 import Signup from "./pages/auth/Signup"
 import Login from "./pages/auth/Login"
+import PasswordReset from "./pages/auth/PasswordReset"
 import Onboarding from "./pages/Onboarding"
 
 export const UserContext = createContext()
@@ -49,6 +50,7 @@ export default function App() {
           <Route element={<AuthLayout />}>
             <Route path="sign-up" element={<Signup />}/>
             <Route path="log-in" element={<Login />}/>
+            <Route path="password-reset" element={<PasswordReset />}/>
           </Route>
 
         </Routes>

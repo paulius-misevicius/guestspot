@@ -41,7 +41,12 @@ export default function Login() {
                     password={password}
                 />
             </div>
-            <p className="auth_forgot-password">Forgot your password?</p>
+            <Link 
+                className="auth_forgot-password"
+                to="../password-reset"
+            >
+                Forgot your password?
+            </Link>
             {error && 
                 <p className="error-msg">{error}</p>
                 }

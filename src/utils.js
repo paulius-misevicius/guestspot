@@ -1,5 +1,5 @@
 import { collection, addDoc, getDocs, query, orderBy, onSnapshot, doc, deleteDoc, where } from "firebase/firestore"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, sendEmailVerification } from "firebase/auth"
+import { sendPasswordResetEmail, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, sendEmailVerification } from "firebase/auth"
 import { uploadBytes, ref, getDownloadURL } from "firebase/storage"
 import { db, auth, provider, storage } from "./firebase"
 
@@ -72,6 +72,10 @@ export function signOutUser() {
 
 export function signInWithGoogle() {
     return signInWithPopup(auth, provider)
+}
+
+export function resetPassword(email) {
+    return sendPasswordResetEmail(auth, email)
 }
 
 export function verifyEmail() {
