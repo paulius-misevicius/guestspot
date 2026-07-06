@@ -517,6 +517,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   text-align: center;
   margin-top: 24px;
 }
+.auth_forgot-password {
+  text-align: right;
+  margin-top: 16px;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
 
 .auth_divider {
   display: flex;
