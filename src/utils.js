@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, query, orderBy, onSnapshot, doc, deleteDoc } from "firebase/firestore"
+import { collection, addDoc, getDocs, query, orderBy, onSnapshot, doc, deleteDoc, where } from "firebase/firestore"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, sendEmailVerification } from "firebase/auth"
 import { db, auth, provider } from "./firebase"
 
@@ -35,9 +35,9 @@ export async function getCollectionFromFirebase(myCollection) {
     return queryData
 }
 
-export function getRealTimeCollectionFromFirebase(myCollection, onData) {
+export function getRealTimeCollectionFromFirebase(myCollection, onData, userId) {
 
-    const q = query(collection(db, myCollection), orderBy("createdAt", "desc"))
+    const q = query(collection(db, myCollection), where("userId", "==", userId), orderBy("createdAt", "desc"))
 
     return onSnapshot(q, querySnapshot => {
 

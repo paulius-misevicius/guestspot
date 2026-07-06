@@ -1,16 +1,18 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { Plus } from "lucide-react"
 import Listing from "../components/Listing.jsx"
 import NewListingModal from "../components/NewListingModal/NewListingModal.jsx"
 import { getRealTimeCollectionFromFirebase } from "../utils.js"
+import { UserContext } from "../App.jsx"
 
 export default function MyListings() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [artistListings, setArtistListings] = useState([])
+  const { user } = useContext(UserContext)
 
   useEffect(() => {
-    const unsubscribe = getRealTimeCollectionFromFirebase("listings", setArtistListings)
+    const unsubscribe = getRealTimeCollectionFromFirebase("listings", setArtistListings, user.uid)
 
     return () => unsubscribe()
   }, [])

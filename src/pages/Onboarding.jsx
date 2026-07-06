@@ -29,7 +29,9 @@ export default function Onboarding() {
     return (
         <div className="onboarding-screen">
             <div>
-                <label>Username</label>
+                <label>Profile pic</label>
+                <input className="onboarding_profile-pic" type="file"/>
+                <label>Artist name / Pseudonym</label>
                 <input />
                 <label>Profile bio</label>
                 <input />

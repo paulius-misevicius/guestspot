@@ -544,6 +544,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width: 22px;
 }
 
+.onboarding_profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 999px;
+}
+
 @media (max-width: 600px) {
   .sidebar {
     display: none;
