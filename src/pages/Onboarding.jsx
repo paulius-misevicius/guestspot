@@ -9,7 +9,7 @@ import ProfileBio from "../components/inputs/onboarding/ProfileBio"
 import ProfilePortfolio from "../components/inputs/onboarding/ProfilePortfolio"
 import ProfileImage from "../components/inputs/onboarding/ProfileImage"
 import Combobox from "../components/inputs/Combobox"
-import { User } from "lucide-react"
+import { User, AtSign } from "lucide-react"
 
 export default function Onboarding() {
 
@@ -47,19 +47,20 @@ export default function Onboarding() {
 
 
     const profileTypes = [{display: "Tattoo artist", id: "artist"}, {display: "Tattoo studio", id: "studio"}]
-    const profileNameIcon = <User className="input-icon user-icon" />
+    const profileNameIcon = <User className="input-icon icon-16px" />
+    const instagramIcon = <AtSign className="input-icon icon-14px" />
 
     let questionInput
     if (!questionsArtist[currentQuestion].input) {
         questionInput = null
     } else if (questionsArtist[currentQuestion].input === "type") {
-        questionInput = <RadioButtons data={profile} setData={setProfile} values={profileTypes}/>
+        questionInput = <RadioButtons data={profile} setData={setProfile} name="type" values={profileTypes}/>
     } else if (questionsArtist[currentQuestion].input === "name") {
         questionInput = <TextShort data={profile} setData={setProfile} name="name" label="Name / pseudonym" icon={profileNameIcon}/>
     } else if (questionsArtist[currentQuestion].input === "city") {
         questionInput = <Combobox data={profile} setData={setProfile} itemList={locations}/>
     } else if (questionsArtist[currentQuestion].input === "instagram") {
-        questionInput = <ProfileInstagram profile={profile} setProfile={setProfile} />
+        questionInput = <TextShort data={profile} setData={setProfile} name="instagram" label="Instagram username" icon={instagramIcon}/>
     } else if (questionsArtist[currentQuestion].input === "bio") {
         questionInput = <ProfileBio profile={profile} setProfile={setProfile} />
     } else if (questionsArtist[currentQuestion].input === "portfolio") {

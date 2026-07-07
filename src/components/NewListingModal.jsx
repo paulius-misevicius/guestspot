@@ -49,7 +49,7 @@ export default function NewListingModal({isModalOpen, setIsModalOpen}) {
                         className="listing-modal_close-btn" 
                         onClick={() => setIsModalOpen(false)}
                     >
-                        <X className="listing-modal_close-icon"/>
+                        <X className="icon-14px"/>
                     </button>
                 </div>
 

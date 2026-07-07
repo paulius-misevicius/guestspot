@@ -1,4 +1,4 @@
-export default function RadioButtons({data, setData, values}) {
+export default function RadioButtons({data, setData, name, values}) {
     return (
         <div className="input_radio_container">
             {values.map(item => 
@@ -8,17 +8,17 @@ export default function RadioButtons({data, setData, values}) {
                         onChange={() => setData((
                             {
                                 ...data, 
-                                type: item.id
+                                [name]: item.id
                             }
                         ))} 
                         type="radio" 
                         id={item.id} 
                         checked={data.type === item.id}
                         value={item.id} 
-                        name="type"
+                        name={name}
                     />
                     <label 
-                        className={data.type === item.id ? "input_radio_label radio_checked" : "input_radio_label"}
+                        className={data[name] === item.id ? "input_radio_label radio_checked" : "input_radio_label"}
                         htmlFor={item.id}
                     >
                         {item.display}

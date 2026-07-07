@@ -8,11 +8,11 @@ export default function Password({password, ...rest}) {
     const passwordToggleIcon = 
         isPasswordVisible
             ? <EyeOff 
-                className="input-icon input-icon_right-side auth_password-toggle-icon"
+                className="input-icon input-icon_right-side icon-16px"
                 onClick={() => setIsPasswordVisible(prev => !prev)} 
                 /> 
             : <Eye 
-                className="input-icon input-icon_right-side auth_password-toggle-icon"
+                className="input-icon input-icon_right-side icon-16px"
                 onClick={() => setIsPasswordVisible(prev => !prev)} 
                 />
 
@@ -20,7 +20,7 @@ export default function Password({password, ...rest}) {
         <div className="auth_field">
             <label htmlFor="password">Password</label>
             <div className="input-container">
-                <Lock className="input-icon auth_password-icon" />
+                <Lock className="input-icon icon-14px" />
                 <input 
                     {...rest}
                     name="password" 

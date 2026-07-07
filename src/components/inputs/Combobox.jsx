@@ -83,7 +83,7 @@ export default function Combobox({data, setData, itemList}) {
         >
             <label htmlFor="city">City</label>
             <div className="input-container">
-                <Search className="input-icon combobox-city_search-icon"/>
+                <Search className="input-icon icon-14px"/>
                 <input
                     role="combobox"
                     aria-expanded={showDropdown}
@@ -104,7 +104,7 @@ export default function Combobox({data, setData, itemList}) {
                 />
                 {inputValue.length > 0 && 
                     <X 
-                        className="input-icon input-icon_right-side combobox-city_clear-icon" 
+                        className="input-icon input-icon_right-side icon-16px" 
                         onClick={() => commitCity(null)}
                     />
                     }

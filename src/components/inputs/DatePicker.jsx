@@ -60,7 +60,7 @@ export default function DatePicker({setData}) {
                             onClick={() => setIsCalendarOpen(true)}
                             readOnly
                         />
-                        <CalendarDays className="input-icon date-field_calendar-icon"/>
+                        <CalendarDays className="input-icon icon-14px"/>
                     </div>
                 </div>
             </div>
@@ -71,8 +71,8 @@ export default function DatePicker({setData}) {
             >
                 {isCalendarOpen ? "Hide" : "Show"} calendar
                 {isCalendarOpen 
-                    ? <ChevronUp className="toggle-calendar-btn_chevron-icon" /> 
-                    : <ChevronDown className="toggle-calendar-btn_chevron-icon" />
+                    ? <ChevronUp className="icon-14px" /> 
+                    : <ChevronDown className="icon-14px" />
                     }
             </button>
             {isCalendarOpen &&

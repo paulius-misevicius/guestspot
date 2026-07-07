@@ -59,6 +59,12 @@ button {
   left: 12px;
   color: var(--text-muted);
 }
+.icon-14px {
+  width: 14px;
+}
+.icon-16px {
+  width: 16px;
+}
 .input-icon_right-side {
   left: unset;
   right: 12px;
@@ -268,9 +274,6 @@ main {
   height: 32px;
   border-radius: 999px;
 }
-.listing-modal_close-icon {
-  width: 14px;
-}
 .listing-modal_city-field {
   position: relative;
   margin-bottom: 24px;
@@ -311,12 +314,6 @@ main {
   font-size: var(--font-size-xs);
   color: var(--text-muted);
 }
-.combobox-city_search-icon {
-  width: 14px;
-}
-.combobox-city_clear-icon {
-  width: 16px;
-}
 .combobox-city_map-pin-icon {
   position: absolute;
   color: var(--text-muted);
@@ -343,9 +340,6 @@ main {
   color: var(--text-muted);
   margin-bottom: 4px;
 }
-.toggle-calendar-btn_chevron-icon {
-  width: 14px;
-}
 .date-picker_date-fields {
   display: flex;
   justify-content: space-between;
@@ -365,9 +359,6 @@ main {
 input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
-}
-.date-field_calendar-icon {
-  width: 14px;
 }
 .date-picker_date-field input {
   cursor: pointer;
@@ -497,15 +488,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .auth_field {
   min-width: 300px;
-}
-.auth_mail-icon {
-  width: 14px;
-}
-.auth_password-icon {
-  width: 14px;
-}
-.auth_password-toggle-icon {
-  width: 16px;
 }
 .auth_submit-button {
   display: flex;
@@ -641,10 +623,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .radio_checked {
   background-color: var(--surface-3);
-}
-
-.user-icon {
-  width: 16px;
 }
 
 @media (max-width: 600px) {

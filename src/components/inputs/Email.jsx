@@ -5,7 +5,7 @@ export default function Email({...rest}) {
         <div className="auth_field">
             <label htmlFor="email">Email</label>
             <div className="input-container">
-                <Mail className="input-icon auth_mail-icon" />
+                <Mail className="input-icon icon-14px" />
                 <input 
                     {...rest}
                     name="email" 
