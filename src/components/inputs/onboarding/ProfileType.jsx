@@ -1,13 +1,9 @@
-import { useState } from "react"
-
 export default function ProfileType({profile, setProfile}) {
 
-    const artistValue = "artist"
-    const studioValue = "studio"
-
     return (
-        <div>
+        <div className="input_radio_container">
             <input 
+                className="input_radio"
                 onClick={() => setProfile((
                     {
                         ...profile, 
@@ -16,12 +12,18 @@ export default function ProfileType({profile, setProfile}) {
                 ))} 
                 type="radio" 
                 id="artist" 
-                defaultChecked={artistValue === profile.type}
-                value={artistValue} 
+                defaultChecked={profile.type === "artist"}
+                value="artist" 
                 name="type"
             />
-            <label htmlFor="artist">Tattoo artist</label>
+            <label 
+                className={profile.type === "artist" ? "input_radio_label radio_checked" : "input_radio_label"}
+                htmlFor="artist"
+            >
+                Tattoo artist
+            </label>
             <input 
+                className="input_radio"
                 onClick={() => setProfile((
                     {
                         ...profile, 
@@ -30,11 +32,16 @@ export default function ProfileType({profile, setProfile}) {
                 ))} 
                 type="radio" 
                 id="studio" 
-                defaultChecked={studioValue === profile.type}
-                value={studioValue}
+                defaultChecked={profile.type === "studio"}
+                value="studio"
                 name="type"
             />
-            <label htmlFor="studio">Tattoo studio</label>
+            <label 
+                className={profile.type === "studio" ? "input_radio_label radio_checked" : "input_radio_label"}
+                htmlFor="studio"
+            >
+                Tattoo studio
+            </label>
         </div>
     )
 }
