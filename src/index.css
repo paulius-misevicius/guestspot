@@ -643,6 +643,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: var(--surface-3);
 }
 
+.user-icon {
+  width: 16px;
+}
+
 @media (max-width: 600px) {
   .sidebar {
     display: none;

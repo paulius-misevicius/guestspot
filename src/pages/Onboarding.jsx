@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react"
 import { questionsArtist } from "../onboardingQuestions"
 import RadioButtons from "../components/inputs/RadioButtons"
-import ProfileName from "../components/inputs/onboarding/ProfileName"
+import TextShort from "../components/inputs/TextShort"
 import { UserContext } from "../App"
 import { getCollectionFromFirebase } from "../utils"
 import ProfileInstagram from "../components/inputs/onboarding/ProfileInstagram"
@@ -9,6 +9,7 @@ import ProfileBio from "../components/inputs/onboarding/ProfileBio"
 import ProfilePortfolio from "../components/inputs/onboarding/ProfilePortfolio"
 import ProfileImage from "../components/inputs/onboarding/ProfileImage"
 import Combobox from "../components/inputs/Combobox"
+import { User } from "lucide-react"
 
 export default function Onboarding() {
 
@@ -46,6 +47,7 @@ export default function Onboarding() {
 
 
     const profileTypes = [{display: "Tattoo artist", id: "artist"}, {display: "Tattoo studio", id: "studio"}]
+    const profileNameIcon = <User className="input-icon user-icon" />
 
     let questionInput
     if (!questionsArtist[currentQuestion].input) {
@@ -53,7 +55,7 @@ export default function Onboarding() {
     } else if (questionsArtist[currentQuestion].input === "type") {
         questionInput = <RadioButtons data={profile} setData={setProfile} values={profileTypes}/>
     } else if (questionsArtist[currentQuestion].input === "name") {
-        questionInput = <ProfileName profile={profile} setProfile={setProfile} />
+        questionInput = <TextShort data={profile} setData={setProfile} name="name" label="Name / pseudonym" icon={profileNameIcon}/>
     } else if (questionsArtist[currentQuestion].input === "city") {
         questionInput = <Combobox data={profile} setData={setProfile} itemList={locations}/>
     } else if (questionsArtist[currentQuestion].input === "instagram") {
