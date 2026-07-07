@@ -95,6 +95,14 @@ label {
   letter-spacing: 8%;
   color: var(--text-secondary);
 }
+textarea {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--surface-1);
+  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  padding: 8px 12px;
+}
 
 main {
   display: flex;

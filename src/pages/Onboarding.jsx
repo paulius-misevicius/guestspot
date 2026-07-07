@@ -1,15 +1,16 @@
 import { useContext, useState, useEffect } from "react"
+import { User, AtSign } from "lucide-react"
 import { questionsArtist } from "../onboardingQuestions"
-import RadioButtons from "../components/inputs/RadioButtons"
-import TextShort from "../components/inputs/TextShort"
 import { UserContext } from "../App"
 import { getCollectionFromFirebase } from "../utils"
+
+import RadioButtons from "../components/inputs/RadioButtons"
+import TextShort from "../components/inputs/TextShort"
 import ProfileInstagram from "../components/inputs/onboarding/ProfileInstagram"
-import ProfileBio from "../components/inputs/onboarding/ProfileBio"
 import ProfilePortfolio from "../components/inputs/onboarding/ProfilePortfolio"
 import ProfileImage from "../components/inputs/onboarding/ProfileImage"
 import Combobox from "../components/inputs/Combobox"
-import { User, AtSign } from "lucide-react"
+import TextLong from "../components/inputs/TextLong"
 
 export default function Onboarding() {
 
@@ -62,7 +63,7 @@ export default function Onboarding() {
     } else if (questionsArtist[currentQuestion].input === "instagram") {
         questionInput = <TextShort data={profile} setData={setProfile} name="instagram" label="Instagram username" icon={instagramIcon}/>
     } else if (questionsArtist[currentQuestion].input === "bio") {
-        questionInput = <ProfileBio profile={profile} setProfile={setProfile} />
+        questionInput = <TextLong data={profile} setData={setProfile} name="bio" label="Profile bio"/>
     } else if (questionsArtist[currentQuestion].input === "portfolio") {
         questionInput = <ProfilePortfolio profile={profile} setProfile={setProfile} />
     } else if (questionsArtist[currentQuestion].input === "profileImage") {
