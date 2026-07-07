@@ -1,88 +1,65 @@
-import { useState, useRef, useContext, useEffect } from "react"
-import { uploadImageToFirebase, downloadImageFromFirebase } from "../utils"
-import { UserContext } from "../App"
-import { UserRound } from "lucide-react"
+import { useState } from "react"
+import { questionsArtist } from "../onboardingQuestions"
 
 export default function Onboarding() {
-    
-    const { user } = useContext(UserContext)
-    
-    const [profilePic, setProfilePic] = useState(null)
-    const [profileType, setProfileType] = useState(null)
-    const [file, setFile] = useState(null)
-    const fileInputRef = useRef(null)
-    
-    async function changeProfilePic(event) {
-        
-        const file = event.target.files[0]
-        const path = `users/${user.uid}/profile.webp`
-        
-        if (!file) return
-        
-        try {
-            await uploadImageToFirebase(file, path)
 
-            const picUrl = await downloadImageFromFirebase(path)
-            setProfilePic(picUrl)
-        } catch (error) {
-            console.error(error.message)
-        }
+    const [currentQuestion, setCurrentQuestion] = useState(0)
+
+    function nextQuestion() {
+        setCurrentQuestion(prev => prev + 1)
+    }
+    function previousQuestion() {
+        setCurrentQuestion(prev => prev - 1)
     }
 
-    if (!profileType) {
-        return (
-            <div className="onboarding-screen">
-                <h2>Which one are you?</h2>
-                <div className="onboarding_which-one">
-                    <button 
-                        className="onboarding_which-one_btn"
-                        onClick={() => setProfileType("artist")}
-                    >
-                        Tattoo artist
-                    </button>
-                    <button 
-                        className="onboarding_which-one_btn"
-                        onClick={() => setProfileType("studio")}
-                    >
-                        Tattoo studio
-                    </button>
-                </div>
-            </div>
-        )
-    }
+    const nextButton = 
+        <button onClick={nextQuestion}>{currentQuestion === 0 ? "Get started": "Continue"}</button>
+
+    const backButton = 
+        <button onClick={previousQuestion}>Back</button>
+
+    const finishButton =
+        <button>Finish</button>
+
+    // let questionInput
+    // if (!questionsArtist[currentQuestion].input) {
+    //     questionInput = null
+    // } else if (questionsArtist[currentQuestion].input === "profile type") {
+    //     questionInput = 
+    //     <>
+    //         <button 
+    //             className="onboarding_which-one_btn"
+    //         >
+    //             Tattoo artist
+    //         </button>
+    //         <button 
+    //             className="onboarding_which-one_btn"
+    //         >
+    //             Tattoo studio
+    //         </button>
+    //     </>
+    // }
 
     return (
-        <div className="onboarding-screen">
-            <div>
-                <label>Profile pic</label>
-                <input 
-                    ref={fileInputRef}
-                    onChange={changeProfilePic} 
-                    type="file" 
-                    accept="image/png, image/jpeg, image/webp" 
-                    style={{ display: "none" }}
-                />
-                <button
-                    className="onboarding_profile"
-                    type="button"
-                    onClick={() => fileInputRef.current.click()}
-                >
-                    {profilePic 
-                        ? <img className="onboarding_profile-pic" src={profilePic} />
-                        : <UserRound className="onboarding_avatar-icon"/>
+        <div className="onboarding">
+            <section className="onboarding_left">
+                <h2>Find studios or artists for guestspotting across Europe.</h2>
+                <p>Ensure a good first impression by building out your profile.</p>
+            </section>
+            <section className="onboarding_right">
+                <h1>{questionsArtist[currentQuestion].title}</h1>
+                <p>{questionsArtist[currentQuestion].description}</p>
+
+                {/* {questionInput} */}
+
+                <div className="onboarding_navigation">
+                    {currentQuestion > 0 && backButton}
+                    {currentQuestion === (questionsArtist.length - 1)
+                        ? finishButton
+                        : nextButton
                         }
-                </button>
-                <label>Artist name / Pseudonym</label>
-                <input />
-                <label>Profile bio</label>
-                <input />
-                <label>Country</label>
-                <input />
-                <label>City</label>
-                <input />
-                <label>Instagram username</label>
-                <input />
-            </div>
+                </div>
+            </section>
         </div>
     )
 }

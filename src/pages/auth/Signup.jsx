@@ -39,11 +39,17 @@ export default function Signup() {
             <div className="auth_fields">
                 <Email 
                     value={email}
-                    onChange={event => setEmail(event.target.value)}
+                    onChange={event => {
+                        setEmail(event.target.value)
+                        setError(null)
+                    }}
                 />
                 <Password 
                     value={password}
-                    onChange={event => setPassword(event.target.value)}
+                    onChange={event => {
+                        setPassword(event.target.value)
+                        setError(null)
+                    }}
                     password={password}
                 />
             </div>
