@@ -1,19 +1,19 @@
 import { useState, useRef, useContext, useEffect } from "react"
-import { uploadImageToFirebase, downloadImageFromFirebase } from "../../utils"
-import { UserContext } from "../../App"
-import { Plus } from "lucide-react"
+import { uploadImageToFirebase, downloadImageFromFirebase } from "../../../utils"
+import { UserContext } from "../../../App"
+import { UserRound } from "lucide-react"
 
-export default function ProfilePortfolio() {
-
+export default function ProfileImage() {
+    
     const { user } = useContext(UserContext)
-        
+    
     const [profilePic, setProfilePic] = useState(null)
     const [profileType, setProfileType] = useState(null)
     const [file, setFile] = useState(null)
     const fileInputRef = useRef(null)
-
+    
     async function changeProfilePic(event) {
-            
+        
         const file = event.target.files[0]
         const path = `users/${user.uid}/profile.webp`
         
@@ -30,14 +30,13 @@ export default function ProfilePortfolio() {
     }
 
     return (
-        <>
-            <label>Portfolio pictures</label>
             <div>
-                <input
+                <label>Profile pic</label>
+                <input 
                     ref={fileInputRef}
-                    onChange={changeProfilePic}
-                    type="file"
-                    accept="image/png, image/jpeg, image/webp"
+                    onChange={changeProfilePic} 
+                    type="file" 
+                    accept="image/png, image/jpeg, image/webp" 
                     style={{ display: "none" }}
                 />
                 <button
@@ -45,12 +44,11 @@ export default function ProfilePortfolio() {
                     type="button"
                     onClick={() => fileInputRef.current.click()}
                 >
-                    {profilePic
+                    {profilePic 
                         ? <img className="onboarding_profile-pic" src={profilePic} />
-                        : <Plus className="onboarding_avatar-icon"/>
+                        : <UserRound className="onboarding_avatar-icon"/>
                         }
                 </button>
             </div>
-        </>
     )
 }

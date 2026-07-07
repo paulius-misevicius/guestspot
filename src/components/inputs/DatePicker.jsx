@@ -7,7 +7,7 @@ import "@daypicker/react/style.css"
 
 import { CalendarDays, MoveRight, ChevronDown, ChevronUp } from "lucide-react"
 
-export default function DatePicker({setListingData}) {
+export default function DatePicker({setData}) {
 
     const today = new Date()
 
@@ -25,7 +25,7 @@ export default function DatePicker({setListingData}) {
         
         if (!selected) return
 
-        setListingData(prev => ({...prev, dateFrom: selected.from, dateTo: selected.to}))
+        setData(prev => ({...prev, dateFrom: selected.from, dateTo: selected.to}))
         setSelected(selected)
     }
 

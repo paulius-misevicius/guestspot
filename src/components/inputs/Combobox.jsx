@@ -1,21 +1,15 @@
 import { useState, useRef, useEffect } from "react"
 import { Search, X, MapPin } from "lucide-react"
-import { getCollectionFromFirebase, toEnglishChars } from "../../utils"
+import { toEnglishChars } from "../../utils"
 
-export default function CityCombobox({ setListingData }) {
+export default function Combobox({data, setData, itemList}) {
 
     const containerRef = useRef(null)
     const [isComboboxOpen, setIsComboboxOpen] = useState(false)
-    const [comboboxLocations, setComboboxLocations] = useState([])
-    const [inputValue, setInputValue] = useState("")
+    const [inputValue, setInputValue] = useState(data.city || "")
     const [highlightedIndex, setHighlightedIndex] = useState(-1)
 
-    useEffect(() => {
-        getCollectionFromFirebase("locations")
-            .then(data => setComboboxLocations(data))
-    }, [])
-
-    const searchResults = comboboxLocations.filter(item => 
+    const searchResults = itemList.filter(item => 
         toEnglishChars(item.city.toLowerCase()).includes(inputValue.toLowerCase())
     )
 
@@ -23,7 +17,7 @@ export default function CityCombobox({ setListingData }) {
 
     function commitCity(item) {
         setInputValue(item ? item.city : "")
-        setListingData(prev => (
+        setData(prev => (
             {
                 ...prev, 
                 city: item ? item.city : null, 
@@ -35,7 +29,7 @@ export default function CityCombobox({ setListingData }) {
     }
 
     function commitTypedValue() {
-        const match = comboboxLocations.find(item => 
+        const match = itemList.find(item => 
             toEnglishChars(item.city.toLowerCase()) === toEnglishChars(inputValue.toLowerCase())
         )
         commitCity(match)
@@ -55,7 +49,7 @@ export default function CityCombobox({ setListingData }) {
         setInputValue(event.target.value)
         setIsComboboxOpen(true)
         setHighlightedIndex(-1)
-        setListingData(prev => ({...prev, city: null, country: null}))
+        setData(prev => ({...prev, city: null, country: null}))
     }
 
     function handleKeyDown(event) {

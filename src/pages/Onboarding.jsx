@@ -1,14 +1,14 @@
 import { useContext, useState, useEffect } from "react"
 import { questionsArtist } from "../onboardingQuestions"
-import ProfileType from "../components/inputs/ProfileType"
-import ProfileName from "../components/inputs/ProfileName"
-import ProfileCity from "../components/inputs/ProfileCity"
+import ProfileType from "../components/inputs/onboarding/ProfileType"
+import ProfileName from "../components/inputs/onboarding/ProfileName"
 import { UserContext } from "../App"
 import { getCollectionFromFirebase } from "../utils"
-import ProfileInstagram from "../components/inputs/ProfileInstagram"
-import ProfileBio from "../components/inputs/ProfileBio"
-import ProfilePortfolio from "../components/inputs/ProfilePortfolio"
-import ProfileImage from "../components/inputs/ProfileImage"
+import ProfileInstagram from "../components/inputs/onboarding/ProfileInstagram"
+import ProfileBio from "../components/inputs/onboarding/ProfileBio"
+import ProfilePortfolio from "../components/inputs/onboarding/ProfilePortfolio"
+import ProfileImage from "../components/inputs/onboarding/ProfileImage"
+import Combobox from "../components/inputs/Combobox"
 
 export default function Onboarding() {
 
@@ -16,11 +16,11 @@ export default function Onboarding() {
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [profile, setProfile] = useState({userId: user.uid})
-    const [comboboxLocations, setComboboxLocations] = useState([])
+    const [locations, setLocations] = useState([])
 
     useEffect(() => {
         getCollectionFromFirebase("locations")
-            .then(data => setComboboxLocations(data))
+            .then(data => setLocations(data))
     }, [])
 
     function nextQuestion() {
@@ -52,7 +52,7 @@ export default function Onboarding() {
     } else if (questionsArtist[currentQuestion].input === "name") {
         questionInput = <ProfileName profile={profile} setProfile={setProfile} />
     } else if (questionsArtist[currentQuestion].input === "city") {
-        questionInput = <ProfileCity profile={profile} setProfile={setProfile} comboboxLocations={comboboxLocations}/>
+        questionInput = <Combobox data={profile} setData={setProfile} itemList={locations}/>
     } else if (questionsArtist[currentQuestion].input === "instagram") {
         questionInput = <ProfileInstagram profile={profile} setProfile={setProfile} />
     } else if (questionsArtist[currentQuestion].input === "bio") {
