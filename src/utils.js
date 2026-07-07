@@ -26,6 +26,8 @@ export function checkErrorMessage(error) {
         return "Please try again in a few seconds."
     } else if (error.message === "Firebase: Password should be at least 6 characters (auth/weak-password).") {
         return "Password should be at least 6 characters."
+    } else if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+        return "Account with this email already exists."
     } else if (
         error.message === "Firebase: Error (auth/internal-error)."
         || error.message === "Firebase: Error (auth/popup-closed-by-user)."

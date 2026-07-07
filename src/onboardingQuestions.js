@@ -8,13 +8,13 @@ export const questionsArtist = [
     {
         title: "Which one are you?", 
         description: "Choose what type of profile to create.", 
-        input: "profile type",
+        input: "type",
         skippable: false
     },
     {
         title: "What's your name or pseudonym?", 
         description: "This is how you'll appear to studios", 
-        input: "pseudonym",
+        input: "name",
         skippable: false
     },
     {
@@ -44,7 +44,7 @@ export const questionsArtist = [
     {
         title: "Add a profile photo",
         description: "Upload a picture of yourself or your logo.",
-        input: "profile image",
+        input: "profileImage",
         skippable: true
     }
 ]
