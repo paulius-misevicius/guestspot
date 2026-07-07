@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react"
 import { questionsArtist } from "../onboardingQuestions"
-import ProfileType from "../components/inputs/onboarding/ProfileType"
+import RadioButtons from "../components/inputs/RadioButtons"
 import ProfileName from "../components/inputs/onboarding/ProfileName"
 import { UserContext } from "../App"
 import { getCollectionFromFirebase } from "../utils"
@@ -44,11 +44,14 @@ export default function Onboarding() {
     const nextButton = 
         <button type="submit">{currentQuestion === (questionsArtist.length - 1) ? "Finish" : "Continue"}</button>
 
+
+    const profileTypes = [{display: "Tattoo artist", id: "artist"}, {display: "Tattoo studio", id: "studio"}]
+
     let questionInput
     if (!questionsArtist[currentQuestion].input) {
         questionInput = null
     } else if (questionsArtist[currentQuestion].input === "type") {
-        questionInput = <ProfileType profile={profile} setProfile={setProfile} />
+        questionInput = <RadioButtons data={profile} setData={setProfile} values={profileTypes}/>
     } else if (questionsArtist[currentQuestion].input === "name") {
         questionInput = <ProfileName profile={profile} setProfile={setProfile} />
     } else if (questionsArtist[currentQuestion].input === "city") {
