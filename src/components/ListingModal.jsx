@@ -9,7 +9,7 @@ import { serverTimestamp } from "firebase/firestore"
 import { UserContext } from "../App"
 import { getCollectionFromFirebase } from "../utils"
 
-export default function NewListingModal({isModalOpen, setIsModalOpen}) {
+export default function ListingModal({isModalOpen, setIsModalOpen}) {
     
     
     const [listingData, setListingData] = useState({})

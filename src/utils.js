@@ -1,6 +1,6 @@
 import { collection, addDoc, getDocs, query, orderBy, onSnapshot, doc, deleteDoc, where } from "firebase/firestore"
 import { sendPasswordResetEmail, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, sendEmailVerification } from "firebase/auth"
-import { uploadBytes, ref, getDownloadURL } from "firebase/storage"
+import { uploadBytes, ref, getDownloadURL, deleteObject, listAll } from "firebase/storage"
 import { db, auth, provider, storage } from "./firebase"
 
 // General functions
@@ -111,4 +111,14 @@ export function downloadImageFromFirebase(path) {
     const storageRef = ref(storage, path)
 
     return getDownloadURL(storageRef)
+}
+
+export function deleteImageFromFirebase(path) {
+    return deleteObject(ref(storage, path))
+}
+
+export function listAllDirectoryFiles(path) {
+    const listRef = ref(storage, path)
+
+    return listAll(listRef)
 }

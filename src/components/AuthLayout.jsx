@@ -1,10 +1,12 @@
-import Auth from "./Auth"
 import { Outlet } from "react-router"
 
-export default function AppLayout() {
+export default function AuthLayout() {
     return (
-        <Auth>
-            <Outlet />
-        </Auth>
+        <main className="auth">
+            <section className="auth_content">
+                <h1>Guestspot app</h1>
+                <Outlet />
+            </section>
+        </main>
     )
 }

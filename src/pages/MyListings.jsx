@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react"
 import { Plus } from "lucide-react"
 import Listing from "../components/Listing.jsx"
-import NewListingModal from "../components/NewListingModal.jsx"
+import ListingModal from "../components/ListingModal.jsx"
 import { getRealTimeCollectionFromFirebase } from "../utils.js"
 import { UserContext } from "../App.jsx"
 
@@ -19,7 +19,7 @@ export default function MyListings() {
 
   return (
       <>
-        <NewListingModal 
+        <ListingModal 
           isModalOpen={isModalOpen} 
           setIsModalOpen={setIsModalOpen}
         />

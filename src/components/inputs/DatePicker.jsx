@@ -44,7 +44,7 @@ export default function DatePicker({setData}) {
                             onClick={() => setIsCalendarOpen(true)}
                             readOnly
                         />
-                        <CalendarDays className="input-icon date-field_calendar-icon" />
+                        <CalendarDays className="input-icon icon-14px" />
                     </div>
                 </div>
                 <MoveRight className="date-fields_arrow-icon"/>

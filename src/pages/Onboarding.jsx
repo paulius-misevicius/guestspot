@@ -6,8 +6,7 @@ import { getCollectionFromFirebase } from "../utils"
 
 import RadioButtons from "../components/inputs/RadioButtons"
 import TextShort from "../components/inputs/TextShort"
-import ProfileInstagram from "../components/inputs/onboarding/ProfileInstagram"
-import ProfilePortfolio from "../components/inputs/onboarding/ProfilePortfolio"
+import ImageGallery from "../components/inputs/ImageGallery"
 import ProfileImage from "../components/inputs/onboarding/ProfileImage"
 import Combobox from "../components/inputs/Combobox"
 import TextLong from "../components/inputs/TextLong"
@@ -38,13 +37,13 @@ export default function Onboarding() {
     }
     console.log(profile)
     const startButton =
-        <button type="button" onClick={nextQuestion}>Get started</button>
+        <button type="button" className="onboarding_navigation_btn" onClick={nextQuestion}>Get started</button>
 
     const backButton = 
-        <button type="button" onClick={previousQuestion}>Back</button>
+        <button type="button" className="onboarding_navigation_btn" onClick={previousQuestion}>Back</button>
 
     const nextButton = 
-        <button type="submit">{currentQuestion === (questionsArtist.length - 1) ? "Finish" : "Continue"}</button>
+        <button type="submit" className="onboarding_navigation_btn">{currentQuestion === (questionsArtist.length - 1) ? "Finish" : "Continue"}</button>
 
 
     const profileTypes = [{display: "Tattoo artist", id: "artist"}, {display: "Tattoo studio", id: "studio"}]
@@ -61,11 +60,15 @@ export default function Onboarding() {
     } else if (questionsArtist[currentQuestion].input === "city") {
         questionInput = <Combobox data={profile} setData={setProfile} itemList={locations}/>
     } else if (questionsArtist[currentQuestion].input === "instagram") {
-        questionInput = <TextShort data={profile} setData={setProfile} name="instagram" label="Instagram username" icon={instagramIcon}/>
+        questionInput = 
+            <>
+                <TextShort data={profile} setData={setProfile} name="instagram" label="Instagram username" icon={instagramIcon}/>
+                <p>Preview: {"instagram.com/" + (profile.instagram || "")}</p>
+            </>
     } else if (questionsArtist[currentQuestion].input === "bio") {
         questionInput = <TextLong data={profile} setData={setProfile} name="bio" label="Profile bio"/>
     } else if (questionsArtist[currentQuestion].input === "portfolio") {
-        questionInput = <ProfilePortfolio profile={profile} setProfile={setProfile} />
+        questionInput = <ImageGallery />
     } else if (questionsArtist[currentQuestion].input === "profileImage") {
         questionInput = <ProfileImage profile={profile} setProfile={setProfile} />
     }
