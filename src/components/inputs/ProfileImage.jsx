@@ -1,6 +1,6 @@
 import { useState, useRef, useContext, useEffect } from "react"
-import { uploadImageToFirebase, downloadImageFromFirebase } from "../../../utils"
-import { UserContext } from "../../../App"
+import { uploadImageToFirebase, downloadImageFromFirebase } from "../../utils"
+import { UserContext } from "../../App"
 import { UserRound } from "lucide-react"
 
 export default function ProfileImage({profilePic, setProfilePic}) {
