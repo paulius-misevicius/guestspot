@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react"
 import { User, AtSign } from "lucide-react"
 import { questionsArtist } from "../onboardingQuestions"
 import { UserContext } from "../App"
-import { getCollectionFromFirebase } from "../utils"
+import { getCollectionFromFirebase, downloadImageFromFirebase, listAllDirectoryFiles } from "../utils"
 
 import RadioButtons from "../components/inputs/RadioButtons"
 import TextShort from "../components/inputs/TextShort"
@@ -17,11 +17,45 @@ export default function Onboarding() {
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [profile, setProfile] = useState({userId: user.uid})
+    const [profilePic, setProfilePic] = useState(null)
+    const [gallery, setGallery] = useState([])
     const [locations, setLocations] = useState([])
 
     useEffect(() => {
         getCollectionFromFirebase("locations")
             .then(data => setLocations(data))
+
+        async function getImageGalleryFromFirebase() {
+            
+            const dirPath = `users/${user.uid}/portfolio`
+
+            try {
+                const userFiles = await listAllDirectoryFiles(dirPath)
+                for (let i = 0; i < userFiles.items.length; i++) {
+                    const filePath = userFiles.items[i]._location.path
+                    const itemId = filePath.replace(`users/${user.uid}/portfolio/`, "")
+                    const imageUrl = await downloadImageFromFirebase(filePath)
+                    setGallery(prev => [{image: imageUrl, id: itemId}, ...prev])
+                }
+            } catch (error) {
+                console.error(error.message)
+            }
+        }
+
+        async function getProfileImageFromFirebase() {
+
+            const path = `users/${user.uid}/profile.webp`
+
+            try {
+                const imageUrl = await downloadImageFromFirebase(path)
+                setProfilePic(imageUrl)
+            } catch (error) {
+                console.error(error.message)
+            }
+        }
+
+        getImageGalleryFromFirebase()
+        getProfileImageFromFirebase()
     }, [])
 
     function nextQuestion() {
@@ -68,9 +102,9 @@ export default function Onboarding() {
     } else if (questionsArtist[currentQuestion].input === "bio") {
         questionInput = <TextLong data={profile} setData={setProfile} name="bio" label="Profile bio"/>
     } else if (questionsArtist[currentQuestion].input === "portfolio") {
-        questionInput = <ImageGallery />
+        questionInput = <ImageGallery gallery={gallery} setGallery={setGallery}/>
     } else if (questionsArtist[currentQuestion].input === "profileImage") {
-        questionInput = <ProfileImage profile={profile} setProfile={setProfile} />
+        questionInput = <ProfileImage profilePic={profilePic} setProfilePic={setProfilePic} />
     }
 
     return (

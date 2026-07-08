@@ -1,11 +1,5 @@
 export const questionsArtist = [
     {
-        title: "Add your portfolio",
-        description: "Upload at least 4 photos of your best work.",
-        input: "portfolio",
-        skippable: true
-    },
-    {
         title: "Welcome!", 
         description: "Set up your profile now to get started.",
         input: null,
@@ -39,6 +33,12 @@ export const questionsArtist = [
         title: "Write a short bio",
         description: "Tell studios about your style, specialties, and experience.",
         input: "bio",
+        skippable: true
+    },
+    {
+        title: "Add your portfolio",
+        description: "Upload at least 4 photos of your best work.",
+        input: "portfolio",
         skippable: true
     },
     {

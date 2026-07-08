@@ -3,13 +3,10 @@ import { uploadImageToFirebase, downloadImageFromFirebase } from "../../../utils
 import { UserContext } from "../../../App"
 import { UserRound } from "lucide-react"
 
-export default function ProfileImage() {
+export default function ProfileImage({profilePic, setProfilePic}) {
     
     const { user } = useContext(UserContext)
     
-    const [profilePic, setProfilePic] = useState(null)
-    const [profileType, setProfileType] = useState(null)
-    const [file, setFile] = useState(null)
     const fileInputRef = useRef(null)
     
     async function changeProfilePic(event) {
@@ -18,14 +15,17 @@ export default function ProfileImage() {
         const path = `users/${user.uid}/profile.webp`
         
         if (!file) return
+
+        const preview = URL.createObjectURL(file)
+        setProfilePic(preview)
         
         try {
             await uploadImageToFirebase(file, path)
-
             const picUrl = await downloadImageFromFirebase(path)
             setProfilePic(picUrl)
         } catch (error) {
             console.error(error.message)
+            setProfilePic(null)
         }
     }
 

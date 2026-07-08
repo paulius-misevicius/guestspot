@@ -4,32 +4,11 @@ import { UserContext } from "../../App"
 import { Plus, X } from "lucide-react"
 import { nanoid } from "nanoid"
 
-export default function ImageGallery() {
+export default function ImageGallery({gallery, setGallery}) {
 
     const { user } = useContext(UserContext)
         
-    const [gallery, setGallery] = useState([])
     const fileInputRef = useRef(null)
-    
-    useEffect(() => {
-        async function fetchFromGallery() {
-    
-            const dirPath = `users/${user.uid}/portfolio`
-    
-            try {
-                const userFiles = await listAllDirectoryFiles(dirPath)
-                for (let i = 0; i < userFiles.items.length; i++) {
-                    const filePath = userFiles.items[i]._location.path
-                    const itemId = filePath.replace(`users/${user.uid}/portfolio/`, "")
-                    const imageUrl = await downloadImageFromFirebase(filePath)
-                    setGallery(prev => [{image: imageUrl, id: itemId}, ...prev])
-                }
-            } catch (error) {
-                console.error(error.message)
-            }
-        }
-        fetchFromGallery()
-    }, [])
 
     async function deleteFromGallery(id) {
 
@@ -94,11 +73,12 @@ export default function ImageGallery() {
                 {gallery.map(item => 
                     <div className="input_gallery_item" key={item.id}>
                         <img className="input_gallery_image" src={item.image} />
-                        <button type="button" className="gallery_item_delete-btn">
-                            <X 
-                                onClick={() => deleteFromGallery(item.id)}
-                                className="item_delete-btn_icon"
-                            />
+                        <button 
+                            onClick={() => deleteFromGallery(item.id)} 
+                            type="button" 
+                            className="gallery_item_delete-btn"
+                        >
+                            <X className="item_delete-btn_icon"/>
                         </button>
                     </div>
                     )}
