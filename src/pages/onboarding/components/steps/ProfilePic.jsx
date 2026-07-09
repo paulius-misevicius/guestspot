@@ -1,5 +1,5 @@
 import { useState, useRef, useContext, useEffect } from "react"
-import { uploadImageToFirebase, downloadImageFromFirebase } from "../../../../utils"
+import { uploadImageToFirebase, downloadImageFromFirebase } from "../../../../utils/firebase/storage"
 import { UserContext } from "../../../../App"
 import { UserRound } from "lucide-react"
 

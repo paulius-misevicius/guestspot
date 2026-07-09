@@ -1,6 +1,7 @@
 import { useState } from "react"
+import { resetPassword } from "../../utils/firebase/auth"
+
 import Email from "./components/Email"
-import { resetPassword } from "../../utils"
 
 export default function PasswordReset() {
 

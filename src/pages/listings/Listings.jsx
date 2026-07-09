@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from "react"
 import { Plus } from "lucide-react"
-import { getRealTimeCollectionFromFirebase } from "../../utils.js"
+import { getRealTimeCollectionFromFirebase } from "../../utils/firebase/firestore.js"
 import { UserContext } from "../../App.jsx"
+
 import Listing from "./components/Listing.jsx"
 import ListingModal from "./components/ListingModal.jsx"
 

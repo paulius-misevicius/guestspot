@@ -1,6 +1,6 @@
 import { NavLink } from "react-router"
 import { LogOut } from "lucide-react"
-import { signOutUser } from "../utils"
+import { signOutUser } from "../utils/firebase/auth"
 import { UserContext } from "../App"
 import { useContext } from "react"
 

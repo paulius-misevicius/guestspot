@@ -1,5 +1,5 @@
 import { useState, useRef, useContext, useEffect } from "react"
-import { uploadImageToFirebase, downloadImageFromFirebase, deleteImageFromFirebase, listAllDirectoryFiles } from "../../../../utils"
+import { uploadImageToFirebase, downloadImageFromFirebase, deleteImageFromFirebase, listAllDirectoryFiles } from "../../../../utils/firebase/storage"
 import { UserContext } from "../../../../App"
 import { Plus, X } from "lucide-react"
 import { nanoid } from "nanoid"

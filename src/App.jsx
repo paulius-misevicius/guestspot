@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router"
 import { useState, useEffect, createContext } from "react"
-import { auth } from "./firebase"
+import { auth } from "./utils/firebase/config"
 import { onAuthStateChanged } from "firebase/auth"
 
 import AuthRequired from "./layouts/AuthRequired"

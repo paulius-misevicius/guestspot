@@ -1,6 +1,6 @@
-import { signInWithGoogle } from "../../../utils"
 import { useNavigate } from "react-router"
-import { checkErrorMessage } from "../../../utils"
+import { signInWithGoogle } from "../../../utils/firebase/auth"
+import { checkErrorMessage } from "../../../utils/general"
 
 export default function AuthGoogle({setError}) {
 

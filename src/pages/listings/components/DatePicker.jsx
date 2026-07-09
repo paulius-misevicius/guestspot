@@ -1,10 +1,7 @@
 import { useState } from "react"
-
 import { format } from "date-fns"
-
 import { DayPicker } from "@daypicker/react"
 import "@daypicker/react/style.css"
-
 import { CalendarDays, MoveRight, ChevronDown, ChevronUp } from "lucide-react"
 
 export default function DatePicker({setData}) {

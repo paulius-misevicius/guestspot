@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react"
-import { questionsArtist } from "../../onboardingQuestions"
 import { UserContext } from "../../App"
-import { overwriteFirebaseDoc, getFirebaseDoc, getCollectionFromFirebase, listAllDirectoryFiles, downloadImageFromFirebase } from "../../utils"
+import { getCollectionFromFirebase, getFirebaseDoc } from "../../utils/firebase/firestore"
+import { listAllDirectoryFiles, downloadImageFromFirebase } from "../../utils/firebase/storage"
 
 import Navigation from "./components/Navigation"
 

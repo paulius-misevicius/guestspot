@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { Search, X, MapPin } from "lucide-react"
-import { toEnglishChars } from "../../utils"
+import { toEnglishChars } from "../../utils/general"
 
 export default function Combobox({data, setData, itemList}) {
 

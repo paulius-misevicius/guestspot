@@ -1,10 +1,12 @@
 import { useState } from "react"
-import { signInExistingUser, checkErrorMessage, signInWithGoogle } from "../../utils"
 import { Link, useNavigate } from "react-router"
+import { TailSpin } from "react-loader-spinner"
+import { signInExistingUser, signInWithGoogle } from "../../utils/firebase/auth"
+import { checkErrorMessage } from "../../utils/general"
+
 import Email from "./components/Email"
 import Password from "./components/Password"
 import AuthGoogle from "./components/AuthGoogle"
-import { TailSpin } from "react-loader-spinner"
 
 export default function Login() {
 

@@ -1,12 +1,15 @@
-import { Mail, Lock } from "lucide-react"
-import { signUpNewUser, verifyEmail, checkErrorMessage, overwriteFirebaseDoc } from "../../utils"
-import { Link, useNavigate } from "react-router"
 import { useState, useContext } from "react"
+import { Link, useNavigate } from "react-router"
+import { TailSpin } from "react-loader-spinner"
+import { Mail, Lock } from "lucide-react"
+import { signUpNewUser, verifyEmail } from "../../utils/firebase/auth"
+import { overwriteFirebaseDoc } from "../../utils/firebase/firestore"
+import { checkErrorMessage } from "../../utils/general"
 import { UserContext } from "../../App"
+
 import Email from "./components/Email"
 import Password from "./components/Password"
 import AuthGoogle from "./components/AuthGoogle"
-import { TailSpin } from "react-loader-spinner"
 
 export default function Signup() {
 

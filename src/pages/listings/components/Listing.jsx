@@ -1,6 +1,6 @@
 import { format } from "date-fns"
 import { Trash2 } from "lucide-react"
-import { deleteFromFirebase } from "../../../utils"
+import { deleteFromFirebase } from "../../../utils/firebase/firestore"
 
 export default function Listing({id, city, country, dateFrom, dateTo}) {
 
