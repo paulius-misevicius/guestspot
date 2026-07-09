@@ -3,17 +3,14 @@ import { Link, useNavigate } from "react-router"
 import { TailSpin } from "react-loader-spinner"
 import { Mail, Lock } from "lucide-react"
 import { signUpNewUser, verifyEmail } from "../../utils/firebase/auth"
-import { overwriteFirebaseDoc } from "../../utils/firebase/firestore"
+import { addToFirebaseWithId } from "../../utils/firebase/firestore"
 import { checkErrorMessage } from "../../utils/general"
-import { UserContext } from "../../App"
 
 import Email from "./components/Email"
 import Password from "./components/Password"
 import AuthGoogle from "./components/AuthGoogle"
 
 export default function Signup() {
-
-    const { user } = useContext(UserContext)
 
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -28,8 +25,9 @@ export default function Signup() {
         setIsLoading(true)
 
         try { 
-            await signUpNewUser(email, password)
-            await overwriteFirebaseDoc("profiles", user.uid, {isProfileCompleted: false, userId: user.uid})
+            const userCredential = await signUpNewUser(email, password)
+            const user = userCredential.user
+            await addToFirebaseWithId("profiles", user.uid, {isProfileCompleted: false})
             setIsLoading(false)
             navigate("/onboarding")
         } catch (error) {

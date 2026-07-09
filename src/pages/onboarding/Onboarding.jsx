@@ -1,7 +1,9 @@
 import { useContext, useState, useEffect } from "react"
+import { LogOut } from "lucide-react"
 import { UserContext } from "../../App"
-import { getCollectionFromFirebase, getFirebaseDoc } from "../../utils/firebase/firestore"
+import { getCollectionFromFirebase, getFirebaseDoc, addToFirebaseWithId } from "../../utils/firebase/firestore"
 import { listAllDirectoryFiles, downloadImageFromFirebase } from "../../utils/firebase/storage"
+import { signOutUser } from "../../utils/firebase/auth"
 
 import Navigation from "./components/Navigation"
 
@@ -27,11 +29,19 @@ export default function Onboarding() {
         async function getInfoForOnboarding() {
             try {
                 const profileData = await getFirebaseDoc("profiles", user.uid)
-                setProfile({...profileData, userId: user.uid})
-                
+                setProfile({...profileData})
+            } catch (error) {
+                console.error(error.message)
+            }
+            
+            try {
                 const dbLocations = await getCollectionFromFirebase("locations")
                 setLocations(dbLocations)
-                
+            } catch (error) {
+                console.error(error.message)
+            }
+
+            try {
                 const userGallery = await listAllDirectoryFiles(`users/${user.uid}/portfolio`)
                 for (let i = 0; i < userGallery.items.length; i++) {
                     const filePath = userGallery.items[i]._location.path
@@ -39,7 +49,11 @@ export default function Onboarding() {
                     const imageUrl = await downloadImageFromFirebase(filePath)
                     setGallery(prev => [{image: imageUrl, id: itemId}, ...prev])
                 }
-                
+            } catch (error) {
+                console.error(error.message)
+            }
+            
+            try {
                 const profilePicUrl = await downloadImageFromFirebase(`users/${user.uid}/profile.webp`)
                 setProfilePic(profilePicUrl)
             } catch (error) {
@@ -49,42 +63,64 @@ export default function Onboarding() {
         getInfoForOnboarding()
     }, [])
     
-    async function submitAnswer(event) {
-        event.preventDefault()
-        
-        if (currentStep < 7) {
-            setCurrentStep(prev => prev + 1)
-        }
-    }
-    
     const STEPS = [
         {key: "welcome", component: Welcome},
-        {key: "type", component: Type},
-        {key: "name", component: Name},
-        {key: "location", component: Location},
-        {key: "instagram", component: Instagram},
+        {key: "type", component: Type, isFilled: profile.type !== undefined && profile.type !== ""},
+        {key: "name", component: Name, isFilled: profile.name !== undefined && profile.name !== ""},
+        {key: "location", component: Location, isFilled: profile.city !== undefined && profile.city !== null && profile.city !== ""},
+        {key: "instagram", component: Instagram, isFilled: profile.instagram !== undefined && profile.instagram !== ""},
         {key: "bio", component: Bio},
         {key: "portfolio", component: Portfolio},
         {key: "profilePic", component: ProfilePic}
     ]
-
+    
     const CurrentComponent = STEPS[currentStep].component
-
+    
     const stepProps = {
         profile, setProfile, locations, gallery, setGallery, profilePic, setProfilePic
     }
     
+    async function submitAnswer(event) {
+        event.preventDefault()
+
+        if (!STEPS[currentStep].isFilled) return
+        
+        if (currentStep < STEPS.length) {
+            setCurrentStep(prev => prev + 1)
+        } 
+
+    }
+
+    async function logoutFromAccount() {
+        try {
+            await signOutUser()
+        } catch (error) {
+            console.error(error.message)
+        }
+    }
+
     return (
         <div className="onboarding">
             <section className="onboarding_left">
                 <h2>Find studios or artists for guestspotting across Europe.</h2>
                 <p>Ensure a good first impression by building out your profile.</p>
+                <button 
+                    onClick={logoutFromAccount} 
+                    className="log-out_btn"
+                >
+                    <LogOut className="log-out_icon" />
+                </button>
             </section>
             <section className="onboarding_right">
                 <form onSubmit={submitAnswer} id="onboarding">
                     <CurrentComponent {...stepProps} />
                 </form>
-                <Navigation currentStep={currentStep} setCurrentStep={setCurrentStep}/>
+                <Navigation 
+                    currentStep={currentStep} 
+                    setCurrentStep={setCurrentStep} 
+                    totalSteps={STEPS.length} 
+                    steps={STEPS} 
+                />
             </section>
         </div>
     )

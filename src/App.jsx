@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router"
 import { useState, useEffect, createContext } from "react"
 import { auth } from "./utils/firebase/config"
+import { getFirebaseDoc, addToFirebaseWithId } from "./utils/firebase/firestore"
 import { onAuthStateChanged } from "firebase/auth"
 
 import AuthRequired from "./layouts/AuthRequired"
@@ -15,25 +16,42 @@ import Signup from "./pages/auth/Signup"
 import Login from "./pages/auth/Login"
 import PasswordReset from "./pages/auth/PasswordReset"
 import Onboarding from "./pages/onboarding/Onboarding"
+import OnboardingGate from "./layouts/OnboardingGate"
 
 export const UserContext = createContext()
 
 export default function App() {
 
   const [user, setUser] = useState(null)
+  const [userProfile, setUserProfile] = useState(null)
   const [isAuthLoading, setIsAuthLoading] = useState(true)
-  const [isProfileCompleted, setIsProfileCompleted] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, user => {
+    const unsubscribe = onAuthStateChanged(auth, async user => {
       setUser(user)
+      
+      if (!user) {
+        setUserProfile(null)
+        setIsAuthLoading(false)
+        return
+      }
+
+      const profileData = await getFirebaseDoc("profiles", user.uid)
+
+      if (!profileData) {
+        await addToFirebaseWithId("profiles", user.uid, {isProfileCompleted: false})
+        setUserProfile({isProfileCompleted: false})
+      } else {
+        setUserProfile(profileData)
+      }
+
       setIsAuthLoading(false)
     })
     return () => unsubscribe()
   }, [])
 
   return (
-    <UserContext.Provider value={{user, isAuthLoading, isProfileCompleted}}>
+    <UserContext.Provider value={{user, isAuthLoading, userProfile}}>
       <BrowserRouter>
         <Routes>
 
@@ -44,6 +62,9 @@ export default function App() {
               <Route path="profile" element={<Profile />}/>
             </Route>
 
+          </Route>
+
+          <Route element={<OnboardingGate />}>
             <Route path="onboarding" element={<Onboarding />}/>
           </Route>
 

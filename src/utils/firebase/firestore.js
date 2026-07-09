@@ -5,6 +5,10 @@ export async function addToFirebase(myCollection, myDocument) {
     const docRef = await addDoc(collection(db, myCollection), myDocument)
 }
 
+export async function addToFirebaseWithId(myCollection, documentId, myDocument) {
+    const docRef = await setDoc(doc(db, myCollection, documentId), myDocument)
+}
+
 export async function deleteFromFirebase(myCollection, myDocumentId) {
     await deleteDoc(doc(db, myCollection, myDocumentId))
 }
@@ -49,6 +53,6 @@ export async function getFirebaseDoc(myCollection, documentId) {
     if (docSnap.exists()) {
         return docSnap.data()
     } else {
-        return {}
+        return undefined
     }
 }

@@ -1,5 +1,4 @@
-export default function Navigation({currentStep, setCurrentStep}) {
-
+export default function Navigation({currentStep, setCurrentStep, totalSteps, steps}) {
     return (
         <div className="onboarding_navigation">
             {currentStep > 0 && 
@@ -10,12 +9,12 @@ export default function Navigation({currentStep, setCurrentStep}) {
                     Back
                 </button>
                 }
-            {currentStep > 0 && 
+            {currentStep > 0 && steps[currentStep].isFilled && 
                 <button 
                     form="onboarding"
                     className="onboarding_navigation_btn"
                 >
-                    {currentStep === 8 ? "Finish" : "Continue"}
+                    {currentStep === totalSteps ? "Finish" : "Continue"}
                 </button>
                 }
             {currentStep === 0 && 

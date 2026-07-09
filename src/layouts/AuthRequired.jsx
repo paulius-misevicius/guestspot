@@ -1,11 +1,12 @@
-import { useContext } from "react"
+import { useContext, useState, useEffect } from "react"
 import { Outlet, Navigate } from "react-router"
 import { UserContext } from "../App"
 import { TailSpin } from "react-loader-spinner"
+import { getFirebaseDoc } from "../utils/firebase/firestore"
 
 export default function AuthRequired() {
 
-    const { user, isAuthLoading, isProfileCompleted } = useContext(UserContext)
+    const { user, isAuthLoading, userProfile } = useContext(UserContext)
 
     if (isAuthLoading) {
         return (
@@ -21,10 +22,6 @@ export default function AuthRequired() {
 
     if (!user) {
         return <Navigate to="/log-in" />
-    }
-
-    if (user && !isProfileCompleted) {
-        return <Navigate to="/onboarding" />
     }
 
     return <Outlet />
