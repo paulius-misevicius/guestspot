@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Email from "../../components/fields/email"
+import Email from "./components/Email"
 import { resetPassword } from "../../utils"
 
 export default function PasswordReset() {

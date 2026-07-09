@@ -8,7 +8,7 @@ import AuthRequired from "./layouts/AuthRequired"
 import AppLayout from "./layouts/AppLayout"
 import AuthLayout from "./layouts/AuthLayout"
 
-import MyListings from "./pages/mylistings/MyListings"
+import Listings from "./pages/listings/Listings"
 import Browse from "./pages/browse/Browse"
 import Profile from "./pages/profile/Profile"
 import Signup from "./pages/auth/Signup"
@@ -39,7 +39,7 @@ export default function App() {
 
           <Route element={<AuthRequired />}>
             <Route path="/" element={<AppLayout />}>
-              <Route index element={<MyListings />}/>
+              <Route index element={<Listings />}/>
               <Route path="browse" element={<Browse />}/>
               <Route path="profile" element={<Profile />}/>
             </Route>

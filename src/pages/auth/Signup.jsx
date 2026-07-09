@@ -3,8 +3,8 @@ import { signUpNewUser, verifyEmail, checkErrorMessage, overwriteFirebaseDoc } f
 import { Link, useNavigate } from "react-router"
 import { useState, useContext } from "react"
 import { UserContext } from "../../App"
-import Email from "../../components/fields/email"
-import Password from "../../components/fields/Password"
+import Email from "./components/Email"
+import Password from "./components/Password"
 import AuthGoogle from "./components/AuthGoogle"
 import { TailSpin } from "react-loader-spinner"
 

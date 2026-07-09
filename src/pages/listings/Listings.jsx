@@ -5,7 +5,7 @@ import { UserContext } from "../../App.jsx"
 import Listing from "./components/Listing.jsx"
 import ListingModal from "./components/ListingModal.jsx"
 
-export default function MyListings() {
+export default function Listings() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [artistListings, setArtistListings] = useState([])

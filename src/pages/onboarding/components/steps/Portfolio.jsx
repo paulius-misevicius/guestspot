@@ -1,10 +1,10 @@
 import { useState, useRef, useContext, useEffect } from "react"
-import { uploadImageToFirebase, downloadImageFromFirebase, deleteImageFromFirebase, listAllDirectoryFiles } from "../../utils"
-import { UserContext } from "../../App"
+import { uploadImageToFirebase, downloadImageFromFirebase, deleteImageFromFirebase, listAllDirectoryFiles } from "../../../../utils"
+import { UserContext } from "../../../../App"
 import { Plus, X } from "lucide-react"
 import { nanoid } from "nanoid"
 
-export default function ImageGallery({gallery, setGallery}) {
+export default function Portfolio({gallery, setGallery}) {
 
     const { user } = useContext(UserContext)
         

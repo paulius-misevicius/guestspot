@@ -1,62 +1,65 @@
 import { useContext, useState, useEffect } from "react"
 import { questionsArtist } from "../../onboardingQuestions"
 import { UserContext } from "../../App"
-import { overwriteFirebaseDoc, getFirebaseDoc } from "../../utils"
-import OnboardingInput from "../../components/OnboardingInput"
+import { overwriteFirebaseDoc, getFirebaseDoc, getCollectionFromFirebase, listAllDirectoryFiles, downloadImageFromFirebase } from "../../utils"
+
+import Navigation from "./components/Navigation"
+
+import Welcome from "./components/steps/Welcome"
+import Type from "./components/steps/Type"
+import Name from "./components/steps/Name"
+import Location from "./components/steps/Location"
+import Instagram from "./components/steps/Instagram"
+import Bio from "./components/steps/Bio"
+import Portfolio from "./components/steps/Portfolio"
+import ProfilePic from "./components/steps/ProfilePic"
 
 export default function Onboarding() {
 
     const { user } = useContext(UserContext)
 
-    const [currentQuestion, setCurrentQuestion] = useState(0)
+    const [currentStep, setCurrentStep] = useState(0)
     const [profile, setProfile] = useState({})
 
+    const [locations, setLocations] = useState([])
+    const [gallery, setGallery] = useState([])
+    const [profilePic, setProfilePic] = useState([])
+
     useEffect(() => {
-        async function getProfileFromDatabase() {
+        async function getInfoForOnboarding() {
             try {
                 const profileData = await getFirebaseDoc("profiles", user.uid)
                 setProfile({...profileData, userId: user.uid})
+
+                const dbLocations = await getCollectionFromFirebase("locations")
+                setLocations(dbLocations)
+
+                const userGallery = await listAllDirectoryFiles(`users/${user.uid}/portfolio`)
+                for (let i = 0; i < userGallery.items.length; i++) {
+                    const filePath = userGallery.items[i]._location.path
+                    const itemId = filePath.replace(`users/${user.uid}/portfolio/`, "")
+                    const imageUrl = await downloadImageFromFirebase(filePath)
+                    setGallery(prev => [{image: imageUrl, id: itemId}, ...prev])
+                }
+
+                const profilePicUrl = await downloadImageFromFirebase(`users/${user.uid}/profile.webp`)
+                setProfilePic(profilePicUrl)
             } catch (error) {
                 console.error(error.message)
             }
         }
-        getProfileFromDatabase()
+        getInfoForOnboarding()
     }, [])
-
-    function nextQuestion() {
-        setCurrentQuestion(prev => prev + 1)
-    }
-    function previousQuestion() {
-        setCurrentQuestion(prev => prev - 1)
-    }
 
     async function submitAnswer(event) {
         event.preventDefault()
-        nextQuestion()
 
-        if (
-            questionsArtist[currentQuestion].input === "portfolio" 
-            || questionsArtist[currentQuestion].input === "profileImage"
-        ) {
-            return
+        if (currentStep < 7) {
+            setCurrentStep(prev => prev + 1)
         }
-
-        overwriteFirebaseDoc("profiles", user.uid, profile)
-        console.log("submitted")
     }
 
     console.log(profile)
-
-    const startButton =
-        <button type="button" className="onboarding_navigation_btn" onClick={nextQuestion}>Get started</button>
-
-    const backButton = 
-        <button type="button" className="onboarding_navigation_btn" onClick={previousQuestion}>Back</button>
-
-    const nextButton = 
-        <button type="submit" className="onboarding_navigation_btn">
-            {currentQuestion === (questionsArtist.length - 1) ? "Finish" : "Continue"}
-        </button>
 
     return (
         <div className="onboarding">
@@ -64,18 +67,19 @@ export default function Onboarding() {
                 <h2>Find studios or artists for guestspotting across Europe.</h2>
                 <p>Ensure a good first impression by building out your profile.</p>
             </section>
-            <form onSubmit={submitAnswer} className="onboarding_right">
-                <h1>{questionsArtist[currentQuestion].title}</h1>
-                <p>{questionsArtist[currentQuestion].description}</p>
-
-                <OnboardingInput currentQuestion={currentQuestion} profile={profile} setProfile={setProfile} />
-
-                <div className="onboarding_navigation">
-                    {currentQuestion > 0 && backButton}
-                    {currentQuestion > 0 && nextButton}
-                    {currentQuestion === 0 && startButton}
-                </div>
-            </form>
+            <section className="onboarding_right">
+                <form onSubmit={submitAnswer} id="onboarding">
+                    {currentStep === 0 && <Welcome />}
+                    {currentStep === 1 && <Type profile={profile} setProfile={setProfile} />}
+                    {currentStep === 2 && <Name profile={profile} setProfile={setProfile} />}
+                    {currentStep === 3 && <Location profile={profile} setProfile={setProfile} locations={locations} />}
+                    {currentStep === 4 && <Instagram profile={profile} setProfile={setProfile} />}
+                    {currentStep === 5 && <Bio profile={profile} setProfile={setProfile} />}
+                    {currentStep === 6 && <Portfolio gallery={gallery} setGallery={setGallery} />}
+                    {currentStep === 7 && <ProfilePic profilePic={profilePic} setProfilePic={setProfilePic} />}
+                </form>
+                <Navigation currentStep={currentStep} setCurrentStep={setCurrentStep}/>
+            </section>
         </div>
     )
 }
