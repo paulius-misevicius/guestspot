@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, query, orderBy, onSnapshot, doc, deleteDoc, where } from "firebase/firestore"
+import { collection, addDoc, getDocs, getDoc, query, orderBy, onSnapshot, doc, deleteDoc, where, setDoc } from "firebase/firestore"
 import { sendPasswordResetEmail, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, sendEmailVerification } from "firebase/auth"
 import { uploadBytes, ref, getDownloadURL, deleteObject, listAll } from "firebase/storage"
 import { db, auth, provider, storage } from "./firebase"
@@ -121,4 +121,19 @@ export function listAllDirectoryFiles(path) {
     const listRef = ref(storage, path)
 
     return listAll(listRef)
+}
+
+export async function overwriteFirebaseDoc(myCollection, documentId, myDocument) {
+    await setDoc(doc(db, myCollection, documentId), myDocument)
+}
+
+export async function getFirebaseDoc(myCollection, documentId) {
+    const docRef = doc(db, myCollection, documentId)
+    const docSnap = await getDoc(docRef)
+
+    if (docSnap.exists()) {
+        return docSnap.data()
+    } else {
+        return {}
+    }
 }

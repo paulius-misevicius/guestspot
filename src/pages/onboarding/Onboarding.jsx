@@ -1,14 +1,27 @@
 import { useContext, useState, useEffect } from "react"
-import { questionsArtist } from "../onboardingQuestions"
-import { UserContext } from "../App"
-import OnboardingInput from "../components/OnboardingInput"
+import { questionsArtist } from "../../onboardingQuestions"
+import { UserContext } from "../../App"
+import { overwriteFirebaseDoc, getFirebaseDoc } from "../../utils"
+import OnboardingInput from "../../components/OnboardingInput"
 
 export default function Onboarding() {
 
     const { user } = useContext(UserContext)
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
-    const [profile, setProfile] = useState({userId: user.uid})
+    const [profile, setProfile] = useState({})
+
+    useEffect(() => {
+        async function getProfileFromDatabase() {
+            try {
+                const profileData = await getFirebaseDoc("profiles", user.uid)
+                setProfile({...profileData, userId: user.uid})
+            } catch (error) {
+                console.error(error.message)
+            }
+        }
+        getProfileFromDatabase()
+    }, [])
 
     function nextQuestion() {
         setCurrentQuestion(prev => prev + 1)
@@ -17,7 +30,7 @@ export default function Onboarding() {
         setCurrentQuestion(prev => prev - 1)
     }
 
-    function submitAnswer(event) {
+    async function submitAnswer(event) {
         event.preventDefault()
         nextQuestion()
 
@@ -28,7 +41,8 @@ export default function Onboarding() {
             return
         }
 
-        console.log("submitting")
+        overwriteFirebaseDoc("profiles", user.uid, profile)
+        console.log("submitted")
     }
 
     console.log(profile)

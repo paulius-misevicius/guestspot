@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { signInExistingUser, checkErrorMessage, signInWithGoogle } from "../../utils"
 import { Link, useNavigate } from "react-router"
-import Email from "../../components/inputs/email"
-import Password from "../../components/inputs/Password"
-import AuthGoogle from "../../components/AuthGoogle"
+import Email from "../../components/fields/email"
+import Password from "../../components/fields/Password"
+import AuthGoogle from "./components/AuthGoogle"
 import { TailSpin } from "react-loader-spinner"
 
 export default function Login() {

@@ -4,12 +4,12 @@ import { UserContext } from "../App"
 import { getCollectionFromFirebase, downloadImageFromFirebase, listAllDirectoryFiles } from "../utils"
 import { questionsArtist } from "../onboardingQuestions"
 
-import RadioButtons from "./inputs/RadioButtons"
-import TextShort from "./inputs/TextShort"
-import ImageGallery from "./inputs/ImageGallery"
-import ProfileImage from "./inputs/ProfileImage"
-import Combobox from "./inputs/Combobox"
-import TextLong from "./inputs/TextLong"
+import RadioButtons from "./fields/RadioButtons"
+import TextShort from "./fields/TextShort"
+import ImageGallery from "./fields/ImageGallery"
+import ProfileImage from "./fields/ProfileImage"
+import Combobox from "./fields/Combobox"
+import TextLong from "./fields/TextLong"
 
 export default function OnboardingInput({currentQuestion, profile, setProfile}) {
 

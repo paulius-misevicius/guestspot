@@ -3,18 +3,18 @@ import { useState, useEffect, createContext } from "react"
 import { auth } from "./firebase"
 import { onAuthStateChanged } from "firebase/auth"
 
-import AuthRequired from "./components/AuthRequired"
+import AuthRequired from "./layouts/AuthRequired"
 
-import AppLayout from "./components/AppLayout"
-import AuthLayout from "./components/AuthLayout"
+import AppLayout from "./layouts/AppLayout"
+import AuthLayout from "./layouts/AuthLayout"
 
-import MyListings from "./pages/MyListings"
-import Browse from "./pages/Browse"
-import Profile from "./pages/Profile"
+import MyListings from "./pages/mylistings/MyListings"
+import Browse from "./pages/browse/Browse"
+import Profile from "./pages/profile/Profile"
 import Signup from "./pages/auth/Signup"
 import Login from "./pages/auth/Login"
 import PasswordReset from "./pages/auth/PasswordReset"
-import Onboarding from "./pages/Onboarding"
+import Onboarding from "./pages/onboarding/Onboarding"
 
 export const UserContext = createContext()
 

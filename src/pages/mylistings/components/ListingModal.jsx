@@ -2,12 +2,12 @@ import { createPortal } from "react-dom"
 import { useState, useContext, useEffect } from "react"
 import { nanoid } from "nanoid"
 import { X } from "lucide-react"
-import DatePicker from "./inputs/DatePicker"
-import Combobox from "./inputs/Combobox"
-import { addToFirebase } from "../utils"
+import DatePicker from "./DatePicker"
+import Combobox from "../../../components/fields/Combobox"
+import { addToFirebase } from "../../../utils"
 import { serverTimestamp } from "firebase/firestore"
-import { UserContext } from "../App"
-import { getCollectionFromFirebase } from "../utils"
+import { UserContext } from "../../../App"
+import { getCollectionFromFirebase } from "../../../utils"
 
 export default function ListingModal({isModalOpen, setIsModalOpen}) {
     

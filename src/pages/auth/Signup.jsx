@@ -1,13 +1,16 @@
 import { Mail, Lock } from "lucide-react"
-import { signUpNewUser, verifyEmail, checkErrorMessage } from "../../utils"
+import { signUpNewUser, verifyEmail, checkErrorMessage, overwriteFirebaseDoc } from "../../utils"
 import { Link, useNavigate } from "react-router"
-import { useState } from "react"
-import Email from "../../components/inputs/email"
-import Password from "../../components/inputs/Password"
-import AuthGoogle from "../../components/AuthGoogle"
+import { useState, useContext } from "react"
+import { UserContext } from "../../App"
+import Email from "../../components/fields/email"
+import Password from "../../components/fields/Password"
+import AuthGoogle from "./components/AuthGoogle"
 import { TailSpin } from "react-loader-spinner"
 
 export default function Signup() {
+
+    const { user } = useContext(UserContext)
 
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -23,8 +26,9 @@ export default function Signup() {
 
         try { 
             await signUpNewUser(email, password)
+            await overwriteFirebaseDoc("profiles", user.uid, {isProfileCompleted: false, userId: user.uid})
             setIsLoading(false)
-            navigate("/")
+            navigate("/onboarding")
         } catch (error) {
             const translatedError = checkErrorMessage(error)
             setError(translatedError)
