@@ -1,4 +1,5 @@
 export default function Navigation({currentStep, setCurrentStep}) {
+
     return (
         <div className="onboarding_navigation">
             {currentStep > 0 && 

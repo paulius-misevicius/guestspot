@@ -17,23 +17,21 @@ import ProfilePic from "./components/steps/ProfilePic"
 export default function Onboarding() {
 
     const { user } = useContext(UserContext)
-
     const [currentStep, setCurrentStep] = useState(0)
     const [profile, setProfile] = useState({})
-
     const [locations, setLocations] = useState([])
     const [gallery, setGallery] = useState([])
-    const [profilePic, setProfilePic] = useState([])
-
+    const [profilePic, setProfilePic] = useState("")
+    
     useEffect(() => {
         async function getInfoForOnboarding() {
             try {
                 const profileData = await getFirebaseDoc("profiles", user.uid)
                 setProfile({...profileData, userId: user.uid})
-
+                
                 const dbLocations = await getCollectionFromFirebase("locations")
                 setLocations(dbLocations)
-
+                
                 const userGallery = await listAllDirectoryFiles(`users/${user.uid}/portfolio`)
                 for (let i = 0; i < userGallery.items.length; i++) {
                     const filePath = userGallery.items[i]._location.path
@@ -41,7 +39,7 @@ export default function Onboarding() {
                     const imageUrl = await downloadImageFromFirebase(filePath)
                     setGallery(prev => [{image: imageUrl, id: itemId}, ...prev])
                 }
-
+                
                 const profilePicUrl = await downloadImageFromFirebase(`users/${user.uid}/profile.webp`)
                 setProfilePic(profilePicUrl)
             } catch (error) {
@@ -50,17 +48,32 @@ export default function Onboarding() {
         }
         getInfoForOnboarding()
     }, [])
-
+    
     async function submitAnswer(event) {
         event.preventDefault()
-
+        
         if (currentStep < 7) {
             setCurrentStep(prev => prev + 1)
         }
     }
+    
+    const STEPS = [
+        {key: "welcome", component: Welcome},
+        {key: "type", component: Type},
+        {key: "name", component: Name},
+        {key: "location", component: Location},
+        {key: "instagram", component: Instagram},
+        {key: "bio", component: Bio},
+        {key: "portfolio", component: Portfolio},
+        {key: "profilePic", component: ProfilePic}
+    ]
 
-    console.log(profile)
+    const CurrentComponent = STEPS[currentStep].component
 
+    const stepProps = {
+        profile, setProfile, locations, gallery, setGallery, profilePic, setProfilePic
+    }
+    
     return (
         <div className="onboarding">
             <section className="onboarding_left">
@@ -69,14 +82,7 @@ export default function Onboarding() {
             </section>
             <section className="onboarding_right">
                 <form onSubmit={submitAnswer} id="onboarding">
-                    {currentStep === 0 && <Welcome />}
-                    {currentStep === 1 && <Type profile={profile} setProfile={setProfile} />}
-                    {currentStep === 2 && <Name profile={profile} setProfile={setProfile} />}
-                    {currentStep === 3 && <Location profile={profile} setProfile={setProfile} locations={locations} />}
-                    {currentStep === 4 && <Instagram profile={profile} setProfile={setProfile} />}
-                    {currentStep === 5 && <Bio profile={profile} setProfile={setProfile} />}
-                    {currentStep === 6 && <Portfolio gallery={gallery} setGallery={setGallery} />}
-                    {currentStep === 7 && <ProfilePic profilePic={profilePic} setProfilePic={setProfilePic} />}
+                    <CurrentComponent {...stepProps} />
                 </form>
                 <Navigation currentStep={currentStep} setCurrentStep={setCurrentStep}/>
             </section>

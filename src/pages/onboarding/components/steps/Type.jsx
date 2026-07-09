@@ -23,7 +23,7 @@ export default function Type({profile, setProfile}) {
                         className={profile.type === "artist" ? "input_radio_label radio_checked" : "input_radio_label"}
                         htmlFor="artist"
                     >
-                        Tatoo artist
+                        Tattoo artist
                     </label>
                 </div>
                 <div>
@@ -45,7 +45,7 @@ export default function Type({profile, setProfile}) {
                         className={profile.type === "studio" ? "input_radio_label radio_checked" : "input_radio_label"}
                         htmlFor="studio"
                     >
-                        Tatoo studio
+                        Tattoo studio
                     </label>
                 </div>
             </div>
