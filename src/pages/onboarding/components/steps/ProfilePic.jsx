@@ -31,6 +31,8 @@ export default function ProfilePic({profilePic, setProfilePic}) {
 
     return (
             <div>
+                <h1>Add a profile picture or a logo</h1>
+                <p>This is the first thing studios see. Make sure to leave a good first impression!</p>
                 <label>Profile pic</label>
                 <input 
                     ref={fileInputRef}

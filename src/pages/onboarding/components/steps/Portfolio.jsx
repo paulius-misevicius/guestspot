@@ -51,6 +51,8 @@ export default function Portfolio({gallery, setGallery}) {
 
     return (
         <>
+            <h1>Add pictures to your portfolio</h1>
+            <p>Pick up to 20 images of your best work.</p>
             <label>Portfolio pictures</label>
             <div className="input-gallery">
                 <div className="input_gallery_item">

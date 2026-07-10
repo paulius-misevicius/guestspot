@@ -65,13 +65,13 @@ export default function Onboarding() {
     
     const STEPS = [
         {key: "welcome", component: Welcome},
-        {key: "type", component: Type, isFilled: profile.type !== undefined && profile.type !== ""},
-        {key: "name", component: Name, isFilled: profile.name !== undefined && profile.name !== ""},
-        {key: "location", component: Location, isFilled: profile.city !== undefined && profile.city !== null && profile.city !== ""},
-        {key: "instagram", component: Instagram, isFilled: profile.instagram !== undefined && profile.instagram !== ""},
-        {key: "bio", component: Bio},
-        {key: "portfolio", component: Portfolio},
-        {key: "profilePic", component: ProfilePic}
+        {key: "type", component: Type, skippable: false, isFilled: profile.type !== undefined && profile.type !== ""},
+        {key: "name", component: Name, skippable: false, isFilled: profile.name !== undefined && profile.name !== ""},
+        {key: "location", component: Location, skippable: false, isFilled: profile.city !== undefined && profile.city !== null && profile.city !== ""},
+        {key: "instagram", component: Instagram, skippable: false, isFilled: profile.instagram !== undefined && profile.instagram !== ""},
+        {key: "bio", component: Bio, skippable: true, isFilled: profile.bio !== undefined && profile.bio !== ""},
+        {key: "portfolio", component: Portfolio, skippable: true, isFilled: gallery.length > 0},
+        {key: "profilePic", component: ProfilePic, skippable: true, isFilled: profilePic !== undefined && profilePic !== ""}
     ]
     
     const CurrentComponent = STEPS[currentStep].component
@@ -118,7 +118,6 @@ export default function Onboarding() {
                 <Navigation 
                     currentStep={currentStep} 
                     setCurrentStep={setCurrentStep} 
-                    totalSteps={STEPS.length} 
                     steps={STEPS} 
                 />
             </section>

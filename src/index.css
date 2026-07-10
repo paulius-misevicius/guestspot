@@ -586,7 +586,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width: fit-content;
   padding: 12px 40px;
   border-radius: 12px;
-  margin-top: 20px;
 }
 .onboarding_right h1 {
   margin-bottom: 12px;
@@ -594,6 +593,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .onboarding_navigation {
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
 }
 
 .onboarding_input_profile-type {
@@ -683,6 +683,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .item_delete-btn_icon {
   width: 50%;
   height: 50%;
+}
+
+.navigation_next-skip-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.onboarding_navigation_skip-btn {
+  background-color: transparent;
 }
 
 @media (max-width: 600px) {
