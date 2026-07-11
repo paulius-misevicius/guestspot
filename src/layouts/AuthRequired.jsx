@@ -6,7 +6,7 @@ import { getFirebaseDoc } from "../utils/firebase/firestore"
 
 export default function AuthRequired() {
 
-    const { user, isAuthLoading, userProfile } = useContext(UserContext)
+    const { user, isAuthLoading } = useContext(UserContext)
 
     if (isAuthLoading) {
         return (

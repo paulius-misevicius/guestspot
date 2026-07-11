@@ -5,9 +5,9 @@ import Sidebar from "../components/Sidebar"
 
 export default function AppLayout() {
 
-    const { userProfile } = useContext(UserContext)
+    const { profile } = useContext(UserContext)
 
-    if (!userProfile?.isProfileCompleted) {
+    if (!profile?.isProfileCompleted) {
         return <Navigate to="/onboarding" />
     }
 

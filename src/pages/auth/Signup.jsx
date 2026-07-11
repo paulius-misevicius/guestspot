@@ -27,7 +27,7 @@ export default function Signup() {
         try { 
             const userCredential = await signUpNewUser(email, password)
             const user = userCredential.user
-            await addToFirebaseWithId("profiles", user.uid, {isProfileCompleted: false})
+            await addToFirebaseWithId("profiles", user.uid, {isProfileCompleted: false, hasProfilePicture: false})
             setIsLoading(false)
             navigate("/onboarding")
         } catch (error) {

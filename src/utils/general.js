@@ -21,6 +21,8 @@ export function checkErrorMessage(error) {
         return "Password should be at least 6 characters."
     } else if (error.message === "Firebase: Error (auth/email-already-in-use).") {
         return "Account with this email already exists."
+    } else if (error.message.includes("profile.webp' does not exist.")) {
+        return "No profile picture"
     } else if (
         error.message === "Firebase: Error (auth/internal-error)."
         || error.message === "Firebase: Error (auth/popup-closed-by-user)."

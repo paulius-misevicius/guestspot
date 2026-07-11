@@ -23,7 +23,7 @@ export const UserContext = createContext()
 export default function App() {
 
   const [user, setUser] = useState(null)
-  const [userProfile, setUserProfile] = useState(null)
+  const [profile, setProfile] = useState(null)
   const [isAuthLoading, setIsAuthLoading] = useState(true)
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function App() {
       setUser(user)
       
       if (!user) {
-        setUserProfile(null)
+        setProfile(null)
         setIsAuthLoading(false)
         return
       }
@@ -39,10 +39,10 @@ export default function App() {
       const profileData = await getFirebaseDoc("profiles", user.uid)
 
       if (!profileData) {
-        await addToFirebaseWithId("profiles", user.uid, {isProfileCompleted: false})
-        setUserProfile({isProfileCompleted: false})
+        await addToFirebaseWithId("profiles", user.uid, {isProfileCompleted: false, hasProfilePicture: false})
+        setProfile({isProfileCompleted: false})
       } else {
-        setUserProfile(profileData)
+        setProfile(profileData)
       }
 
       setIsAuthLoading(false)
@@ -51,7 +51,7 @@ export default function App() {
   }, [])
 
   return (
-    <UserContext.Provider value={{user, isAuthLoading, userProfile}}>
+    <UserContext.Provider value={{user, isAuthLoading, profile, setProfile}}>
       <BrowserRouter>
         <Routes>
 

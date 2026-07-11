@@ -3,7 +3,7 @@ import { uploadImageToFirebase, downloadImageFromFirebase } from "../../../../ut
 import { UserContext } from "../../../../App"
 import { UserRound } from "lucide-react"
 
-export default function ProfilePic({profilePic, setProfilePic}) {
+export default function ProfilePic({setProfile, profilePic, setProfilePic}) {
     
     const { user } = useContext(UserContext)
     
@@ -23,6 +23,7 @@ export default function ProfilePic({profilePic, setProfilePic}) {
             await uploadImageToFirebase(file, path)
             const picUrl = await downloadImageFromFirebase(path)
             setProfilePic(picUrl)
+            setProfile(prev => ({...prev, hasProfilePicture: true}))
         } catch (error) {
             console.error(error.message)
             setProfilePic(null)

@@ -695,6 +695,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: transparent;
 }
 
+.profile_profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 999px;
+  background-color: var(--surface-3);
+}
+
 @media (max-width: 600px) {
   .sidebar {
     display: none;

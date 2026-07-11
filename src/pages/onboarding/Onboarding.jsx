@@ -1,9 +1,11 @@
 import { useContext, useState, useEffect } from "react"
+import { Navigate } from "react-router"
 import { LogOut } from "lucide-react"
 import { UserContext } from "../../App"
-import { getCollectionFromFirebase, getFirebaseDoc, addToFirebaseWithId } from "../../utils/firebase/firestore"
+import { getCollectionFromFirebase, getFirebaseDoc, addToFirebaseWithId, overwriteFirebaseDoc } from "../../utils/firebase/firestore"
 import { listAllDirectoryFiles, downloadImageFromFirebase } from "../../utils/firebase/storage"
 import { signOutUser } from "../../utils/firebase/auth"
+import { checkErrorMessage } from "../../utils/general"
 
 import Navigation from "./components/Navigation"
 
@@ -18,22 +20,16 @@ import ProfilePic from "./components/steps/ProfilePic"
 
 export default function Onboarding() {
 
-    const { user } = useContext(UserContext)
+    const { user, profile, setProfile } = useContext(UserContext)
     const [currentStep, setCurrentStep] = useState(0)
-    const [profile, setProfile] = useState({})
     const [locations, setLocations] = useState([])
     const [gallery, setGallery] = useState([])
     const [profilePic, setProfilePic] = useState("")
-    
+
+    console.log(profile)
+
     useEffect(() => {
         async function getInfoForOnboarding() {
-            try {
-                const profileData = await getFirebaseDoc("profiles", user.uid)
-                setProfile({...profileData})
-            } catch (error) {
-                console.error(error.message)
-            }
-            
             try {
                 const dbLocations = await getCollectionFromFirebase("locations")
                 setLocations(dbLocations)
@@ -54,10 +50,12 @@ export default function Onboarding() {
             }
             
             try {
+                if (!profile.hasProfilePicture) return
                 const profilePicUrl = await downloadImageFromFirebase(`users/${user.uid}/profile.webp`)
                 setProfilePic(profilePicUrl)
             } catch (error) {
-                console.error(error.message)
+                const translatedError = checkErrorMessage(error)
+                console.error(translatedError)
             }
         }
         getInfoForOnboarding()
@@ -83,12 +81,16 @@ export default function Onboarding() {
     async function submitAnswer(event) {
         event.preventDefault()
 
-        if (!STEPS[currentStep].isFilled) return
+        if (!STEPS[currentStep].isFilled && currentStep !== (STEPS.length - 1)) return
         
-        if (currentStep < STEPS.length) {
+        if (currentStep < (STEPS.length - 1)) {
             setCurrentStep(prev => prev + 1)
-        } 
-
+            await overwriteFirebaseDoc("profiles", user.uid, profile)
+        } else {
+            setProfile(prev => ({...prev, isProfileCompleted: true}))
+            await overwriteFirebaseDoc("profiles", user.uid, profile)
+            return <Navigate to="/" />
+        }
     }
 
     async function logoutFromAccount() {
