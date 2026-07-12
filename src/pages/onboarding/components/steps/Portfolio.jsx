@@ -4,7 +4,7 @@ import { UserContext } from "../../../../App"
 import { Plus, X } from "lucide-react"
 import { nanoid } from "nanoid"
 
-export default function Portfolio({gallery, setGallery}) {
+export default function Portfolio({gallery, setGallery, profile}) {
 
     const { user } = useContext(UserContext)
         
@@ -51,8 +51,16 @@ export default function Portfolio({gallery, setGallery}) {
 
     return (
         <>
-            <h1>Add pictures to your portfolio</h1>
-            <p>Pick up to 20 images of your best work.</p>
+            <h1>{profile.type === "artist" 
+                    ? "Add pictures of your portfolio"
+                    : "Add pictures of your studio"
+                    }
+            </h1>
+            <p>{profile.type === "artist" 
+                    ? "Pick up to 20 images of your best work."
+                    : "Upload up to 20 images that best capture your studio."    
+                    }
+            </p>
             <label>Portfolio pictures</label>
             <div className="input-gallery">
                 <div className="input_gallery_item">

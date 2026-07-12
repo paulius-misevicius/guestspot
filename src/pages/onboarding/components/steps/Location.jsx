@@ -48,8 +48,8 @@ export default function Location({profile, setProfile, locations}) {
                     : "This will let artists know where you're based."
                     }
             </p>
-            {profile.type === "studio" && locationComboboxes}
-            {(profile?.locations?.filter(Boolean).length ?? 0) >= locationCount && locationCount < 5 &&
+            {locationComboboxes}
+            {profile.type === "studio" && (profile?.locations?.filter(Boolean).length ?? 0) >= locationCount && locationCount < 5 &&
                 <button 
                     className="onboarding_add-location-btn"
                     type="button"

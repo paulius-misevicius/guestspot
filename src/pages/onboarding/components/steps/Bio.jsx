@@ -2,7 +2,11 @@ export default function Bio({profile, setProfile}) {
     return (
         <>
             <h1>Write a short bio</h1>
-            <p>Tell studios about your style, specialties, and experience.</p>
+            <p>{profile.type === "artist" 
+                    ? "Tell studios about your style, specialties, and experience."
+                    : "Tell artist about your studio."
+                    }
+            </p>
             <div>
                 <label htmlFor="bio">Profile bio</label>
                 <textarea 

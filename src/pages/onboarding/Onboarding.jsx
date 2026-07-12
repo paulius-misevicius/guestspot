@@ -87,8 +87,9 @@ export default function Onboarding() {
             setCurrentStep(prev => prev + 1)
             await overwriteFirebaseDoc("profiles", user.uid, profile)
         } else {
-            setProfile(prev => ({...prev, isProfileCompleted: true}))
-            await overwriteFirebaseDoc("profiles", user.uid, profile)
+            const updatedProfile = {...profile, isProfileCompleted: true}
+            setProfile(updatedProfile)
+            await overwriteFirebaseDoc("profiles", user.uid, updatedProfile)
             return <Navigate to="/" />
         }
     }

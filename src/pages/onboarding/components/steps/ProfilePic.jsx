@@ -3,7 +3,7 @@ import { uploadImageToFirebase, downloadImageFromFirebase } from "../../../../ut
 import { UserContext } from "../../../../App"
 import { UserRound } from "lucide-react"
 
-export default function ProfilePic({setProfile, profilePic, setProfilePic}) {
+export default function ProfilePic({setProfile, profilePic, setProfilePic, profile}) {
     
     const { user } = useContext(UserContext)
     
