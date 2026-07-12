@@ -17,7 +17,7 @@ export default function Listings() {
 
     return () => unsubscribe()
   }, [])
-
+  console.log(artistListings)
   return (
       <>
         <ListingModal 
@@ -41,8 +41,8 @@ export default function Listings() {
             <Listing 
               key={item.id} 
               id={item.id}
-              city={item.city}
-              country={item.country}
+              city={item.locations[0].city}
+              country={item.locations[0].country}
               dateFrom={item.dateFrom}
               dateTo={item.dateTo}
             />

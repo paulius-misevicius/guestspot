@@ -25,7 +25,7 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
     function createListing(event) {
         event.preventDefault()
         
-        if (!listingData.city || listingData.dateFrom === undefined) {
+        if (!listingData.locations[0].city || listingData.dateFrom === undefined) {
             setError("Please fill out the required fields!")
             return
         }
@@ -53,7 +53,7 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
                     </button>
                 </div>
 
-                <Combobox data={listingData} setData={setListingData} itemList={locations} placeholder="I'm looking to guestspot in..."/>
+                <Combobox data={listingData} setData={setListingData} itemList={locations} index={0} placeholder="I'm looking to guestspot in..."/>
                 <DatePicker setData={setListingData} />
 
                 <button 
