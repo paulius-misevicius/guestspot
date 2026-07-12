@@ -3,8 +3,8 @@ import { User } from "lucide-react"
 export default function Name({profile, setProfile}) {
     return (
         <>
-            <h1>What's your name or pseudonym?</h1>
-            <p>This is how you'll appear to studios.</p>
+            <h1>{profile.type === "artist" ? "What's your name or pseudonym?" : "What's the name of your studio"}</h1>
+            <p>{profile.type === "artist" ? "This is how you'll appear to studios." : "This is how you'll appear to artists."}</p>
             <div className="auth_field">
                 <label htmlFor="name">Name / pseudonym</label>
                 <div className="input-container">

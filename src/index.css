@@ -284,7 +284,6 @@ main {
 }
 .listing-modal_city-field {
   position: relative;
-  margin-bottom: 24px;
   width: 100%;
 }
 .listing-modal_city-field ul {
@@ -700,6 +699,30 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   height: 100px;
   border-radius: 999px;
   background-color: var(--surface-3);
+}
+.onboarding_location-multiple {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+}
+.onboarding_location-delete-btn {
+  background-color: var(--surface-1);
+  color: var(--text-muted);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  padding: 8px 12px;
+  height: fit-content;
+}
+.onboarding_location-delete-btn:hover {
+  background-color: var(--surface-3);
+  color: var(--text-primary);
+}
+.onboarding_add-location-btn {
+  background-color: transparent;
+  margin-top: 12px;
 }
 
 @media (max-width: 600px) {

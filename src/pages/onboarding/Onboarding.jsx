@@ -65,7 +65,7 @@ export default function Onboarding() {
         {key: "welcome", component: Welcome},
         {key: "type", component: Type, skippable: false, isFilled: profile.type !== undefined && profile.type !== ""},
         {key: "name", component: Name, skippable: false, isFilled: profile.name !== undefined && profile.name !== ""},
-        {key: "location", component: Location, skippable: false, isFilled: profile.city !== undefined && profile.city !== null && profile.city !== ""},
+        {key: "location", component: Location, skippable: false, isFilled: profile.locations !== undefined && profile.locations[0]?.city !== undefined},
         {key: "instagram", component: Instagram, skippable: false, isFilled: profile.instagram !== undefined && profile.instagram !== ""},
         {key: "bio", component: Bio, skippable: true, isFilled: profile.bio !== undefined && profile.bio !== ""},
         {key: "portfolio", component: Portfolio, skippable: true, isFilled: gallery.length > 0},

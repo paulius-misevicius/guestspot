@@ -53,7 +53,7 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
                     </button>
                 </div>
 
-                <Combobox data={listingData} setData={setListingData} itemList={locations} />
+                <Combobox data={listingData} setData={setListingData} itemList={locations} placeholder="I'm looking to guestspot in..."/>
                 <DatePicker setData={setListingData} />
 
                 <button 

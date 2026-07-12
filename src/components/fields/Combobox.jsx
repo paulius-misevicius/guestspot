@@ -2,33 +2,39 @@ import { useState, useRef, useEffect } from "react"
 import { Search, X, MapPin } from "lucide-react"
 import { toEnglishChars } from "../../utils/general"
 
-export default function Combobox({data, setData, itemList}) {
+export default function Combobox({data, setData, itemList, noLabel, index, placeholder}) {
 
     const containerRef = useRef(null)
+    const commitTypedValueRef = useRef()
+    commitTypedValueRef.current = commitTypedValue
     const [isComboboxOpen, setIsComboboxOpen] = useState(false)
-    const [inputValue, setInputValue] = useState(data.city || "")
+    const [inputValue, setInputValue] = useState(data.locations?.[index]?.city ?? "")
     const [highlightedIndex, setHighlightedIndex] = useState(-1)
 
     const searchResults = itemList.filter(item => 
-        toEnglishChars(item.city.toLowerCase()).includes(inputValue.toLowerCase())
+        toEnglishChars(item.city.toLowerCase()).includes(toEnglishChars(inputValue.toLowerCase())) 
+        && 
+        !data?.locations?.some(location => location?.city === item.city)
     )
-
-    const showDropdown = isComboboxOpen && searchResults.length > 0 && inputValue.length > 0
+    const visibleResults = searchResults.slice(0, 5)
+    const showDropdown = isComboboxOpen && visibleResults.length > 0 && inputValue.length > 0
 
     function commitCity(item) {
         setInputValue(item ? item.city : "")
-        setData(prev => (
-            {
-                ...prev, 
-                city: item ? item.city : null, 
-                country: item ? item.country : null
-            }
-        ))
+        setData(prev => {
+            const next = [...(prev.locations ?? [])]
+            next[index] = item ? {city: item.city, country: item.country} : undefined
+            return {...prev, locations: next}
+        })
         setIsComboboxOpen(false)
         setHighlightedIndex(-1)
     }
 
     function commitTypedValue() {
+        if (!inputValue) return
+        if (data?.locations?.some(item => 
+            toEnglishChars(item?.city?.toLowerCase() ?? "") === toEnglishChars(inputValue.toLowerCase())
+        )) return
         const match = itemList.find(item => 
             toEnglishChars(item.city.toLowerCase()) === toEnglishChars(inputValue.toLowerCase())
         )
@@ -38,18 +44,22 @@ export default function Combobox({data, setData, itemList}) {
     useEffect(() => {
         function handleClickOutside(event) {
             if (containerRef.current && !containerRef.current.contains(event.target)) {
-                commitTypedValue()
+                commitTypedValueRef.current()
             }
         }
         document.addEventListener("mousedown", handleClickOutside)
         return () => document.removeEventListener("mousedown", handleClickOutside)
-    }, [inputValue])
+    }, [])
 
     function handleInputChange(event) {
         setInputValue(event.target.value)
         setIsComboboxOpen(true)
         setHighlightedIndex(-1)
-        setData(prev => ({...prev, city: null, country: null}))
+        setData(prev => {
+            const next = [...(prev.locations ?? [])]
+            next[index] = undefined
+            return {...prev, locations: next}
+        })
     }
 
     function handleKeyDown(event) {
@@ -57,7 +67,7 @@ export default function Combobox({data, setData, itemList}) {
 
         if (event.key === "ArrowDown") {
             event.preventDefault()
-            setHighlightedIndex(prev => Math.min(prev + 1, searchResults.length - 1))
+            setHighlightedIndex(prev => Math.min(prev + 1, visibleResults.length - 1))
         } 
         else if (event.key === "ArrowUp") {
             event.preventDefault()
@@ -69,7 +79,8 @@ export default function Combobox({data, setData, itemList}) {
         } 
         else if (event.key === "Enter") {
             event.preventDefault()
-            commitCity(searchResults[highlightedIndex + 1])
+            if (visibleResults.length === 0) return
+            commitCity(highlightedIndex >= 0 ? visibleResults[highlightedIndex] : visibleResults[0])
         } 
         else if (event.key === "Escape") {
             setIsComboboxOpen(false)
@@ -81,19 +92,20 @@ export default function Combobox({data, setData, itemList}) {
             className="listing-modal_city-field"
             ref={containerRef} 
         >
-            <label htmlFor="city">City</label>
+            <label htmlFor="city" className={noLabel ? "sr-only" : undefined}>City</label>
             <div className="input-container">
                 <Search className="input-icon icon-14px"/>
                 <input
                     role="combobox"
                     aria-expanded={showDropdown}
                     aria-controls="city-listbox"
+                    aria-autocomplete="list"
                     aria-activedescendant={highlightedIndex >= 0
                         ? `city-option-${highlightedIndex}`
                         : undefined}
                     autoComplete="off"
                     className="combobox-city"
-                    placeholder="I'm looking to guestspot in..."
+                    placeholder={placeholder}
                     id="city"
                     name="city"
                     type="text"
@@ -113,11 +125,11 @@ export default function Combobox({data, setData, itemList}) {
 
             {showDropdown &&
                 <ul id="city-listbox" role="listbox">
-                    {searchResults.slice(0, 5).map((item, index) => 
+                    {visibleResults.map((item, index) => 
                         <li 
                             className={index === highlightedIndex ? "highlight-li" : undefined}
-                            key={item.city}
-                            id={`city-option-${highlightedIndex}`} 
+                            key={`${item.city}-${item.country}`}
+                            id={`city-option-${index}`} 
                             role="option"
                             aria-selected={index === highlightedIndex}
                             onMouseDown={() => commitCity(item)}
