@@ -20,13 +20,9 @@ import ProfilePic from "./components/steps/ProfilePic"
 
 export default function Onboarding() {
 
-    const { user, profile, setProfile } = useContext(UserContext)
+    const { user, profile, setProfile, profilePic, setProfilePic, gallery, setGallery } = useContext(UserContext)
     const [currentStep, setCurrentStep] = useState(0)
     const [locations, setLocations] = useState([])
-    const [gallery, setGallery] = useState([])
-    const [profilePic, setProfilePic] = useState("")
-
-    console.log(profile)
 
     useEffect(() => {
         async function getInfoForOnboarding() {
@@ -35,27 +31,6 @@ export default function Onboarding() {
                 setLocations(dbLocations)
             } catch (error) {
                 console.error(error.message)
-            }
-
-            try {
-                const userGallery = await listAllDirectoryFiles(`users/${user.uid}/portfolio`)
-                for (let i = 0; i < userGallery.items.length; i++) {
-                    const filePath = userGallery.items[i]._location.path
-                    const itemId = filePath.replace(`users/${user.uid}/portfolio/`, "")
-                    const imageUrl = await downloadImageFromFirebase(filePath)
-                    setGallery(prev => [{image: imageUrl, id: itemId}, ...prev])
-                }
-            } catch (error) {
-                console.error(error.message)
-            }
-            
-            try {
-                if (!profile.hasProfilePicture) return
-                const profilePicUrl = await downloadImageFromFirebase(`users/${user.uid}/profile.webp`)
-                setProfilePic(profilePicUrl)
-            } catch (error) {
-                const translatedError = checkErrorMessage(error)
-                console.error(translatedError)
             }
         }
         getInfoForOnboarding()

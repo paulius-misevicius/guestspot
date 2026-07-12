@@ -3,6 +3,8 @@ import { useState, useEffect, createContext } from "react"
 import { auth } from "./utils/firebase/config"
 import { getFirebaseDoc, addToFirebaseWithId } from "./utils/firebase/firestore"
 import { onAuthStateChanged } from "firebase/auth"
+import { downloadImageFromFirebase, listAllDirectoryFiles } from "./utils/firebase/storage"
+import { checkErrorMessage } from "./utils/general"
 
 import AuthRequired from "./layouts/AuthRequired"
 
@@ -25,6 +27,8 @@ export default function App() {
   const [user, setUser] = useState(null)
   const [profile, setProfile] = useState(null)
   const [isAuthLoading, setIsAuthLoading] = useState(true)
+  const [profilePic, setProfilePic] = useState("")
+  const [gallery, setGallery] = useState([])
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async user => {
@@ -46,12 +50,34 @@ export default function App() {
       }
 
       setIsAuthLoading(false)
+      
+      try {
+          if (!profileData.hasProfilePicture) return
+          const profilePicUrl = await downloadImageFromFirebase(`users/${user.uid}/profile.webp`)
+          setProfilePic(profilePicUrl)
+      } catch (error) {
+          const translatedError = checkErrorMessage(error)
+          console.error(translatedError)
+      }
+
+      try {
+          const userGallery = await listAllDirectoryFiles(`users/${user.uid}/portfolio`)
+          for (let i = 0; i < userGallery.items.length; i++) {
+              const filePath = userGallery.items[i]._location.path
+              const itemId = filePath.replace(`users/${user.uid}/portfolio/`, "")
+              const imageUrl = await downloadImageFromFirebase(filePath)
+              setGallery(prev => [{image: imageUrl, id: itemId}, ...prev])
+          }
+      } catch (error) {
+          console.error(error.message)
+      }
+
     })
     return () => unsubscribe()
   }, [])
 
   return (
-    <UserContext.Provider value={{user, isAuthLoading, profile, setProfile}}>
+    <UserContext.Provider value={{user, isAuthLoading, profile, setProfile, profilePic, setProfilePic, gallery, setGallery}}>
       <BrowserRouter>
         <Routes>
 

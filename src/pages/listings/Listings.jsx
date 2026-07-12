@@ -17,7 +17,7 @@ export default function Listings() {
 
     return () => unsubscribe()
   }, [])
-  console.log(artistListings)
+
   return (
       <>
         <ListingModal 
