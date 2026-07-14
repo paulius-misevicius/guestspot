@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router"
 import { useState, useEffect, createContext } from "react"
 import { auth } from "./utils/firebase/config"
-import { getFirebaseDoc, addToFirebaseWithId } from "./utils/firebase/firestore"
+import { getFirebaseDoc, addToFirebaseWithId, getCollectionFromFirebase } from "./utils/firebase/firestore"
 import { onAuthStateChanged } from "firebase/auth"
 import { downloadImageFromFirebase, listAllDirectoryFiles } from "./utils/firebase/storage"
 import { checkErrorMessage } from "./utils/general"
@@ -29,6 +29,7 @@ export default function App() {
   const [isAuthLoading, setIsAuthLoading] = useState(true)
   const [profilePic, setProfilePic] = useState("")
   const [gallery, setGallery] = useState([])
+  const [locations, setLocations] = useState([])
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async user => {
@@ -66,8 +67,16 @@ export default function App() {
               const filePath = userGallery.items[i]._location.path
               const itemId = filePath.replace(`users/${user.uid}/portfolio/`, "")
               const imageUrl = await downloadImageFromFirebase(filePath)
+              if (gallery.some(item => item.image === imageUrl)) return
               setGallery(prev => [{image: imageUrl, id: itemId}, ...prev])
           }
+      } catch (error) {
+          console.error(error.message)
+      }
+
+      try {
+          const dbLocations = await getCollectionFromFirebase("locations")
+          setLocations(dbLocations)
       } catch (error) {
           console.error(error.message)
       }
@@ -77,7 +86,7 @@ export default function App() {
   }, [])
 
   return (
-    <UserContext.Provider value={{user, isAuthLoading, profile, setProfile, profilePic, setProfilePic, gallery, setGallery}}>
+    <UserContext.Provider value={{user, isAuthLoading, profile, setProfile, profilePic, setProfilePic, gallery, setGallery, locations}}>
       <BrowserRouter>
         <Routes>
 

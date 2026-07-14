@@ -1,11 +1,9 @@
-import { useContext, useState, useEffect } from "react"
+import { useContext, useState } from "react"
 import { Navigate } from "react-router"
 import { LogOut } from "lucide-react"
 import { UserContext } from "../../App"
-import { getCollectionFromFirebase, getFirebaseDoc, addToFirebaseWithId, overwriteFirebaseDoc } from "../../utils/firebase/firestore"
-import { listAllDirectoryFiles, downloadImageFromFirebase } from "../../utils/firebase/storage"
+import { overwriteFirebaseDoc } from "../../utils/firebase/firestore"
 import { signOutUser } from "../../utils/firebase/auth"
-import { checkErrorMessage } from "../../utils/general"
 
 import Navigation from "./components/Navigation"
 
@@ -20,21 +18,8 @@ import ProfilePic from "./components/steps/ProfilePic"
 
 export default function Onboarding() {
 
-    const { user, profile, setProfile, profilePic, setProfilePic, gallery, setGallery } = useContext(UserContext)
+    const { user, profile, setProfile, profilePic, setProfilePic, gallery, setGallery, locations } = useContext(UserContext)
     const [currentStep, setCurrentStep] = useState(0)
-    const [locations, setLocations] = useState([])
-
-    useEffect(() => {
-        async function getInfoForOnboarding() {
-            try {
-                const dbLocations = await getCollectionFromFirebase("locations")
-                setLocations(dbLocations)
-            } catch (error) {
-                console.error(error.message)
-            }
-        }
-        getInfoForOnboarding()
-    }, [])
     
     const STEPS = [
         {key: "welcome", component: Welcome},

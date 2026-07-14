@@ -25,8 +25,8 @@ export default function Instagram({profile, setProfile}) {
                                 instagram: event.target.value
                             }
                         ))} 
-                        name="instragram"
-                        id="instragram"
+                        name="instagram"
+                        id="instagram"
                         type="text" 
                     />
                 </div>
