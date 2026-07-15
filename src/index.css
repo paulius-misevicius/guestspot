@@ -443,8 +443,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .listing-modal_create-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding-block: 12px;
   width: 100%;
+  height: 44px;
   border-radius: 12px;
   margin-top: 20px;
 }

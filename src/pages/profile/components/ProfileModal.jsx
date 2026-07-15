@@ -2,22 +2,27 @@ import { useContext, useRef, useState } from "react"
 import { Link } from "react-router"
 import { X, UserRound, User, Camera, AtSign, ExternalLink, Plus } from "lucide-react"
 import { nanoid } from "nanoid"
+import { TailSpin } from "react-loader-spinner"
 import { createPortal } from "react-dom"
 import { UserContext } from "../../../App"
-import { uploadImageToFirebase, downloadImageFromFirebase } from "../../../utils/firebase/storage"
+import { uploadImageToFirebase, downloadImageFromFirebase, deleteImageFromFirebase } from "../../../utils/firebase/storage"
+import { overwriteFirebaseDoc } from "../../../utils/firebase/firestore"
 
 import Combobox from "../../../components/fields/Combobox"
 
 export default function ProfileModal({isModalOpen, setIsModalOpen}) {
 
-    const { user, profile, profilePic, setProfilePic, gallery, setGallery, locations } = useContext(UserContext)
+    const { user, profile, setProfile, profilePic, setProfilePic, gallery, setGallery, locations } = useContext(UserContext)
     const profilePicRef = useRef(null)
     const galleryPicRef = useRef(null)
 
     const [updatedProfile, setUpdatedProfile] = useState(profile)
     const [updatedProfilePic, setUpdatedProfilePic] = useState(profilePic)
+    const [updatedProfilePicFile, setUpdatedProfilePicFile] = useState(null)
     const [updatedGallery, setUpdatedGallery] = useState(gallery)
+
     const [locationCount, setLocationCount] = useState(profile.locations.length)
+    const [isLoading, setIsLoading] = useState(false)
     
     const igPreview = `instagram.com/${updatedProfile.instagram}`
 
@@ -58,6 +63,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
 
         const preview = URL.createObjectURL(file)
         setUpdatedProfilePic(preview)
+        setUpdatedProfilePicFile(file)
     }
     
     function deleteFromGallery(id) {
@@ -73,11 +79,68 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
         if (!file) return
 
         const preview = URL.createObjectURL(file)
-        setUpdatedGallery(prev => [{image: preview, id: itemId}, ...prev])
+        setUpdatedGallery(prev => [{image: preview, file, id: itemId}, ...prev])
     }
 
-    function updateUserProfile(event) {
+    async function updateUserProfile(event) {
         event.preventDefault()
+        setIsLoading(true)
+        try {
+            if (profilePic !== updatedProfilePic) {
+                await uploadImageToFirebase(updatedProfilePicFile, `users/${user.uid}/profile.webp`)
+                const picUrl = await downloadImageFromFirebase(`users/${user.uid}/profile.webp`)
+                setProfilePic(picUrl)
+                setProfile(prev => ({...prev, hasProfilePicture: true}))
+            }
+        } catch (error) {
+            console.error(error.message)
+        }
+        try {
+            if (JSON.stringify(profile) !== JSON.stringify(updatedProfile)) {
+                await overwriteFirebaseDoc("profiles", user.uid, updatedProfile)
+                setProfile(prev => ({...prev, ...updatedProfile}))
+            }
+        } catch (error) {
+            console.error(error.message)
+        }
+        try {
+            if (JSON.stringify(gallery) !== JSON.stringify(updatedGallery)) {
+                const oldIds = new Set(gallery.map(item => item.id))
+                const newIds = new Set(updatedGallery.map(item => item.id))
+
+                const deletedItems = gallery.filter(item => !newIds.has(item.id))
+                const addedItems = updatedGallery.filter(item => !oldIds.has(item.id))
+
+                await Promise.all(
+                    deletedItems.map(item =>
+                        deleteImageFromFirebase(`users/${user.uid}/portfolio/${item.id}`)
+                    )
+                )
+
+                const uploadedItems = await Promise.all(
+                    addedItems.map(async item => {
+                        const path = `users/${user.uid}/portfolio/${item.id}`
+                        await uploadImageToFirebase(item.file, path)
+                        const url = await downloadImageFromFirebase(path)
+                        return {id: item.id, image: url}
+                    })
+                )
+
+                const finalGallery = updatedGallery.map(item => {
+                    if (newIds.has(item.id) && oldIds.has(item.id)) {
+                        return gallery.find(img => img.id === item.id)
+                    }
+                    const uploaded = uploadedItems.find(img => img.id === item.id)
+                    return uploaded ?? item
+                })
+
+                setGallery(finalGallery)
+            }
+        } catch (error) {
+            console.error (error.message)
+        }
+        setIsLoading(false)
+        setIsModalOpen(false)
     }
 
     if (!isModalOpen) return
@@ -232,7 +295,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                         type="submit"
                         className="listing-modal_create-btn"
                     >
-                        Save changes
+                        {isLoading ? <TailSpin width="32" height="32" color="var(--text-muted)"/>  : "Save changes"}
                     </button>
                 </form>
             </>,
