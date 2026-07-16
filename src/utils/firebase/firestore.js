@@ -56,3 +56,12 @@ export async function getFirebaseDoc(myCollection, documentId) {
         return undefined
     }
 }
+
+export async function queryCollectionFromFirebase(myCollection, queryThis, queryThat) {
+    const q = query(collection(db, myCollection), where(queryThis, "==", queryThat))
+
+    const querySnapshot = await getDocs(q)
+    const queryData = querySnapshot.docs.map(item => ({id: item.id, ...item.data()}))
+
+    return queryData
+}

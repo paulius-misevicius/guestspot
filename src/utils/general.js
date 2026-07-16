@@ -1,7 +1,36 @@
+import { format } from "date-fns"
+
 export function toEnglishChars(string) {
     return string
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
+}
+
+export function translateDates(dateFrom, dateTo) {
+
+    const fromDay = format(dateFrom, "d")
+    const fromMonth = format(dateFrom, "MMM")
+    const fromYear = format(dateFrom, "yyyy")
+
+    const toDay = format(dateTo, "d")
+    const toMonth = format(dateTo, "MMM")
+    const toYear = format(dateTo, "yyyy")
+
+    let dateRange
+    if (fromYear !== toYear) {
+        dateRange = `${fromMonth} ${fromDay}, ${fromYear} - ${toMonth} ${toDay}, ${toYear}`
+    }
+    if (fromYear === toYear) {
+        dateRange = `${fromMonth} ${fromDay} - ${toMonth} ${toDay}, ${fromYear}`
+    }
+    if (fromMonth === toMonth && fromYear === toYear) {
+        dateRange = `${fromMonth} ${fromDay} - ${toDay}, ${fromYear}`
+    }
+    if (fromDay === toDay && fromMonth === toMonth && fromYear === toYear) {
+        dateRange = `${fromMonth} ${fromDay}, ${fromYear}`
+    }
+
+    return dateRange
 }
 
 export function checkErrorMessage(error) {

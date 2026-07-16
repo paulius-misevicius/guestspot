@@ -1,30 +1,11 @@
 import { format } from "date-fns"
 import { Trash2 } from "lucide-react"
 import { deleteFromFirebase } from "../../../utils/firebase/firestore"
+import { translateDates } from "../../../utils/general"
 
 export default function Listing({id, city, country, dateFrom, dateTo}) {
 
-  const fromDay = format(dateFrom, "d")
-  const fromMonth = format(dateFrom, "MMM")
-  const fromYear = format(dateFrom, "yyyy")
-
-  const toDay = format(dateTo, "d")
-  const toMonth = format(dateTo, "MMM")
-  const toYear = format(dateTo, "yyyy")
-
-  let dateRange
-  if (fromYear !== toYear) {
-      dateRange = `${fromMonth} ${fromDay}, ${fromYear} - ${toMonth} ${toDay}, ${toYear}`
-  }
-  if (fromYear === toYear) {
-      dateRange = `${fromMonth} ${fromDay} - ${toMonth} ${toDay}, ${fromYear}`
-  }
-  if (fromMonth === toMonth && fromYear === toYear) {
-      dateRange = `${fromMonth} ${fromDay} - ${toDay}, ${fromYear}`
-  }
-  if (fromDay === toDay && fromMonth === toMonth && fromYear === toYear) {
-      dateRange = `${fromMonth} ${fromDay}, ${fromYear}`
-  }
+  const dateRange = translateDates(dateFrom, dateTo)
 
   return (
       <div className="listing">

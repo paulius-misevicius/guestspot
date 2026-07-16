@@ -32,8 +32,16 @@ export default function ProfilePic({setProfile, profilePic, setProfilePic, profi
 
     return (
             <div>
-                <h1>Add a profile picture or a logo</h1>
-                <p>This is the first thing studios see. Make sure to leave a good first impression!</p>
+                <h1>{profile.type === "artist" 
+                        ? "Add a profile picture or a logo"
+                        : "Add your studio logo"
+                        }
+                </h1>
+                <p>{profile.type === "artist" 
+                        ? "This is the first thing studios see. Make sure to leave a good first impression!"
+                        : "This is the first thing artists see. Make sure they can recognize your studio right away!"
+                        }
+                </p>
                 <label>Profile pic</label>
                 <input 
                     ref={fileInputRef}

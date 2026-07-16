@@ -15,7 +15,7 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
     const [listingData, setListingData] = useState({})
     const [locations, setLocations] = useState([])
     const [error, setError] = useState(null)
-    const { user } = useContext(UserContext)
+    const { user, profile } = useContext(UserContext)
     
     useEffect(() => {
         getCollectionFromFirebase("locations")
@@ -30,7 +30,7 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
             return
         }
         setError(null)
-        addToFirebase("listings", {...listingData, createdAt: serverTimestamp(), userId: user.uid})
+        addToFirebase("listings", {...listingData, createdAt: serverTimestamp(), userId: user.uid, type: profile.type})
         setIsModalOpen(false)
     }
 

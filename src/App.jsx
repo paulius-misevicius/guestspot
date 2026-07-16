@@ -53,9 +53,10 @@ export default function App() {
       setIsAuthLoading(false)
       
       try {
-          if (!profileData.hasProfilePicture) return
-          const profilePicUrl = await downloadImageFromFirebase(`users/${user.uid}/profile.webp`)
-          setProfilePic(profilePicUrl)
+          if (profileData.hasProfilePicture) {
+            const profilePicUrl = await downloadImageFromFirebase(`users/${user.uid}/profile.webp`)
+            setProfilePic(profilePicUrl)
+          }
       } catch (error) {
           const translatedError = checkErrorMessage(error)
           console.error(translatedError)

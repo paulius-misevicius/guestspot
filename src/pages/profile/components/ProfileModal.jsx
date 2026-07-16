@@ -85,20 +85,21 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
     async function updateUserProfile(event) {
         event.preventDefault()
         setIsLoading(true)
+        let updatedFields = {}
+
         try {
             if (profilePic !== updatedProfilePic) {
                 await uploadImageToFirebase(updatedProfilePicFile, `users/${user.uid}/profile.webp`)
                 const picUrl = await downloadImageFromFirebase(`users/${user.uid}/profile.webp`)
-                setProfilePic(picUrl)
-                setProfile(prev => ({...prev, hasProfilePicture: true}))
+                updatedFields.profilePic = picUrl
+                updatedFields.hasProfilePicture = true
             }
         } catch (error) {
             console.error(error.message)
         }
         try {
             if (JSON.stringify(profile) !== JSON.stringify(updatedProfile)) {
-                await overwriteFirebaseDoc("profiles", user.uid, updatedProfile)
-                setProfile(prev => ({...prev, ...updatedProfile}))
+                updatedFields = {...updatedFields, ...updatedProfile}
             }
         } catch (error) {
             console.error(error.message)
@@ -134,11 +135,23 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                     return uploaded ?? item
                 })
 
-                setGallery(finalGallery)
+                updatedFields.gallery = finalGallery
             }
         } catch (error) {
             console.error (error.message)
         }
+
+        try {
+            if (Object.keys(updatedFields).length > 0) {
+                await overwriteFirebaseDoc("profiles", user.uid, {...profile, ...updatedFields})
+                setProfile(prev => ({...prev, ...updatedFields}))
+                if (updatedFields.profilePic) setProfilePic(updatedFields.profilePic)
+                if (updatedFields.gallery) setGallery(updatedFields.gallery)
+            }
+        } catch (error) {
+            console.error(error.message)
+        }
+        
         setIsLoading(false)
         setIsModalOpen(false)
     }
@@ -233,7 +246,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                     </div>
                     <div className="profile_modal_combobox">
                         {locationComboboxes}
-                        {profile.type === "studio" && (profile?.locations?.filter(Boolean).length ?? 0) >= locationCount && locationCount < 5 &&
+                        {profile.type === "studio" && updatedProfile.locations.filter(Boolean).length >= locationCount && locationCount < 5 &&
                             <button 
                                 className="onboarding_add-location-btn"
                                 type="button"
