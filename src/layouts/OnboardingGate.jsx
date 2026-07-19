@@ -23,7 +23,7 @@ export default function OnboardingGate() {
         return <Navigate to="/log-in"/>
     }
 
-    if (profile.isProfileCompleted) {
+    if (profile?.isProfileCompleted) {
         return <Navigate to="/" />
     }
 

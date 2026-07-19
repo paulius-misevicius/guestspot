@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, getDoc, query, orderBy, onSnapshot, doc, deleteDoc, where, setDoc } from "firebase/firestore"
+import { collection, addDoc, getDocs, getDoc, query, orderBy, onSnapshot, doc, startAfter, deleteDoc, where, setDoc, limit } from "firebase/firestore"
 import { db } from "./config"
 
 export async function addToFirebase(myCollection, myDocument) {
@@ -64,4 +64,25 @@ export async function queryCollectionFromFirebase(myCollection, queryThis, query
     const queryData = querySnapshot.docs.map(item => ({id: item.id, ...item.data()}))
 
     return queryData
+}
+
+export async function fetchBrowseListingsPage(userType, lastDoc, pageSize) {
+    const constraints = [
+        where("type", "==", userType),
+        orderBy("dateFrom"),
+        limit(pageSize)
+    ]
+
+    if (lastDoc) {
+        constraints.push(startAfter(lastDoc))
+    }
+
+    const q = query(collection(db, "listings"), ...constraints)
+    const snapshot = await getDocs(q)
+
+    const listings = snapshot.docs.map(item => ({id: item.id, ...item.data()}))
+    const newLastDoc = snapshot.docs[snapshot.docs.length - 1] ?? null
+    const hasMore = snapshot.docs.length === pageSize
+    
+    return { listings, newLastDoc, hasMore }
 }

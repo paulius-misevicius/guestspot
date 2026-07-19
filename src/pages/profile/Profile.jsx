@@ -17,7 +17,7 @@ export default function Profile() {
             document.body.style.overflow = '';
         }
         return () => { document.body.style.overflow = ''; };
-    }, [isModalOpen]);
+    }, [isModalOpen])
 
     return (
         <>
