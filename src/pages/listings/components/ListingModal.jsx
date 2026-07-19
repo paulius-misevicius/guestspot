@@ -1,4 +1,3 @@
-import { createPortal } from "react-dom"
 import { useState, useContext, useEffect } from "react"
 import { nanoid } from "nanoid"
 import { X } from "lucide-react"
@@ -8,9 +7,9 @@ import { getCollectionFromFirebase, addToFirebase } from "../../../utils/firebas
 
 import DatePicker from "./DatePicker"
 import Combobox from "../../../components/fields/Combobox"
+import Modal from "../../../components/Modal"
 
 export default function ListingModal({isModalOpen, setIsModalOpen}) {
-    
     
     const [listingData, setListingData] = useState({})
     const [locations, setLocations] = useState([])
@@ -36,27 +35,24 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
 
     if(!isModalOpen) return
     
-    return createPortal(
-        <>
-            <div className="content_overlay"/>
-            <form 
+    return (
+        <Modal>
+            <form
                 className="listing-modal"
-                onSubmit={createListing} 
+                onSubmit={createListing}
             >
                 <div className="listing-modal_header">
                     <h3>New listing</h3>
-                    <button 
-                        className="listing-modal_close-btn" 
+                    <button
+                        className="listing-modal_close-btn"
                         onClick={() => setIsModalOpen(false)}
                     >
                         <X className="icon-14px"/>
                     </button>
                 </div>
-
                 <Combobox data={listingData} setData={setListingData} itemList={locations} index={0} placeholder="I'm looking to guestspot in..."/>
                 <DatePicker setData={setListingData} />
-
-                <button 
+                <button
                     type="submit"
                     className="listing-modal_create-btn"
                 >
@@ -64,7 +60,6 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
                 </button>
                 {error && <p className="error-msg">{error}</p>}
             </form>
-        </>,
-        document.getElementById("portal")
+        </Modal>
     )
 }

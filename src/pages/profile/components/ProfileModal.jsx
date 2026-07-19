@@ -3,12 +3,12 @@ import { Link } from "react-router"
 import { X, UserRound, User, Camera, AtSign, ExternalLink, Plus } from "lucide-react"
 import { nanoid } from "nanoid"
 import { TailSpin } from "react-loader-spinner"
-import { createPortal } from "react-dom"
 import { UserContext } from "../../../App"
 import { uploadImageToFirebase, downloadImageFromFirebase, deleteImageFromFirebase } from "../../../utils/firebase/storage"
 import { overwriteFirebaseDoc } from "../../../utils/firebase/firestore"
 
 import Combobox from "../../../components/fields/Combobox"
+import Modal from "../../../components/Modal"
 
 export default function ProfileModal({isModalOpen, setIsModalOpen}) {
 
@@ -158,160 +158,158 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
 
     if (!isModalOpen) return
 
-    return createPortal(
-            <>
-                <div className="content_overlay"/>
-                <form 
-                    onSubmit={updateUserProfile}
-                    className="listing-modal profile_modal"
-                >
-                    <div className="profile_modal_header">
-                        <h3>Edit profile</h3>
+    return (
+        <Modal>
+            <form
+                onSubmit={updateUserProfile}
+                className="listing-modal profile_modal"
+            >
+                <div className="profile_modal_header">
+                    <h3>Edit profile</h3>
+                    <button
+                        type="button"
+                        className="listing-modal_close-btn"
+                        onClick={() => {
+                            setIsModalOpen(false)
+                        }}
+                    >
+                        <X className="icon-14px"/>
+                    </button>
+                </div>
+                <div className="profile_modal_picture">
+                    <div className="profile_modal-pic-container">
+                        <label className="sr-only">Profile pic</label>
+                        <input
+                            ref={profilePicRef}
+                            onChange={previewProfilePic}
+                            type="file"
+                            accept="image/png, image/jpeg, image/webp"
+                            style={{ display: "none" }}
+                        />
                         <button
+                            className="onboarding_profile profile_modal_pic-btn"
                             type="button"
-                            className="listing-modal_close-btn"
-                            onClick={() => {
-                                setIsModalOpen(false)
-                            }}
+                            onClick={() => profilePicRef.current.click()}
                         >
-                            <X className="icon-14px"/>
+                            {profilePic
+                                ? <img className="onboarding_profile-pic" src={updatedProfilePic} />
+                                : <UserRound className="onboarding_avatar-icon"/>
+                                }
+                            <Camera className="profile_pic-camera-icon"/>
                         </button>
                     </div>
-                    <div className="profile_modal_picture">
-                        <div className="profile_modal-pic-container">
-                            <label className="sr-only">Profile pic</label>
+                    <div>
+                        <h4>Profile photo</h4>
+                        <p>Click the icon to upload a new one.</p>
+                    </div>
+                </div>
+                <div className="profile_modal_name-instagram">
+                    <div className="auth_field">
+                        <label htmlFor="name">Name / pseudonym</label>
+                        <div className="input-container">
+                            <User className="input-icon icon-16px" />
                             <input
-                                ref={profilePicRef}
-                                onChange={previewProfilePic}
+                                value={updatedProfile.name}
+                                onChange={event => setUpdatedProfile(prev => ({...prev, name: event.target.value}))}
+                                name="name"
+                                id="name"
+                                type="text"
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <div className="auth_field">
+                            <label htmlFor="instagram">Instagram handle</label>
+                            <div className="input-container">
+                                <AtSign className="input-icon icon-14px" />
+                                <input
+                                    value={updatedProfile.instagram}
+                                    onChange={event => setUpdatedProfile(prev => ({...prev, instagram: event.target.value}))}
+                                    name="instagram"
+                                    id="instagram"
+                                    type="text"
+                                />
+                            </div>
+                        </div>
+                        <span className="ig-preview">
+                            <Link
+                                to={`https://${igPreview}`}
+                                target="_blank"
+                                className="profile_instagram"
+                            >
+                                <ExternalLink className="icon-14px"/>
+                                {igPreview}
+                            </Link>
+                        </span>
+                    </div>
+                </div>
+                <div className="profile_modal_combobox">
+                    {locationComboboxes}
+                    {profile.type === "studio" && updatedProfile.locations.filter(Boolean).length >= locationCount && locationCount < 5 &&
+                        <button
+                            className="onboarding_add-location-btn"
+                            type="button"
+                            onClick={() => setLocationCount(prev => prev + 1)}
+                        >
+                            Add another
+                        </button>
+                    }
+                </div>
+                <div className="profile_modal_bio">
+                    <label htmlFor="bio">Profile bio</label>
+                    <textarea
+                        className="bio_textarea"
+                        value={updatedProfile.bio}
+                        onChange={event => setUpdatedProfile(prev => ({...prev, bio: event.target.value}))}
+                        name="bio"
+                        id="bio"
+                        rows="5"
+                    />
+                </div>
+                <div className="profile_modal_portfolio">
+                    <div className="portfolio_label-count">
+                        <label>Portfolio</label>
+                    </div>
+                    <div className="input-gallery">
+                        <div className="input_gallery_item">
+                            <input
+                                disabled={gallery.length === 20}
+                                ref={galleryPicRef}
+                                onChange={addToGallery}
                                 type="file"
                                 accept="image/png, image/jpeg, image/webp"
                                 style={{ display: "none" }}
                             />
                             <button
-                                className="onboarding_profile profile_modal_pic-btn"
+                                className="input_gallery_add-btn modal_portfolio_image"
                                 type="button"
-                                onClick={() => profilePicRef.current.click()}
+                                onClick={() => galleryPicRef.current.click()}
                             >
-                                {profilePic
-                                    ? <img className="onboarding_profile-pic" src={updatedProfilePic} />
-                                    : <UserRound className="onboarding_avatar-icon"/>
-                                    }
-                                <Camera className="profile_pic-camera-icon"/>
+                            <Plus className="input_gallery_plus-icon"/>
                             </button>
                         </div>
-                        <div>
-                            <h4>Profile photo</h4>
-                            <p>Click the icon to upload a new one.</p>
-                        </div>
-                    </div>
-                    <div className="profile_modal_name-instagram">
-                        <div className="auth_field">
-                            <label htmlFor="name">Name / pseudonym</label>
-                            <div className="input-container">
-                                <User className="input-icon icon-16px" />
-                                <input 
-                                    value={updatedProfile.name}
-                                    onChange={event => setUpdatedProfile(prev => ({...prev, name: event.target.value}))} 
-                                    name="name"
-                                    id="name"
-                                    type="text" 
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <div className="auth_field">
-                                <label htmlFor="instagram">Instagram handle</label>
-                                <div className="input-container">
-                                    <AtSign className="input-icon icon-14px" />
-                                    <input 
-                                        value={updatedProfile.instagram}
-                                        onChange={event => setUpdatedProfile(prev => ({...prev, instagram: event.target.value}))} 
-                                        name="instagram"
-                                        id="instagram"
-                                        type="text" 
-                                    />
-                                </div>
-                            </div>
-                            <span className="ig-preview">
-                                <Link 
-                                    to={`https://${igPreview}`}
-                                    target="_blank"
-                                    className="profile_instagram"
-                                >
-                                    <ExternalLink className="icon-14px"/>
-                                    {igPreview}
-                                </Link>
-                            </span>
-                        </div>
-                    </div>
-                    <div className="profile_modal_combobox">
-                        {locationComboboxes}
-                        {profile.type === "studio" && updatedProfile.locations.filter(Boolean).length >= locationCount && locationCount < 5 &&
-                            <button 
-                                className="onboarding_add-location-btn"
-                                type="button"
-                                onClick={() => setLocationCount(prev => prev + 1)}
-                            >
-                                Add another
-                            </button>
-                        }
-                    </div>
-                    <div className="profile_modal_bio">
-                        <label htmlFor="bio">Profile bio</label>
-                        <textarea 
-                            className="bio_textarea"
-                            value={updatedProfile.bio}
-                            onChange={event => setUpdatedProfile(prev => ({...prev, bio: event.target.value}))} 
-                            name="bio"
-                            id="bio"
-                            rows="5"
-                        />
-                    </div>
-                    <div className="profile_modal_portfolio">
-                        <div className="portfolio_label-count">
-                            <label>Portfolio</label>
-                        </div>
-                        <div className="input-gallery">
-                            <div className="input_gallery_item">
-                                <input
-                                    disabled={gallery.length === 20}
-                                    ref={galleryPicRef}
-                                    onChange={addToGallery}
-                                    type="file"
-                                    accept="image/png, image/jpeg, image/webp"
-                                    style={{ display: "none" }}
-                                />
+                        {updatedGallery.map(item =>
+                            <div className="input_gallery_item" key={item.id}>
+                                <img className="input_gallery_image modal_portfolio_image" src={item.image} />
                                 <button
-                                    className="input_gallery_add-btn modal_portfolio_image"
+                                    onClick={() => deleteFromGallery(item.id)}
                                     type="button"
-                                    onClick={() => galleryPicRef.current.click()}
+                                    className="gallery_item_delete-btn"
                                 >
-                                <Plus className="input_gallery_plus-icon"/>
+                                    <X className="item_delete-btn_icon"/>
                                 </button>
                             </div>
-                            {updatedGallery.map(item => 
-                                <div className="input_gallery_item" key={item.id}>
-                                    <img className="input_gallery_image modal_portfolio_image" src={item.image} />
-                                    <button 
-                                        onClick={() => deleteFromGallery(item.id)} 
-                                        type="button" 
-                                        className="gallery_item_delete-btn"
-                                    >
-                                        <X className="item_delete-btn_icon"/>
-                                    </button>
-                                </div>
-                                )}
-                        </div>
-                        <span>{updatedGallery.length}/20</span>
+                            )}
                     </div>
-                    <button 
-                        type="submit"
-                        className="listing-modal_create-btn"
-                    >
-                        {isLoading ? <TailSpin width="32" height="32" color="var(--text-muted)"/>  : "Save changes"}
-                    </button>
-                </form>
-            </>,
-            document.getElementById("portal")
-        )
+                    <span>{updatedGallery.length}/20</span>
+                </div>
+                <button
+                    type="submit"
+                    className="listing-modal_create-btn"
+                >
+                    {isLoading ? <TailSpin width="32" height="32" color="var(--text-muted)"/>  : "Save changes"}
+                </button>
+            </form>
+        </Modal>
+    )
 }

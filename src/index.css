@@ -23,6 +23,8 @@
   --font-size-s: 0.875rem;
   --font-size-xs: 0.75rem;
   --font-size-xxs: 0.625rem;
+
+  --sidebar-width: 300px;
 }
 
 body {
@@ -134,7 +136,7 @@ main {
 }
 
 .sidebar {
-  width: 300px;
+  width: var(--sidebar-width);
   padding: 28px;
 }
 .sidebar_all {
@@ -178,7 +180,7 @@ main {
 
 .content {
   position: relative;
-  transform: translateZ(0);
+  /* transform: translateZ(0); */
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -192,7 +194,7 @@ main {
 .content_overlay {
   position: fixed;
   top: 0;
-  left: 0;
+  left: calc(0% + var(--sidebar-width));
   bottom: 0;
   right: 0;
   z-index: 100;
@@ -265,7 +267,7 @@ main {
   padding: 20px 28px;
   z-index: 100;
   top: 50dvh;
-  left: 50%;
+  left: calc(50% + var(--sidebar-width) / 2);
   transform: translate(-50%, -50%);
   border-radius: 20px;
 }
@@ -941,6 +943,78 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   height: 44px;
   width: 140px;
   border-radius: 12px;
+}
+.browse_modal {
+  justify-content: flex-start;
+  min-width: 500px;
+  min-height: 95dvh;
+}
+.browse_modal_header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.browse_modal_header-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+}
+.browse_modal_profile-details {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.browse_modal_profile-pic {
+  width: 60px;
+  border-radius: 99px;
+}
+.browse_modal_image-row {
+  display: flex;
+  overflow-x: scroll;
+  gap: 12px;
+}
+.browse_modal_image {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 4/5;
+  border-radius: 12px;
+  background-color: var(--surface-3);
+  margin-bottom: 16px;
+}
+.browse_modal_listing-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-top: 20px;
+}
+.browse_modal_listing-about {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.browse_modal_label {
+  font-weight: 500;
+  color: var(--text-muted)
+}
+.modal_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--surface-3);
+  width: 100%;
+  border-radius: 12px;
+  height: 44px;
+  margin-top: auto;
+  text-decoration: none;
+  color: var(--text-primary)
 }
 
 @media (max-width: 600px) {

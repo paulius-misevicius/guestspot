@@ -5,13 +5,26 @@ import { getFirebaseDoc, queryCollectionFromFirebase, fetchBrowseListingsPage } 
 import { translateDates } from "../../utils/general"
 import { TailSpin } from "react-loader-spinner"
 
+import BrowseModal from "./components/BrowseModal"
+
 export default function Browse() {
 
     const { user } = useContext(UserContext)
     const [browseListings, setBrowseListings] = useState([])
+    const [clickedListing, setClickedListing] = useState(null)
     const [lastDoc, setLastDoc] = useState(null)
     const [hasMore, setHasMore] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    useEffect(() => {
+        if (isModalOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; };
+    }, [isModalOpen])
 
     async function loadMoreListings() {
         if (isLoading || !hasMore) return
@@ -52,40 +65,49 @@ export default function Browse() {
     }, [])
 
     return (
-        <section className="browse_listings-section">
-            <div>
-                <h2>Browse listings</h2>
-                <p>Find guestspotting opportunities with tattoo studios around Europe.</p>
-            </div>
-            {browseListings.map(item => 
-                <div key={item.id} className="browse_listing">
-                    <div className="browse_listing_image-row">
-                        {item.galleryPreview.slice(0, 5).map(item => 
-                            <img key={item.id} src={item.image} className="browse_listing_image"/>
-                        )}
-                    </div>
-                    <div className="browse_listing_name-icon">
-                        <h3>{item.profile.name}</h3>
-                        <button className="browse_listing_chevron-btn">
-                            <ChevronRight />
-                        </button>
-                    </div>
-                    <p>{item.locations[0].city}, {item.locations[0].country}</p>
-                    <div className="browse_date-calendar">
-                        <CalendarDays className="icon-14px browse_calendar-icon"/>
-                        <span className="browse_listing_date-range">{item.dateRange}</span>
-                    </div>
+        <>
+            {isModalOpen && <BrowseModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} clickedListing={clickedListing}/>}
+            <section className="browse_listings-section">
+                <div>
+                    <h2>Browse listings</h2>
+                    <p>Find guestspotting opportunities with tattoo studios around Europe.</p>
                 </div>
-            )}
-            {hasMore &&
-                <button 
-                    className="browse_load-more-btn"
-                    onClick={loadMoreListings} 
-                    disabled={isLoading}
-                >
-                    {isLoading ? <TailSpin width="32" height="32" color="var(--text-muted)" /> : "Load more"}
-                </button>
-                }
-        </section>
+                {browseListings.map(item => 
+                    <div key={item.id} className="browse_listing">
+                        <div className="browse_listing_image-row">
+                            {item.galleryPreview.slice(0, 5).map(item => 
+                                <img key={item.id} src={item.image} className="browse_listing_image"/>
+                            )}
+                        </div>
+                        <div className="browse_listing_name-icon">
+                            <h3>{item.profile.name}</h3>
+                            <button 
+                                className="browse_listing_chevron-btn"
+                                onClick={() => {
+                                    setIsModalOpen(true)
+                                    setClickedListing(browseListings.find(listing => listing.id === item.id))
+                                }}
+                            >
+                                <ChevronRight />
+                            </button>
+                        </div>
+                        <p>{item.locations[0].city}, {item.locations[0].country}</p>
+                        <div className="browse_date-calendar">
+                            <CalendarDays className="icon-14px browse_calendar-icon"/>
+                            <span className="browse_listing_date-range">{item.dateRange}</span>
+                        </div>
+                    </div>
+                )}
+                {hasMore &&
+                    <button 
+                        className="browse_load-more-btn"
+                        onClick={loadMoreListings} 
+                        disabled={isLoading}
+                    >
+                        {isLoading ? <TailSpin width="32" height="32" color="var(--text-muted)" /> : "Load more"}
+                    </button>
+                    }
+            </section>
+        </>
     )
 }
