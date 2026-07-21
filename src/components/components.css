@@ -1,0 +1,125 @@
+.sidebar {
+    width: var(--sidebar-width);
+}
+.sidebar_content {
+    width: var(--sidebar-width);
+    position: fixed;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 16px;
+    background-color: var(--surface-1);
+    border-right: 1px solid var(--border);
+}
+
+.sidebar_nav {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.sidebar_nav_tab {
+    display: flex;
+    transition: background 0.1s ease;
+    gap: 8px;
+    align-items: center;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: var(--font-size-s);
+    color: var(--text-secondary);
+    padding: 12px 16px;
+    border-radius: 12px;
+}
+.sidebar_nav_tab:hover {
+    background-color: var(--tab-hover-color);
+    color: var(--text-primary);
+}
+.active {
+    background-color: var(--tab-active-color) !important;
+    color: var(--surface-1) !important;
+}
+
+.sidebar_profile {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background-color: var(--surface-2);
+    padding: 12px 44px 12px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-top: auto;
+}
+.profile_pic-preview {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+}
+.profile_user-email {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.profile_log-out-btn {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.profile_log-out-btn:hover {
+    color: var(--failure)
+}
+
+.combobox-wrapper {
+  position: relative;
+  width: 100%;
+}
+.combobox-wrapper ul {
+  margin-top: 8px;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  z-index: 10;
+}
+.combobox-wrapper li:first-of-type {
+  border-radius: 8px 8px 0px 0px;
+}
+.combobox-wrapper li:last-of-type {
+  border-radius: 0px 0px 8px 8px;
+  border: 1px solid var(--border);
+  margin-bottom: 0;
+}
+.combobox-wrapper li:only-of-type {
+  border-radius: 12px;
+  margin-bottom: 0;
+}
+.combobox-wrapper li {
+  position: relative;
+  list-style-type: none;
+  background-color: var(--surface-1);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  padding: 12px 36px;
+  font-size: var(--font-size-s);
+  cursor: pointer;
+}
+.combobox-wrapper .highlight-li {
+  border: 1px solid var(--border);
+  border-bottom: none;
+  background-color: var(--surface-2);
+}
+
+.combobox-city_country {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+.combobox-city_map-pin-icon {
+  position: absolute;
+  color: var(--text-muted);
+  width: 14px;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}

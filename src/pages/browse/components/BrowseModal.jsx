@@ -11,7 +11,7 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
 
     return (
         <Modal>
-            <div className="listing-modal browse_modal">
+            <div className="modal browse_modal">
                 <div className="browse_modal_header">
                     <button 
                         className="browse_modal_header-btn"

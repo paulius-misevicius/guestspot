@@ -21,13 +21,12 @@ export async function getCollectionFromFirebase(myCollection) {
 }
 
 export function getRealTimeCollectionFromFirebase(myCollection, onData, userId) {
-
     const q = query(collection(db, myCollection), where("userId", "==", userId), orderBy("createdAt", "desc"))
 
     return onSnapshot(q, querySnapshot => {
 
         const dataArray = querySnapshot.docs.map(item => {
-    
+            const now = new Date()
             const itemDateFrom = item.data().dateFrom
             const itemDateTo = item.data().dateTo
             
@@ -35,7 +34,8 @@ export function getRealTimeCollectionFromFirebase(myCollection, onData, userId) 
                 ...item.data(),
                 id: item.id, 
                 dateFrom: itemDateFrom.toDate(),
-                dateTo: itemDateTo.toDate()
+                dateTo: itemDateTo.toDate(),
+                isActive: itemDateTo.toDate() >= now
             }
         })
         onData(dataArray)

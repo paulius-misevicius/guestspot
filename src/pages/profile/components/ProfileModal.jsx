@@ -162,7 +162,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
         <Modal>
             <form
                 onSubmit={updateUserProfile}
-                className="listing-modal profile_modal"
+                className="modal profile_modal"
             >
                 <div className="profile_modal_header">
                     <h3>Edit profile</h3>

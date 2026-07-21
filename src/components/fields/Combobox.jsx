@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react"
 import { Search, X, MapPin } from "lucide-react"
 import { toEnglishChars } from "../../utils/general"
+import "../components.css"
 
-export default function Combobox({data, setData, itemList, noLabel, index, placeholder}) {
+export default function Combobox({data, setData, itemList, noLabel, index, placeholder, error, setError, classes}) {
 
     const containerRef = useRef(null)
     const commitTypedValueRef = useRef()
@@ -53,6 +54,7 @@ export default function Combobox({data, setData, itemList, noLabel, index, place
 
     function handleInputChange(event) {
         setInputValue(event.target.value)
+        setError(null)
         setIsComboboxOpen(true)
         setHighlightedIndex(-1)
         setData(prev => {
@@ -89,12 +91,12 @@ export default function Combobox({data, setData, itemList, noLabel, index, place
 
     return (
         <div 
-            className="listing-modal_city-field"
+            className={`combobox-wrapper ${classes ? classes : ""}`}
             ref={containerRef} 
         >
             <label htmlFor="city" className={noLabel ? "sr-only" : undefined}>City</label>
             <div className="input-container">
-                <Search className="input-icon icon-14px"/>
+                <Search className="input-icon icon-14px icon-stroke"/>
                 <input
                     role="combobox"
                     aria-expanded={showDropdown}
@@ -104,7 +106,7 @@ export default function Combobox({data, setData, itemList, noLabel, index, place
                         ? `city-option-${highlightedIndex}`
                         : undefined}
                     autoComplete="off"
-                    className="combobox-city"
+                    className={`combobox-city ${error && !data.locations?.[0]?.city ? "input_error" : ""}`}
                     placeholder={placeholder}
                     id="city"
                     name="city"

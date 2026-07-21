@@ -1,0 +1,21 @@
+.browse_header {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.browse_filters {
+    display: flex;
+    gap: 16px;
+    width: 50%;
+}
+.browse_filters input {
+    background-color: var(--surface-1);
+}
+.browse_filters_dates {
+    display: flex;
+    gap: 16px;
+}
+
+.browse_listing_image {
+    width: 200px;
+}
