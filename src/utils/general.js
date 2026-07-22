@@ -1,4 +1,5 @@
 import { format } from "date-fns"
+import imageCompression from "browser-image-compression"
 
 export function toEnglishChars(string) {
     return string
@@ -31,6 +32,16 @@ export function translateDates(dateFrom, dateTo) {
     }
 
     return dateRange
+}
+
+export async function resizeImage(file, maxRes) {
+
+  return imageCompression(file, {
+    maxWidthOrHeight: maxRes,
+    maxSizeMB: 1,
+    fileType: "image/webp",
+    useWebWorker: true,
+  })
 }
 
 export function checkErrorMessage(error) {

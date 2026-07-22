@@ -46,12 +46,12 @@ export default function Sidebar() {
                     </NavLink>
                 </nav>
                 <div className="sidebar_profile">
-                    {profile.profilePic
+                    {profile.profilePic?.small
                         ?
                             <ImageLoader
                                 imgClass="profile_pic-preview"
                                 border
-                                src={profile.profilePic}
+                                src={profile.profilePic.small}
                             />
                         :
                             <div className="profile_pic-preview profile_pic-placeholder">

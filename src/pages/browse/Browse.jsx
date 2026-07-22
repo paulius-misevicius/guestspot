@@ -7,6 +7,7 @@ import { TailSpin } from "react-loader-spinner"
 import "./browse.css"
 
 import BrowseModal from "./components/BrowseModal"
+import BrowseListing from "./components/BrowseListing"
 import Combobox from "../../components/fields/Combobox"
 import DatePicker from "../../components/fields/DatePicker"
 import ImageLoader from "../../components/ImageLoader"
@@ -89,14 +90,6 @@ export default function Browse() {
         return () => observer.disconnect()
     }, [lastDoc, hasMore, isLoading])
 
-    function padGallery(images, count) {
-        const padded = [...images]
-        while (padded.length < count) {
-            padded.push({id: `placeholder-${padded.length}`, isPlaceholder: true})
-        }
-        return padded
-    }
-    console.log(filter)
     return (
         <>
             {isModalOpen && <BrowseModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} clickedListing={clickedListing}/>}
@@ -196,42 +189,15 @@ export default function Browse() {
                 ?
                     <section className="browse_listings">
                         {browseListings.map(item =>
-                            <button 
-                                className="browse_listing"
-                                onClick={() => {
-                                    setIsModalOpen(true)
-                                    setClickedListing(browseListings.find(listing => listing.id === item.id))
-                                }}
-                                key={item.id} 
-                            >
-                                <div className="listing_image-grid">
-                                    {padGallery(item.galleryPreview.slice(0, 3), 3).map(img =>
-                                        img.isPlaceholder 
-                                            ?
-                                                <div key={img.id} className="browse_listing_placeholder">
-                                                    <CameraOff className="placeholder-img_icon"/>
-                                                </div>
-                                            :
-                                                <ImageLoader key={img.id} src={img.image} className="browse_listing_image"/>         
-                                        )}
-                                </div>
-                                <div className="listing_details">
-                                    <div className="listing_name">
-                                        <h3>{item.profile.name}</h3>
-                                        <ChevronRight className="listing_details_btn-icon icon-stroke"/>
-                                    </div>
-                                    <div className="listing_details_fields">
-                                        <div className="listing_details_field">
-                                            <MapPin className="icon-16px icon-stroke-2" />
-                                            <p>{item.locations[0].city}, {item.locations[0].country}</p>
-                                        </div>
-                                        <div className="listing_details_field">
-                                            <CalendarDays className="icon-16px"/>
-                                            <p className="browse_listing_date-range">{item.dateRange}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </button>
+                            <BrowseListing 
+                                key={item.id}
+                                setIsModalOpen={setIsModalOpen} 
+                                setClickedListing={() => setClickedListing(browseListings.find(listing => listing.id === item.id))}
+                                gallery={item.galleryPreview.slice(0, 3)}
+                                name={item.profile.name}
+                                location={`${item.locations[0].city}, ${item.locations[0].country}`}
+                                dateRange={item.dateRange}
+                            />
                         )}
                     </section>
                 :

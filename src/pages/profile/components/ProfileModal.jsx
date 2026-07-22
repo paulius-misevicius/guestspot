@@ -4,11 +4,12 @@ import { X, UserRound, User, Camera, AtSign, ExternalLink, Plus } from "lucide-r
 import { nanoid } from "nanoid"
 import { TailSpin } from "react-loader-spinner"
 import { UserContext } from "../../../App"
-import { uploadImageToFirebase, downloadImageFromFirebase, deleteImageFromFirebase } from "../../../utils/firebase/storage"
+import { uploadImageToFirebase, downloadImageFromFirebase, deleteImageFromFirebase, deleteFolderFromFirebase } from "../../../utils/firebase/storage"
 import { overwriteFirebaseDoc } from "../../../utils/firebase/firestore"
 
 import Combobox from "../../../components/fields/Combobox"
 import Modal from "../../../components/Modal"
+import ImageLoader from "../../../components/ImageLoader"
 
 export default function ProfileModal({isModalOpen, setIsModalOpen}) {
 
@@ -17,9 +18,9 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
     const galleryPicRef = useRef(null)
 
     const [updatedProfile, setUpdatedProfile] = useState(profile)
-    const [updatedProfilePic, setUpdatedProfilePic] = useState(profilePic)
+    const [updatedProfilePic, setUpdatedProfilePic] = useState(profile?.profilePic?.small)
     const [updatedProfilePicFile, setUpdatedProfilePicFile] = useState(null)
-    const [updatedGallery, setUpdatedGallery] = useState(gallery)
+    const [updatedGallery, setUpdatedGallery] = useState(profile?.gallery ?? [])
 
     const [locationCount, setLocationCount] = useState(profile.locations.length)
     const [isLoading, setIsLoading] = useState(false)
@@ -79,7 +80,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
         if (!file) return
 
         const preview = URL.createObjectURL(file)
-        setUpdatedGallery(prev => [{image: preview, file, id: itemId}, ...prev])
+        setUpdatedGallery(prev => [{image: {small: preview}, file, id: itemId}, ...prev])
     }
 
     async function updateUserProfile(event) {
@@ -88,10 +89,10 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
         let updatedFields = {}
 
         try {
-            if (profilePic !== updatedProfilePic) {
-                await uploadImageToFirebase(updatedProfilePicFile, `users/${user.uid}/profile.webp`)
-                const picUrl = await downloadImageFromFirebase(`users/${user.uid}/profile.webp`)
-                updatedFields.profilePic = picUrl
+            if (profile?.profilePic?.small !== updatedProfilePic) {
+                await uploadImageToFirebase(updatedProfilePicFile, `users/${user.uid}/profile`)
+                const [thumb, small, large] = await downloadImageFromFirebase(`users/${user.uid}/profile`)
+                updatedFields.profilePic = {thumb: thumb, small: small, large: large}
                 updatedFields.hasProfilePicture = true
             }
         } catch (error) {
@@ -105,16 +106,18 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
             console.error(error.message)
         }
         try {
-            if (JSON.stringify(gallery) !== JSON.stringify(updatedGallery)) {
-                const oldIds = new Set(gallery.map(item => item.id))
+            if (JSON.stringify(profile.gallery) !== JSON.stringify(updatedGallery)) {
+                const oldGallery = profile?.gallery ?? []
+
+                const oldIds = new Set(oldGallery.map(item => item.id) ?? [])
                 const newIds = new Set(updatedGallery.map(item => item.id))
 
-                const deletedItems = gallery.filter(item => !newIds.has(item.id))
+                const deletedItems = oldGallery.filter(item => !newIds.has(item.id))
                 const addedItems = updatedGallery.filter(item => !oldIds.has(item.id))
 
                 await Promise.all(
                     deletedItems.map(item =>
-                        deleteImageFromFirebase(`users/${user.uid}/portfolio/${item.id}`)
+                        deleteFolderFromFirebase(`users/${user.uid}/portfolio/${item.id}`)
                     )
                 )
 
@@ -122,14 +125,14 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                     addedItems.map(async item => {
                         const path = `users/${user.uid}/portfolio/${item.id}`
                         await uploadImageToFirebase(item.file, path)
-                        const url = await downloadImageFromFirebase(path)
-                        return {id: item.id, image: url}
+                        const [thumb, small, large] = await downloadImageFromFirebase(path)
+                        return {id: item.id, image: {thumb: thumb, small: small, large: large}}
                     })
                 )
 
                 const finalGallery = updatedGallery.map(item => {
                     if (newIds.has(item.id) && oldIds.has(item.id)) {
-                        return gallery.find(img => img.id === item.id)
+                        return oldGallery.find(img => img.id === item.id)
                     }
                     const uploaded = uploadedItems.find(img => img.id === item.id)
                     return uploaded ?? item
@@ -138,7 +141,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                 updatedFields.gallery = finalGallery
             }
         } catch (error) {
-            console.error (error.message)
+            console.error(error.message)
         }
 
         try {
@@ -191,8 +194,8 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                             type="button"
                             onClick={() => profilePicRef.current.click()}
                         >
-                            {profilePic
-                                ? <img className="onboarding_profile-pic" src={updatedProfilePic} />
+                            {updatedProfilePic
+                                ? <ImageLoader className="onboarding_profile-pic" src={updatedProfilePic} />
                                 : <UserRound className="onboarding_avatar-icon"/>
                                 }
                             <Camera className="profile_pic-camera-icon"/>
@@ -290,7 +293,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                         </div>
                         {updatedGallery.map(item =>
                             <div className="input_gallery_item" key={item.id}>
-                                <img className="input_gallery_image modal_portfolio_image" src={item.image} />
+                                <ImageLoader className="input_gallery_image modal_portfolio_image" src={item.image.small} />
                                 <button
                                     onClick={() => deleteFromGallery(item.id)}
                                     type="button"

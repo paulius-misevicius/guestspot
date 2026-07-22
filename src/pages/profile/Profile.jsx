@@ -4,6 +4,7 @@ import { UserContext } from "../../App"
 import { uploadImageToFirebase, downloadImageFromFirebase } from "../../utils/firebase/storage"
 import { Link } from "react-router"
 import ProfileModal from "./components/ProfileModal"
+import ImageLoader from "../../components/ImageLoader"
 
 export default function Profile() {
 
@@ -43,8 +44,8 @@ export default function Profile() {
                             className="onboarding_profile profile_profile-pic"
                             type="button"
                         >
-                            {profilePic
-                                ? <img className="onboarding_profile-pic" src={profilePic} />
+                            {profile.profilePic
+                                ? <ImageLoader className="onboarding_profile-pic" src={profile.profilePic.small} />
                                 : <UserRound className="onboarding_avatar-icon"/>
                                 }
                         </button>
@@ -59,9 +60,9 @@ export default function Profile() {
                 </div>
             </section>
             <section className="profile_gallery">
-                {gallery.map(item => 
+                {profile?.gallery && profile.gallery.map(item => 
                     <div className="input_gallery_item" key={item.id}>
-                        <img className="input_gallery_image" src={item.image} />
+                        <ImageLoader className="input_gallery_image" src={item.image.small} />
                     </div>
                     )}
             </section>

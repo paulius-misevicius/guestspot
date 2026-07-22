@@ -1,0 +1,51 @@
+import { ChevronRight, CameraOff, MapPin, CalendarDays } from "lucide-react"
+import ImageLoader from "../../../components/ImageLoader"
+
+export default function BrowseListing({setIsModalOpen, setClickedListing, gallery, name, location, dateRange}) {
+
+    function padGallery(images, count) {
+        const padded = [...images]
+        while (padded.length < count) {
+            padded.push({id: `placeholder-${padded.length}`, isPlaceholder: true})
+        }
+        return padded
+    }
+
+    return (
+        <button 
+            className="browse_listing"
+            onClick={() => {
+                setIsModalOpen(true)
+                setClickedListing()
+            }}
+        >
+            <div className="listing_image-grid">
+                {padGallery(gallery, 3).map(img =>
+                    img.isPlaceholder 
+                        ?
+                            <div key={img.id} className="browse_listing_placeholder">
+                                <CameraOff className="placeholder-img_icon"/>
+                            </div>
+                        :
+                            <ImageLoader key={img.id} src={img.image.small} className="browse_listing_image"/>         
+                    )}
+            </div>
+            <div className="listing_details">
+                <div className="listing_name">
+                    <h3>{name}</h3>
+                    <ChevronRight className="listing_details_btn-icon icon-stroke"/>
+                </div>
+                <div className="listing_details_fields">
+                    <div className="listing_details_field">
+                        <MapPin className="icon-16px icon-stroke-2" />
+                        <p>{location}</p>
+                    </div>
+                    <div className="listing_details_field">
+                        <CalendarDays className="icon-16px"/>
+                        <p className="browse_listing_date-range">{dateRange}</p>
+                    </div>
+                </div>
+            </div>
+        </button>
+    )
+}

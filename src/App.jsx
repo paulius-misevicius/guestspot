@@ -54,8 +54,8 @@ export default function App() {
       
       try {
           if (profileData.hasProfilePicture) {
-            const profilePicUrl = await downloadImageFromFirebase(`users/${user.uid}/profile.webp`)
-            setProfilePic(profilePicUrl)
+            const [thumb, small, large] = await downloadImageFromFirebase(`users/${user.uid}/profile`)
+            setProfilePic({thumb: thumb, small: small, large: large})
           }
       } catch (error) {
           const translatedError = checkErrorMessage(error)
