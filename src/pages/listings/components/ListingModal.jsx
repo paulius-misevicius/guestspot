@@ -25,23 +25,26 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
     function createListing(event) {
         event.preventDefault()
         
-        if (!listingData.locations?.[0]?.city || listingData.dateFrom === undefined) {
+        if (!listingData.locations?.[0]?.city || listingData.from === undefined) {
             setError("Please fill out the required fields!")
             return
         }
         setError(null)
+        const { from, to, ...rest } = listingData
         addToFirebase("listings", 
             {
-                ...listingData, 
+                ...rest, 
                 createdAt: serverTimestamp(), 
                 userId: user.uid, 
-                type: profile.type
+                type: profile.type,
+                dateFrom: from,
+                dateTo: to
             }
         )
         setListingData({})
         setIsModalOpen(false)
     }
-
+    console.log(listingData)
     if(!isModalOpen) return
     
     return (
@@ -74,8 +77,8 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
                         placeholder="I'm looking to guestspot in..."
                     />
                     <DatePicker 
-                        data={listingData}
-                        setData={setListingData}
+                        selected={listingData}
+                        setSelected={setListingData}
                         error={error}
                         setError={setError} 
                         mode="range"

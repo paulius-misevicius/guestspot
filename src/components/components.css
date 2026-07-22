@@ -1,9 +1,17 @@
+
+/* Sidebar */
+
 .sidebar {
     width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    flex-shrink: 0;
 }
 .sidebar_content {
     width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
     position: fixed;
+    left: 0;
+    top: 0;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -28,7 +36,7 @@
     font-size: var(--font-size-s);
     color: var(--text-secondary);
     padding: 12px 16px;
-    border-radius: 12px;
+    border-radius: 8px;
 }
 .sidebar_nav_tab:hover {
     background-color: var(--tab-hover-color);
@@ -46,16 +54,29 @@
     align-items: center;
     background-color: var(--surface-2);
     padding: 12px 44px 12px 12px;
-    border-radius: 12px;
+    border-radius: 8px;
     border: 1px solid var(--border);
     color: var(--text-secondary);
     font-weight: 500;
     margin-top: auto;
 }
-.profile_pic-preview {
+.sidebar_profile .profile_pic-preview {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
+}
+.profile_pic-placeholder {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.profile_pic-placeholder_icon {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  width: 80%;
+  height: 80%;
 }
 .profile_user-email {
     white-space: nowrap;
@@ -71,6 +92,8 @@
 .profile_log-out-btn:hover {
     color: var(--failure)
 }
+
+/* Combobox */
 
 .combobox-wrapper {
   position: relative;
@@ -122,4 +145,202 @@
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
+}
+
+/* DatePicker */
+
+.date-picker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.date-picker_date-fields {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.date-fields_arrow-icon {
+  color: var(--text-muted);
+  width: 20px;
+}
+.icon_margin {
+  margin-bottom: -24px;
+}
+.date-picker_date-field {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+.date-picker_date-field input {
+  cursor: pointer;
+}
+.date-picker_date-field > p {
+  color: var(--text-primary);
+  text-wrap: nowrap;
+}
+
+.date-picker .date-picker_modal {
+  position: absolute;
+  top: 120%;
+  right: 0%;
+  background-color: var(--surface-1);
+}
+
+.date-picker .rdp-root {
+  --rdp-accent-color: var(--text-primary);
+  --rdp-range_start-color: var(--surface-2);
+  --rdp-range_middle-background-color: var(--surface-2);
+  --rdp-day_button-height: 40px;
+  --rdp-day-height: 40px;
+  --rdp-disabled-opacity: 0.25;
+  --rdp-outside-opacity: 0.65;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 100%;
+  --rdp-day_button-width: 100%;
+  --rdp-day-width: 100%;
+  --rdp-nav-height: 60px;
+  --rdp-nav_button-width: 60px;
+  --rdp-nav-height: 56px;
+}
+.date-picker .rdp-month .rdp-button_previous,
+.date-picker .rdp-month .rdp-month_caption,
+.date-picker .rdp-month .rdp-button_next {
+  border-bottom: 1px solid var(--border);
+  opacity: 1;
+}
+.date-picker .rdp-month .rdp-button_previous,
+.date-picker .rdp-month .rdp-button_next {
+  color: var(--text-muted);
+  cursor: default;
+}
+.date-picker .rdp-month .rdp-chevron {
+  margin-left: auto;
+  margin-right: auto;
+  background-color: var(--surface-2);
+  color: var(--text-muted);
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  padding: 6px;
+  cursor: pointer;
+}
+.date-picker .rdp-chevron {
+  fill: var(--text-muted);
+  width: 20px;
+}
+.date-picker .rdp-chevron:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+.rdp-months,
+.rdp-month,
+.rdp-month_grid {
+  width: 100%;
+}
+.rdp-month_grid {
+  table-layout: fixed;
+  padding: 4px 12px;
+}
+.rdp-caption_label {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.rdp-weekday {
+  color: var(--text-secondary);
+}
+.date-picker .rdp-day_button {
+  font-size: var(--font-size-s);
+  font-weight: 400;
+  border-radius: 12px;
+}
+.date-picker .rdp-selected button{
+  transition: unset;
+}
+.date-picker .rdp-day_button:hover {
+  border-radius: 12px;
+  font-weight: 500;
+  background-color: var(--border);
+}
+.rdp-range_start .rdp-day_button,
+.rdp-range_end .rdp-day_button {
+  border-radius: 12px;
+  font-weight: 500;
+}
+.rdp-range_start .rdp-day_button:hover,
+.rdp-range_end .rdp-day_button:hover {
+  background-color: var(--text-primary);
+}
+.rdp-range_middle .rdp-day_button:hover {
+  background-color: var(--border);
+  border-radius: 0;
+}
+.rdp-range_middle:first-child {
+  border-radius: 12px 0px 0px 12px;
+}
+.rdp-range_middle:last-child {
+  border-radius: 0px 12px 12px 0px;
+}
+.rdp-month table {
+  border-collapse: separate;
+  border-spacing: 0px 8px;
+}
+.date-picker .rdp-weekday {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+.date-filter .rdp-day_button {
+  border-radius: 12px;
+}
+.date-filter .rdp-selected .rdp-day_button {
+  background-color: var(--text-primary);
+  color: var(--bg-color);
+  font-weight: 500;
+}
+
+/* ImageLoader */
+
+.lazy-image-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 100%; */
+  height: 100%;
+}
+.lazy-image-skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 25%,
+    var(--text-muted) 50%,
+    var(--surface-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+  border-radius: inherit;
+}
+.lazy-image-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.2s ease;
+}
+.border-class {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

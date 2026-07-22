@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, getDoc, query, orderBy, onSnapshot, doc, startAfter, deleteDoc, where, setDoc, limit } from "firebase/firestore"
+import { collection, addDoc, getDocs, getDoc, query, orderBy, onSnapshot, doc, startAfter, deleteDoc, where, setDoc, limit, Timestamp } from "firebase/firestore"
 import { db } from "./config"
 
 export async function addToFirebase(myCollection, myDocument) {
@@ -66,12 +66,22 @@ export async function queryCollectionFromFirebase(myCollection, queryThis, query
     return queryData
 }
 
-export async function fetchBrowseListingsPage(userType, lastDoc, pageSize) {
+export async function fetchBrowseListingsPage(userType, lastDoc, pageSize, location, dateFrom, dateTo) {
     const constraints = [
         where("type", "==", userType),
         orderBy("dateFrom"),
         limit(pageSize)
     ]
+
+    if (location && location.length > 0) {
+        constraints.push(where("locations", "array-contains", { city: location[0].city, country: location[0].country }))
+    }
+    if (dateFrom) {
+        constraints.push(where("dateTo", ">=", Timestamp.fromDate(dateFrom)))
+    }
+    if (dateTo) {
+        constraints.push(where("dateFrom", "<=", Timestamp.fromDate(dateTo)))
+    }
 
     if (lastDoc) {
         constraints.push(startAfter(lastDoc))

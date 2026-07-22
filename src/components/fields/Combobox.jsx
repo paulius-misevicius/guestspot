@@ -3,7 +3,7 @@ import { Search, X, MapPin } from "lucide-react"
 import { toEnglishChars } from "../../utils/general"
 import "../components.css"
 
-export default function Combobox({data, setData, itemList, noLabel, index, placeholder, error, setError, classes}) {
+export default function Combobox({data, setData, itemList, noLabel, index, setIndex, placeholder, error, setError, classes, resetSignal = undefined}) {
 
     const containerRef = useRef(null)
     const commitTypedValueRef = useRef()
@@ -52,9 +52,16 @@ export default function Combobox({data, setData, itemList, noLabel, index, place
         return () => document.removeEventListener("mousedown", handleClickOutside)
     }, [])
 
+    useEffect(() => {
+        if (resetSignal === undefined) return
+        setInputValue("")
+        setIsComboboxOpen(false)
+        setHighlightedIndex(-1)
+    }, [resetSignal])
+
     function handleInputChange(event) {
         setInputValue(event.target.value)
-        setError(null)
+        if (error) setError(null)
         setIsComboboxOpen(true)
         setHighlightedIndex(-1)
         setData(prev => {

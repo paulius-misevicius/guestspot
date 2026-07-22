@@ -1,21 +1,201 @@
 .browse_header {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 28px;
+}
+.browse_filter-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 28px;
+    margin-bottom: 12px;
 }
 .browse_filters {
     display: flex;
+    flex-wrap: nowrap;
+    flex: 1 1 768px;
+    max-width: 700px;
     gap: 16px;
-    width: 50%;
 }
 .browse_filters input {
     background-color: var(--surface-1);
 }
-.browse_filters_dates {
+.browse_filters input:focus {
+    background-color: var(--surface-2);
+}
+.browse_filter {
+    flex: 1 1 325px;
+}
+.browse_filter .date-picker_date-fields {
+    margin: unset;
+}
+.browse_filter_buttons {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 12px;
+    flex: 0 0 200px;
+}
+.browse_filter_buttons > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.filter-btn {
+    flex: 1;
+    padding-block: 12px;
+}
+.filter-reset-btn {
+    width: 44px;
+    background-color: var(--surface-2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+}
+.filter-btn:hover {
+    background: var(--btn-hover-color);
+}
+.filter-reset-btn:hover {
+    background: var(--tab-hover-color);
+    color: var(--text-secondary)
+}
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.filter-pill {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    background-color: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text-muted);
+}
+.filter-pill:hover {
+    background-color: var(--tab-hover-color);
+}
+.filter-pill:hover .filter-pill_clear-icon {
+    color: var(--failure);
+}
+.filter-pill_clear-icon {
+    transition: color 0.1s ease;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 2px;
+}
+
+.browse_listings {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+}
+.browse_listings_loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 12px;
+}
+.browse_listing {
+    overflow: hidden;
+    background-color: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: box-shadow 0.1s ease;
+}
+.listing_image-grid {
+    display: grid;
+    gap: 1.5px;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.browse_listing_image {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}
+.browse_listing_placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--surface-2);
+    color: var(--text-muted);
+}
+.placeholder-img_icon {
+    width: 20%;
+    height: 20%;
+}
+.listing_details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+    padding: 16px 20px;
+}
+.listing_name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.listing_name > h3 {
+    color: var(--text-primary);
+}
+.browse_listing:hover .listing_details {
+    background-color: var(--tab-hover-color);
+}
+.browse_listing:hover .listing_details_btn-icon {
+    color: var(--text-secondary);
+}
+.listing_details_fields {
     display: flex;
     gap: 16px;
 }
+.listing_details_field {
+    display: flex;
+    gap: 6px;
+}
+.listing_details_field > svg {
+    color: var(--text-muted)
+}
+.listing_details_field > p {
+    color: var(--text-secondary);
+}
+.listing_details_btn-icon {
+    transition: color 0.1s ease;
+    color: var(--text-muted);
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 2px;
+}
 
-.browse_listing_image {
-    width: 200px;
+.browse_listings_empty_message {
+    text-align: center;
+    margin-block: auto;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .browse_filters {
+        flex-wrap: wrap;
+    }
+    .browse_listings {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    .browse_filter_buttons {
+        flex-grow: 1;
+    }
 }

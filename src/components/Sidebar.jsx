@@ -4,6 +4,7 @@ import { signOutUser } from "../utils/firebase/auth"
 import { UserContext } from "../App"
 import { useContext } from "react"
 import "./components.css"
+import ImageLoader from "./ImageLoader"
 
 export default function Sidebar() {
 
@@ -45,10 +46,18 @@ export default function Sidebar() {
                     </NavLink>
                 </nav>
                 <div className="sidebar_profile">
-                    <img
-                        className="profile_pic-preview"
-                        src={profile.profilePic}
-                    />
+                    {profile.profilePic
+                        ?
+                            <ImageLoader
+                                imgClass="profile_pic-preview"
+                                border
+                                src={profile.profilePic}
+                            />
+                        :
+                            <div className="profile_pic-preview profile_pic-placeholder">
+                                <User className="profile_pic-placeholder_icon"/>
+                            </div>
+                        }
                     <p
                         className="profile_user-email"
                         title={user.email}

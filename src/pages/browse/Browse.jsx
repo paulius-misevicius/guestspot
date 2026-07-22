@@ -1,6 +1,6 @@
-import { useEffect, useContext, useState } from "react"
+import { useEffect, useContext, useState, useRef } from "react"
 import { UserContext } from "../../App"
-import { CalendarDays, ChevronRight } from "lucide-react"
+import { CalendarDays, ChevronRight, MapPin, RotateCcw, X, CameraOff } from "lucide-react"
 import { getFirebaseDoc, queryCollectionFromFirebase, fetchBrowseListingsPage } from "../../utils/firebase/firestore"
 import { translateDates } from "../../utils/general"
 import { TailSpin } from "react-loader-spinner"
@@ -9,6 +9,7 @@ import "./browse.css"
 import BrowseModal from "./components/BrowseModal"
 import Combobox from "../../components/fields/Combobox"
 import DatePicker from "../../components/fields/DatePicker"
+import ImageLoader from "../../components/ImageLoader"
 
 export default function Browse() {
 
@@ -18,8 +19,12 @@ export default function Browse() {
     const [lastDoc, setLastDoc] = useState(null)
     const [hasMore, setHasMore] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
+    const [hasLoadedOnce, setHasLoadedOnce] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [filter, setFilter] = useState({})
+    const [activeFilter, setActiveFilter] = useState(null)
+    const [resetSignal, setResetSignal] = useState(0)
+    const sentinelRef = useRef(null)
 
     useEffect(() => {
         if (isModalOpen) {
@@ -30,14 +35,19 @@ export default function Browse() {
         return () => { document.body.style.overflow = ''; };
     }, [isModalOpen])
 
-    console.log(filter)
+    useEffect(() => {
+        setBrowseListings([])
+        setLastDoc(null)
+        setHasMore(true)
+        setHasLoadedOnce(false)
+    }, [activeFilter])
 
     async function loadMoreListings() {
         if (isLoading || !hasMore) return
         setIsLoading(true)
 
         try {
-            const { listings, newLastDoc, hasMore: more } = await fetchBrowseListingsPage("studio", lastDoc, 5)
+            const { listings, newLastDoc, hasMore: more } = await fetchBrowseListingsPage("studio", lastDoc, 5, activeFilter?.locations, activeFilter?.from, activeFilter?.to)
 
             const uniqueUserIds = [...new Set(listings.map(item => item.userId))]
             const profileEntries = await Promise.all(
@@ -60,16 +70,33 @@ export default function Browse() {
             setLastDoc(newLastDoc)
             setHasMore(more)
         } catch (error) {
-            console.error (error.message)
+            console.error(error.message)
         } finally {
             setIsLoading(false)
+            setHasLoadedOnce(true)
         }
     }
     
     useEffect(() => {
-        loadMoreListings()
-    }, [])
+        const observer = new IntersectionObserver(
+            entries => {
+                if (entries[0].isIntersecting) loadMoreListings()
+            },
+            {rootMargin: "200px"}
+        )
+        
+        if (sentinelRef.current) observer.observe(sentinelRef.current)
+        return () => observer.disconnect()
+    }, [lastDoc, hasMore, isLoading])
 
+    function padGallery(images, count) {
+        const padded = [...images]
+        while (padded.length < count) {
+            padded.push({id: `placeholder-${padded.length}`, isPlaceholder: true})
+        }
+        return padded
+    }
+    console.log(filter)
     return (
         <>
             {isModalOpen && <BrowseModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} clickedListing={clickedListing}/>}
@@ -78,59 +105,144 @@ export default function Browse() {
                     <h1>Browse listings</h1>
                     <p>Find guestspotting opportunities with tattoo studios around Europe.</p>
                 </div>
-                <div className="browse_filters">
-                    <Combobox 
-                        itemList={locations} 
-                        index={0} 
-                        data={filter} 
-                        setData={setFilter}
-                        placeholder="City"
-                        noLabel
-                    />
-                    <DatePicker 
-                        data={filter} 
-                        setData={setFilter} 
-                        noLabel
-                    />
+                <div className="browse_filter-row">
+                    <div className="browse_filters">
+                        <Combobox
+                            classes="browse_filter"
+                            itemList={locations}
+                            index={0}
+                            data={filter}
+                            setData={setFilter}
+                            resetSignal={resetSignal}
+                            placeholder="City"
+                            noLabel
+                        />
+                        <DatePicker
+                            classes="browse_filter"
+                            selected={filter}
+                            setSelected={setFilter}
+                            noLabel
+                            isModal
+                        />
+                    </div>
+                    <div className="browse_filter_buttons">
+                        <button 
+                            className="filter-reset-btn"
+                            onClick={() => {
+                                if (Object.keys(filter).length === 0 && !filter?.locations?.[0]) return
+                                setFilter({})
+                                setActiveFilter(null)
+                                setResetSignal(prev => prev + 1)
+                            }}
+                        >
+                            <RotateCcw className="icon-17px icon-stroke"/>
+                        </button>
+                        <button 
+                            className="filter-btn"
+                            onClick={() => {
+                                if (Object.keys(filter).length === 0 && !filter?.locations?.[0]) return
+                                setActiveFilter(filter)
+                            }}
+                        >
+                            Filter
+                        </button>
+                    </div>
                 </div>
+                {activeFilter &&
+                    <div className="active-filters">
+                        {activeFilter?.locations?.[0]?.city && 
+                            <button 
+                                className="filter-pill"
+                                onClick={() => {
+                                    setResetSignal(prev => prev + 1)
+                                    setFilter(prev => {
+                                        const { locations, ...rest } = prev
+                                        return rest
+                                    })
+                                    setActiveFilter(prev => {
+                                        const { locations, ...rest } = prev
+                                        return rest
+                                    })
+                                }}
+                            >
+                                <MapPin className="icon-16px icon-stroke-2" />
+                                <span>{`${activeFilter.locations[0].city}, ${activeFilter.locations[0].country}`}</span>
+                                <X className="icon-14px filter-pill_clear-icon icon-stroke-2"/>
+                            </button>
+                            }
+                        {activeFilter.from && 
+                            <button 
+                                className="filter-pill"
+                                onClick={() => {
+                                    setFilter(prev => {
+                                        const { from, to, ...rest } = prev
+                                        return rest
+                                    })
+                                    setActiveFilter(prev => {
+                                        const { from, to, ...rest } = prev
+                                        return rest
+                                    })
+                                }}
+                            >
+                                <CalendarDays className="icon-16px"/>
+                                <span>{translateDates(activeFilter.from, activeFilter.to)}</span>
+                                <X className="icon-14px filter-pill_clear-icon icon-stroke-2"/>
+                            </button>
+                            }
+                    </div>
+                    }
             </section>
-            <section>
-                {browseListings.map(item =>
-                    <div key={item.id} className="browse_listing">
-                        <div className="browse_listing_image-row">
-                            {item.galleryPreview.slice(0, 5).map(item =>
-                                <img key={item.id} src={item.image} className="browse_listing_image"/>
-                            )}
-                        </div>
-                        <div className="browse_listing_name-icon">
-                            <h3>{item.profile.name}</h3>
-                            <button
-                                className="browse_listing_chevron-btn"
+            {browseListings.length > 0
+                ?
+                    <section className="browse_listings">
+                        {browseListings.map(item =>
+                            <button 
+                                className="browse_listing"
                                 onClick={() => {
                                     setIsModalOpen(true)
                                     setClickedListing(browseListings.find(listing => listing.id === item.id))
                                 }}
+                                key={item.id} 
                             >
-                                <ChevronRight />
+                                <div className="listing_image-grid">
+                                    {padGallery(item.galleryPreview.slice(0, 3), 3).map(img =>
+                                        img.isPlaceholder 
+                                            ?
+                                                <div key={img.id} className="browse_listing_placeholder">
+                                                    <CameraOff className="placeholder-img_icon"/>
+                                                </div>
+                                            :
+                                                <ImageLoader key={img.id} src={img.image} className="browse_listing_image"/>         
+                                        )}
+                                </div>
+                                <div className="listing_details">
+                                    <div className="listing_name">
+                                        <h3>{item.profile.name}</h3>
+                                        <ChevronRight className="listing_details_btn-icon icon-stroke"/>
+                                    </div>
+                                    <div className="listing_details_fields">
+                                        <div className="listing_details_field">
+                                            <MapPin className="icon-16px icon-stroke-2" />
+                                            <p>{item.locations[0].city}, {item.locations[0].country}</p>
+                                        </div>
+                                        <div className="listing_details_field">
+                                            <CalendarDays className="icon-16px"/>
+                                            <p className="browse_listing_date-range">{item.dateRange}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </button>
-                        </div>
-                        <p>{item.locations[0].city}, {item.locations[0].country}</p>
-                        <div className="browse_date-calendar">
-                            <CalendarDays className="icon-14px browse_calendar-icon"/>
-                            <span className="browse_listing_date-range">{item.dateRange}</span>
-                        </div>
-                    </div>
-                )}
-            </section>
-            {hasMore &&
-                <button 
-                    className="browse_load-more-btn"
-                    onClick={loadMoreListings} 
-                    disabled={isLoading}
-                >
-                    {isLoading ? <TailSpin width="32" height="32" color="var(--text-muted)" /> : "Load more"}
-                </button>
+                        )}
+                    </section>
+                :
+                    !isLoading && hasLoadedOnce && <p className="browse_listings_empty_message">No listings found for your search!</p>
                 }
+            {hasMore && <div ref={sentinelRef} style={{ height: 1 }} />}
+            {isLoading && 
+                <div className="browse_listings_loader">
+                    <TailSpin height="50px" width="50px" color="var(--text-muted)" />
+                </div>
+            }
         </>
     )
 }
