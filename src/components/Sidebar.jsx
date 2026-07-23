@@ -46,18 +46,19 @@ export default function Sidebar() {
                     </NavLink>
                 </nav>
                 <div className="sidebar_profile">
-                    {profile.profilePic?.small
-                        ?
-                            <ImageLoader
-                                imgClass="profile_pic-preview"
-                                border
-                                src={profile.profilePic.small}
-                            />
-                        :
-                            <div className="profile_pic-preview profile_pic-placeholder">
-                                <User className="profile_pic-placeholder_icon"/>
-                            </div>
-                        }
+                    <div className="profile_pic_container">
+                        {profile.profilePic?.small
+                            ?
+                                <ImageLoader
+                                    border
+                                    src={profile.profilePic.small}
+                                />
+                            :
+                                <div className="profile_pic-preview profile_pic-placeholder">
+                                    <User className="profile_pic-placeholder_icon"/>
+                                </div>
+                            }
+                    </div>
                     <p
                         className="profile_user-email"
                         title={user.email}

@@ -90,9 +90,25 @@ export default function Browse() {
         return () => observer.disconnect()
     }, [lastDoc, hasMore, isLoading])
 
+    function padGallery(images, count) {
+        const padded = [...images]
+        while (padded.length < count) {
+            padded.push({id: `placeholder-${padded.length}`, isPlaceholder: true})
+        }
+        return padded
+    }
+
     return (
         <>
-            {isModalOpen && <BrowseModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} clickedListing={clickedListing}/>}
+            {isModalOpen && 
+                <BrowseModal 
+                    isModalOpen={isModalOpen} 
+                    setIsModalOpen={setIsModalOpen} 
+                    clickedListing={clickedListing}
+                    setClickedListing={setClickedListing}
+                    padGallery={padGallery}
+                />
+                }
             <section className="browse_header">
                 <div>
                     <h1>Browse listings</h1>
@@ -141,7 +157,7 @@ export default function Browse() {
                         </button>
                     </div>
                 </div>
-                {activeFilter &&
+                {activeFilter && Object.keys(filter).length !== 0 &&
                     <div className="active-filters">
                         {activeFilter?.locations?.[0]?.city && 
                             <button 
@@ -197,6 +213,7 @@ export default function Browse() {
                                 name={item.profile.name}
                                 location={`${item.locations[0].city}, ${item.locations[0].country}`}
                                 dateRange={item.dateRange}
+                                padGallery={padGallery}
                             />
                         )}
                     </section>

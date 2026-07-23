@@ -57,11 +57,32 @@ export async function getFirebaseDoc(myCollection, documentId) {
     }
 }
 
-export async function queryCollectionFromFirebase(myCollection, queryThis, queryThat) {
-    const q = query(collection(db, myCollection), where(queryThis, "==", queryThat))
+export async function queryCollectionFromFirebase(myCollection, queryThis, queryThat, activeListings = false) {
+    const constraints = [
+        where(queryThis, "==", queryThat),
+        orderBy("dateFrom")
+    ]
+
+    if (activeListings) {
+        constraints.push(where("dateTo", ">", Timestamp.fromDate(new Date())))
+    }
+
+    const q = query(collection(db, myCollection), ...constraints)
 
     const querySnapshot = await getDocs(q)
-    const queryData = querySnapshot.docs.map(item => ({id: item.id, ...item.data()}))
+    const queryData = querySnapshot.docs.map(item => {
+        const itemCreatedAt = item.data().createdAt
+        const itemDateFrom = item.data().dateFrom
+        const itemDateTo = item.data().dateTo
+
+        return {
+            id: item.id, 
+            ...item.data(),
+            createdAt: itemCreatedAt.toDate(), 
+            dateFrom: itemDateFrom.toDate(), 
+            dateTo: itemDateTo.toDate()
+        }
+    })
 
     return queryData
 }
@@ -69,6 +90,7 @@ export async function queryCollectionFromFirebase(myCollection, queryThis, query
 export async function fetchBrowseListingsPage(userType, lastDoc, pageSize, location, dateFrom, dateTo) {
     const constraints = [
         where("type", "==", userType),
+        where("dateTo", ">", Timestamp.fromDate(new Date())),
         orderBy("dateFrom"),
         limit(pageSize)
     ]

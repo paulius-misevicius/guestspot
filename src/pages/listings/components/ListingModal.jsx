@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from "react"
 import { nanoid } from "nanoid"
-import { X } from "lucide-react"
 import { UserContext } from "../../../App"
 import { serverTimestamp } from "firebase/firestore"
 import { getCollectionFromFirebase, addToFirebase } from "../../../utils/firebase/firestore"
@@ -44,56 +43,40 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
         setListingData({})
         setIsModalOpen(false)
     }
-    console.log(listingData)
+
+    function onClose() {
+        setIsModalOpen(false)
+        setListingData({})
+        setError(null)
+    }
+
     if(!isModalOpen) return
     
     return (
-        <Modal>
-            <form
-                className="modal"
-                onSubmit={createListing}
-            >
-                <div className="listing-modal_header">
-                    <h2>New listing</h2>
-                    <button
-                        className="listing-modal_close-btn"
-                        onClick={() => {
-                            setIsModalOpen(false)
-                            setListingData({})
-                            setError(null)
-                        }}
-                    >
-                        <X className="icon-14px icon-stroke"/>
-                    </button>
-                </div>
-                <div className="listing-modal_inputs">
-                    <Combobox 
-                        data={listingData} 
-                        setData={setListingData} 
-                        error={error}
-                        setError={setError}
-                        itemList={locations} 
-                        index={0} 
-                        placeholder="I'm looking to guestspot in..."
-                    />
-                    <DatePicker 
-                        selected={listingData}
-                        setSelected={setListingData}
-                        error={error}
-                        setError={setError} 
-                        mode="range"
-                    />
-                </div>
-                <div className="listing-modal_footer">
-                    <button
-                        type="submit"
-                        className="listing-modal_create-btn"
-                    >
-                        Create listing
-                    </button>
-                    {error && <p className="error-msg">{error}</p>}
-                </div>
-            </form>
+        <Modal 
+            form 
+            title="New listing"
+            buttonText="Create Listing"
+            onSubmit={createListing} 
+            onClose={onClose} 
+            error={error}
+        >
+            <Combobox 
+                data={listingData} 
+                setData={setListingData} 
+                error={error}
+                setError={setError}
+                itemList={locations} 
+                index={0} 
+                placeholder="I'm looking to guestspot in..."
+            />
+            <DatePicker 
+                selected={listingData}
+                setSelected={setListingData}
+                error={error}
+                setError={setError} 
+                mode="range"
+            />
         </Modal>
     )
 }

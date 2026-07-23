@@ -1,61 +1,142 @@
-import { X, ChevronLeft, Ellipsis } from "lucide-react"
+import { useEffect, useState } from "react"
+import { X, CameraOff, MapPin, CalendarDays, ChevronDown, AtSign } from "lucide-react"
 import { Link } from "react-router"
+import { queryCollectionFromFirebase } from "../../../utils/firebase/firestore"
 
 import Modal from "../../../components/Modal"
+import ImageLoader from "../../../components/ImageLoader"
+import { translateDates } from "../../../utils/general"
 
-export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing}) {
+export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing, setClickedListing, padGallery}) {
 
-    console.log(clickedListing)
+    const [userListings, setUserListings] = useState([])
+    const [isShowingAll, setIsShowingAll] = useState(false)
+
+    const userLocations = clickedListing.profile.locations
+    const userType = clickedListing.profile.type
+    const galleryLength = clickedListing.profile.gallery.length < 6 ? 3 : 6
+    const modalGallery = clickedListing.profile.gallery.slice(0, galleryLength)
+    const igIcon = <svg fill="currentColor" viewBox="0 0 32 32" id="Camada_1" version="1.1" xmlSpace="preserve" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M22.3,8.4c-0.8,0-1.4,0.6-1.4,1.4c0,0.8,0.6,1.4,1.4,1.4c0.8,0,1.4-0.6,1.4-1.4C23.7,9,23.1,8.4,22.3,8.4z"></path> <path d="M16,10.2c-3.3,0-5.9,2.7-5.9,5.9s2.7,5.9,5.9,5.9s5.9-2.7,5.9-5.9S19.3,10.2,16,10.2z M16,19.9c-2.1,0-3.8-1.7-3.8-3.8 c0-2.1,1.7-3.8,3.8-3.8c2.1,0,3.8,1.7,3.8,3.8C19.8,18.2,18.1,19.9,16,19.9z"></path> <path d="M20.8,4h-9.5C7.2,4,4,7.2,4,11.2v9.5c0,4,3.2,7.2,7.2,7.2h9.5c4,0,7.2-3.2,7.2-7.2v-9.5C28,7.2,24.8,4,20.8,4z M25.7,20.8 c0,2.7-2.2,5-5,5h-9.5c-2.7,0-5-2.2-5-5v-9.5c0-2.7,2.2-5,5-5h9.5c2.7,0,5,2.2,5,5V20.8z"></path> </g> </g></svg>
+
+    useEffect(() => {
+        async function getUserListings() {
+            try {
+                const listings = await queryCollectionFromFirebase("listings", "userId", clickedListing.userId, true)
+                const filteredListings = listings.filter(item => item.id !== clickedListing.id)
+                setUserListings(filteredListings)
+            } catch(error) {
+                console.error(error.message)
+            }
+        }
+        getUserListings()
+    }, [])
+
+    function onClose() {
+        setIsModalOpen(false)
+        setClickedListing(null)
+    }
 
     if (!isModalOpen) return
 
     return (
-        <Modal>
-            <div className="modal browse_modal">
-                <div className="browse_modal_header">
-                    <button 
-                        className="browse_modal_header-btn"
-                        onClick={() => setIsModalOpen(false)}
-                    >
-                        <ChevronLeft className="icon-16px"/>
-                    </button>
-                    <button className="browse_modal_header-btn">
-                        <Ellipsis className="icon-16px"/>
-                    </button>
-                </div>
-                <div className="browse_modal_image-row">
-                    {clickedListing.profile.gallery.map(item => 
-                        <img key={item.id} src={item.image} className="browse_modal_image"/>
-                    )}
-                </div>
-                <div className="browse_modal_profile-details">
-                    <img 
-                        className="browse_modal_profile-pic"
-                        src={clickedListing.profile.profilePic}
+        <Modal
+            onClose={onClose}
+            title={`${userType.charAt(0).toUpperCase() + userType.slice(1)}'s profile`}
+            buttonText="Message on Instagram"
+            buttonIcon={igIcon}
+            link="https://ig.me/m/inktonite_"
+        >
+            <div className="browse_modal_profile-details">
+                <div className="browse_modal_profile-pic">
+                    <ImageLoader
+                        src={clickedListing.profile.profilePic.small}
                     />
-                    <div>
-                        <h3>{clickedListing.profile.name}</h3>
-                        <p>{clickedListing.profile.locations[0].city}, {clickedListing.profile.locations[0].country}</p>
-                    </div>
                 </div>
                 <div className="browse_modal_listing-details">
-                    <p className="browse_modal_label">Details</p>
-                    <div>
-                        <p>{clickedListing.dateRange}</p>
-                        <p>{clickedListing.locations[0].city}, {clickedListing.locations[0].country}</p>
+                    <h3>{clickedListing.profile.name}</h3>
+                    <div className="listing_details_fields">
+                        <div className="listing_details_field">
+                            <AtSign className="icon-16px icon-stroke-2"/>
+                            <p>{clickedListing.profile.instagram}</p>
+                        </div>
+                        <div className="listing_details_field">
+                            <MapPin className="icon-16px icon-stroke-2" />
+                            <p>
+                                {clickedListing.locations[0].city}, {clickedListing.locations[0].country}
+                                {userLocations.length > 1 && 
+                                    <span>+{userLocations.length - 1} more</span>
+                                }
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div className="browse_modal_listing-about">
-                    <p className="browse_modal_label">About</p>
-                    <p>{clickedListing.profile.bio}</p>
+            </div>
+            <div>
+                <div className="browse_modal_listing-header">
+                    <p className="browse_modal_label">Available spot</p>
+                    {userListings.length > 0 &&
+                        <button onClick={() => setIsShowingAll(prev => !prev)}>
+                            <ChevronDown className={`icon-14px chevron icon-margin ${isShowingAll ? "chevron-open" : ""}`}/>
+                            {isShowingAll ? "Hide" : "Show"} all ({userListings.length + 1})
+                        </button>
+                    }
                 </div>
-                <a 
-                href={`https://instagram.com/${clickedListing.profile.instagram}`}
-                target="_blank"
-                className="modal_btn"
-                >
-                    Contact now
-                </a>
+                <div className="browse_modal_listing first-listing">
+                    <h4>{clickedListing.locations[0].city}, {clickedListing.locations[0].country}</h4>
+                    <div className="listing_details_field">
+                        <CalendarDays className="icon-16px icon-margin"/>
+                        <p>{clickedListing.dateRange}</p>
+                    </div>
+                </div>
+                {isShowingAll &&
+                    <>
+                        <div className="divider-row">
+                            <div className="divider-line"></div>
+                            <span className="divider-label">
+                                Other open spots
+                            </span>
+                            <div className="divider-line"></div>
+                        </div>
+                        <div className="browse_modal_other-listings">
+                            {userListings.map(item =>
+                                <div key={item.id} className="browse_modal_listing">
+                                    <h4>{item.locations[0].city}, {item.locations[0].country}</h4>
+                                    <div className="listing_details_field">
+                                        <CalendarDays className="icon-16px icon-margin"/>
+                                        <p>{translateDates(item.dateFrom, item.dateTo)}</p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </>
+                }
+            </div>
+            <div>
+                <p className="browse_modal_label">About</p>
+                <p>{clickedListing.profile.bio}</p>
+            </div>
+            <div>
+                <p className="browse_modal_label">Portfolio</p>
+                <div className="browse_modal_image-row">
+                    {padGallery(modalGallery, galleryLength).map((img, index) =>
+                        img.isPlaceholder 
+                            ?
+                                <div key={img.id} className="browse_listing_placeholder browse_modal_gallery-img">
+                                    <CameraOff className="placeholder-img_icon"/>
+                                </div>
+                            :
+                                index === (galleryLength - 1) && clickedListing.profile.gallery.length > galleryLength
+                                    ?
+                                        <div key={img.id} className="last-gallery-img browse_modal_gallery-img">
+                                            <ImageLoader src={img.image.small} className="browse_listing_image"/>
+                                            <span className="more-images-hint">
+                                                +{clickedListing.profile.gallery.length - galleryLength}
+                                            </span>
+                                        </div>
+                                    :   
+                                        <ImageLoader key={img.id} src={img.image.small} className="browse_listing_image browse_modal_gallery-img"/>
+                        )}
+                </div>
             </div>
         </Modal>
     )

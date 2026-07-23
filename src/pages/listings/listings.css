@@ -79,12 +79,6 @@
     align-items: center;
     gap: 16px;
 }
-.chevron {
-    transition: transform 0.15s ease;
-}
-.chevron-open {
-    transform: rotate(180deg);
-}
 .user_listing {
     display: flex;
     align-items: center;
@@ -172,52 +166,4 @@
     margin-top: 12px;
     margin-bottom: 20px;
     color: var(--text-muted)
-}
-
-.listing-modal_header {
-    flex: 0 0 auto;
-    width: 100%;
-    padding: 20px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-}
-.listing-modal_close-btn {
-    display: flex;
-    height: 32px;
-    width: 32px;
-    justify-content: center;
-    align-items: center;
-    padding: 8px;
-    border-radius: 8px;
-    background-color: var(--surface-2);
-    color: var(--text-muted);
-}
-.listing-modal_close-btn:hover {
-    background-color: var(--failure);
-    color: var(--surface-1);
-}
-.listing-modal_inputs {
-    display: flex;
-    flex: 1 1 auto;
-    overflow-y: auto;
-    scrollbar-color: var(--btn-hover-color) transparent;
-    flex-direction: column;
-    padding: 24px 28px 16px 28px;
-    gap: 24px;
-}
-.listing-modal_footer {
-    flex: 0 0 auto;
-    width: 100%;
-    padding: 8px 28px 24px 28px;
-}
-.listing-modal_create-btn {
-    width: 100%;
-    height: 48px;
-    border-radius: 12px;
-    font-weight: 500;
-}
-.listing-modal_create-btn:hover {
-    background-color: var(--btn-hover-color);
 }

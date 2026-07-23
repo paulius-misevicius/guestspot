@@ -1,15 +1,7 @@
 import { ChevronRight, CameraOff, MapPin, CalendarDays } from "lucide-react"
 import ImageLoader from "../../../components/ImageLoader"
 
-export default function BrowseListing({setIsModalOpen, setClickedListing, gallery, name, location, dateRange}) {
-
-    function padGallery(images, count) {
-        const padded = [...images]
-        while (padded.length < count) {
-            padded.push({id: `placeholder-${padded.length}`, isPlaceholder: true})
-        }
-        return padded
-    }
+export default function BrowseListing({setIsModalOpen, setClickedListing, gallery, name, location, dateRange, padGallery}) {
 
     return (
         <button 
@@ -41,8 +33,8 @@ export default function BrowseListing({setIsModalOpen, setClickedListing, galler
                         <p>{location}</p>
                     </div>
                     <div className="listing_details_field">
-                        <CalendarDays className="icon-16px"/>
-                        <p className="browse_listing_date-range">{dateRange}</p>
+                        <CalendarDays className="icon-16px icon-margin"/>
+                        <p>{dateRange}</p>
                     </div>
                 </div>
             </div>
