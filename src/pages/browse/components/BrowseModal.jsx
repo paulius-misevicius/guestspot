@@ -79,10 +79,10 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
                             </div>
                             <div className="listing_details_field">
                                 <MapPin className="icon-16px icon-stroke-2" />
-                                <p>
+                                <p className="flex-wrap">
                                     {clickedListing.locations[0].city}, {clickedListing.locations[0].country}
                                     {userLocations.length > 1 && 
-                                        <span>+{userLocations.length - 1} more</span>
+                                        <span className="word-nowrap">+{userLocations.length - 1} more</span>
                                     }
                                 </p>
                             </div>
@@ -129,10 +129,12 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
                         </>
                     }
                 </div>
-                <div>
-                    <p className="browse_modal_label">About</p>
-                    <p>{clickedListing.profile.bio}</p>
-                </div>
+                {clickedListing.profile.bio !== "" && clickedListing.profile.bio !== undefined &&
+                    <div>
+                        <p className="browse_modal_label">About</p>
+                        <p>{clickedListing.profile.bio}</p>
+                    </div>
+                    }
                 <div>
                     <p className="browse_modal_label">Portfolio</p>
                     <div className="browse_modal_image-row">

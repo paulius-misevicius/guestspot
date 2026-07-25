@@ -70,6 +70,7 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--text-muted);
+  height: 100%;
 }
 .profile_pic-placeholder_icon {
   position: absolute;
@@ -78,11 +79,6 @@
   transform: translate(-50%, 50%);
   width: 80%;
   height: 80%;
-}
-.profile_user-email {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 .profile_log-out-btn {
     background-color: transparent;
@@ -407,6 +403,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     flex-direction: column;
     padding: 24px 28px 16px 28px;
     gap: 24px;
+    width: 100%;
 }
 .modal_footer {
     flex: 0 0 auto;

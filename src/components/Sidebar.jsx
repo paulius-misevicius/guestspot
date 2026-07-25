@@ -60,7 +60,7 @@ export default function Sidebar() {
                             }
                     </div>
                     <p
-                        className="profile_user-email"
+                        className="trunctuate"
                         title={user.email}
                     >
                         {user.email}

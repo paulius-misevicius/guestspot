@@ -10,6 +10,7 @@ import { overwriteFirebaseDoc } from "../../../utils/firebase/firestore"
 import Combobox from "../../../components/fields/Combobox"
 import Modal from "../../../components/Modal"
 import ImageLoader from "../../../components/ImageLoader"
+import { checkUsername } from "../../../utils/general"
 
 export default function ProfileModal({isModalOpen, setIsModalOpen}) {
 
@@ -21,6 +22,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
     const [updatedProfilePic, setUpdatedProfilePic] = useState(profile?.profilePic?.small)
     const [updatedProfilePicFile, setUpdatedProfilePicFile] = useState(null)
     const [updatedGallery, setUpdatedGallery] = useState(profile?.gallery ?? [])
+    const [error, setError] = useState(null)
 
     const [locationCount, setLocationCount] = useState(profile.locations.length)
     const [isLoading, setIsLoading] = useState(false)
@@ -28,11 +30,11 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
     const igPreview = `instagram.com/${updatedProfile.instagram}`
 
     const locationComboboxes = Array.from({length: locationCount}).map((item, index) => 
-        <div key={index} className="onboarding_location-multiple">
+        <div key={index} className="profile_modal_location">
             {index > 0 && index === (locationCount - 1) &&
                 <button 
                     type="button"
-                    className="onboarding_location-delete-btn"
+                    className="location_delete-btn"
                     onClick={() => {
                         setLocationCount(prev => prev - 1)
                         setUpdatedProfile(prev => (
@@ -43,7 +45,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                         ))
                     }}
                 >
-                    <X className="icon-16px" />
+                    <X className="icon-16px icon-stroke" />
                 </button>
                 }
             <Combobox 
@@ -52,6 +54,9 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                 setData={setUpdatedProfile} 
                 itemList={locations} 
                 index={index}
+                disabled={index !== (locationCount - 1)}
+                error={error}
+                setError={setError}
                 placeholder="Enter the city in which you're based..."
             />
         </div>
@@ -83,10 +88,40 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
         setUpdatedGallery(prev => [{image: {small: preview}, file, id: itemId}, ...prev])
     }
 
+    console.log(updatedGallery)
+
     async function updateUserProfile(event) {
         event.preventDefault()
         setIsLoading(true)
         let updatedFields = {}
+        const filteredLocations = updatedProfile.locations.filter(item => item !== undefined) 
+
+        if (updatedProfile.name === "" || updatedProfile.instagram === "" || filteredLocations.length === 0) {
+            setError("These fields cannot be empty!")
+            setIsLoading(false)
+            return
+        }
+
+        try {
+            const match = await checkUsername("name", updatedProfile.name)
+            if (match && match !== profile.name) {
+                setError("Name already taken!")
+                setIsLoading(false)
+                return
+            }
+        } catch(error) {
+            console.error(error.message)
+        }
+        try {
+            const match = await checkUsername("instagram", updatedProfile.instagram)
+            if (match && match !== profile.instagram) {
+                setError("Instagram handle already taken!")
+                setIsLoading(false)
+                return
+            }
+        } catch(error) {
+            console.error(error.message)
+        }
 
         try {
             if (profile?.profilePic?.small !== updatedProfilePic) {
@@ -100,7 +135,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
         }
         try {
             if (JSON.stringify(profile) !== JSON.stringify(updatedProfile)) {
-                updatedFields = {...updatedFields, ...updatedProfile}
+                updatedFields = {...updatedFields, ...updatedProfile, locations: filteredLocations}
             }
         } catch (error) {
             console.error(error.message)
@@ -170,10 +205,14 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
             form
             onSubmit={updateUserProfile}
             onClose={onClose}
+            title="Edit profile"
+            buttonText="Save changes"
+            error={error}
+            setError={setError}
         >
             <div className="profile_modal_picture">
                 <div className="profile_modal-pic-container">
-                    <label className="sr-only">Profile pic</label>
+                    <label className="sr-only">Profile picture</label>
                     <input
                         ref={profilePicRef}
                         onChange={previewProfilePic}
@@ -182,67 +221,72 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                         style={{ display: "none" }}
                     />
                     <button
-                        className="onboarding_profile profile_modal_pic-btn"
+                        className="profile_modal_pic-btn"
                         type="button"
                         onClick={() => profilePicRef.current.click()}
                     >
                         {updatedProfilePic
-                            ? <ImageLoader className="onboarding_profile-pic" src={updatedProfilePic} />
-                            : <UserRound className="onboarding_avatar-icon"/>
+                            ?
+                                <ImageLoader
+                                    border
+                                    src={updatedProfilePic}
+                                />
+                            :
+                                <div className="profile_pic-preview profile_pic-placeholder">
+                                    <User className="profile_pic-placeholder_icon"/>
+                                </div>
                             }
-                        <Camera className="profile_pic-camera-icon"/>
+                        <div className="btn-overlay">
+                            <Camera className="profile_pic-camera-icon"/>
+                        </div>
                     </button>
                 </div>
                 <div>
-                    <h4>Profile photo</h4>
-                    <p>Click the icon to upload a new one.</p>
+                    <p className="profile_picture_title">Profile photo</p>
+                    <p>Click the picture to upload a new one.</p>
                 </div>
             </div>
-            <div className="profile_modal_name-instagram">
-                <div className="auth_field">
-                    <label htmlFor="name">Name / pseudonym</label>
+            <div className="profile_modal_name-inputs">
+                <div className="profile_modal_input">
+                    <label htmlFor="name">{profile.type === "studio" ? "Studio" : "Artist"} name</label>
                     <div className="input-container">
                         <User className="input-icon icon-16px" />
                         <input
+                            className={error && (updatedProfile.name === "" || error === "Name already taken!") ? "input_error" : ""}
                             value={updatedProfile.name}
-                            onChange={event => setUpdatedProfile(prev => ({...prev, name: event.target.value}))}
+                            onChange={event => {
+                                setUpdatedProfile(prev => ({...prev, name: event.target.value}))
+                                setError(null)
+                            }}
                             name="name"
                             id="name"
                             type="text"
                         />
                     </div>
                 </div>
-                <div>
-                    <div className="auth_field">
-                        <label htmlFor="instagram">Instagram handle</label>
-                        <div className="input-container">
-                            <AtSign className="input-icon icon-14px" />
-                            <input
-                                value={updatedProfile.instagram}
-                                onChange={event => setUpdatedProfile(prev => ({...prev, instagram: event.target.value}))}
-                                name="instagram"
-                                id="instagram"
-                                type="text"
-                            />
-                        </div>
+                <div className="profile_modal_input">
+                    <label htmlFor="instagram">Instagram handle</label>
+                    <div className="input-container">
+                        <AtSign className="input-icon icon-14px" />
+                        <input
+                            className={error && (updatedProfile.instagram === "" || error === "Instagram handle already taken!") ? "input_error" : ""}
+                            value={updatedProfile.instagram}
+                            onChange={event => {
+                                setUpdatedProfile(prev => ({...prev, instagram: event.target.value}))
+                                setError(null)
+                            }}
+                            name="instagram"
+                            id="instagram"
+                            type="text"
+                        />
                     </div>
-                    <span className="ig-preview">
-                        <Link
-                            to={`https://${igPreview}`}
-                            target="_blank"
-                            className="profile_instagram"
-                        >
-                            <ExternalLink className="icon-14px"/>
-                            {igPreview}
-                        </Link>
-                    </span>
                 </div>
             </div>
             <div className="profile_modal_combobox">
                 {locationComboboxes}
                 {profile.type === "studio" && updatedProfile.locations.filter(Boolean).length >= locationCount && locationCount < 5 &&
                     <button
-                        className="onboarding_add-location-btn"
+                        className="add-location-btn"
                         type="button"
                         onClick={() => setLocationCount(prev => prev + 1)}
                     >
@@ -254,12 +298,15 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                 <label htmlFor="bio">Profile bio</label>
                 <textarea
                     className="bio_textarea"
+                    placeholder={`Say something about ${profile.type === "studio" ? "your studio" : "yourself"}!`}
                     value={updatedProfile.bio}
                     onChange={event => setUpdatedProfile(prev => ({...prev, bio: event.target.value}))}
                     name="bio"
                     id="bio"
                     rows="5"
+                    maxLength="165"
                 />
+                <span>{updatedProfile.bio.length}/165</span>
             </div>
             <div className="profile_modal_portfolio">
                 <div className="portfolio_label-count">
@@ -268,7 +315,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                 <div className="input-gallery">
                     <div className="input_gallery_item">
                         <input
-                            disabled={gallery.length === 20}
+                            disabled={updatedGallery.length === 20}
                             ref={galleryPicRef}
                             onChange={addToGallery}
                             type="file"
@@ -280,12 +327,12 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                             type="button"
                             onClick={() => galleryPicRef.current.click()}
                         >
-                        <Plus className="input_gallery_plus-icon"/>
+                            <Plus className="input_gallery_plus-icon"/>
                         </button>
                     </div>
                     {updatedGallery.map(item =>
                         <div className="input_gallery_item" key={item.id}>
-                            <ImageLoader className="input_gallery_image modal_portfolio_image" src={item.image.small} />
+                            <ImageLoader src={item.image.small} />
                             <button
                                 onClick={() => deleteFromGallery(item.id)}
                                 type="button"
@@ -298,12 +345,6 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                 </div>
                 <span>{updatedGallery.length}/20</span>
             </div>
-            <button
-                type="submit"
-                className="listing-modal_create-btn"
-            >
-                {isLoading ? <TailSpin width="32" height="32" color="var(--text-muted)"/>  : "Save changes"}
-            </button>
         </Modal>
     )
 }

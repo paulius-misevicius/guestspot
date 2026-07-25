@@ -3,11 +3,28 @@ import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import "./components.css"
 import ImageLoader from "./ImageLoader"
 import FocusTrap from "focus-trap-react"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 
 export default function Lightbox({isLightboxOn, setIsLightboxOn, lightboxImage, gallery}) {
 
     const [currentImage, setCurrentImage] = useState(lightboxImage)
+    const lightboxRef = useRef(null)
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (lightboxRef.current && !lightboxRef.current.contains(event.target)) {
+                setIsLightboxOn(false)
+            }
+        }
+
+        if (isLightboxOn) {
+            document.addEventListener('mousedown', handleClickOutside)
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [isLightboxOn])
 
     if (!isLightboxOn) return
 
@@ -15,7 +32,7 @@ export default function Lightbox({isLightboxOn, setIsLightboxOn, lightboxImage, 
         <>
             <div className="root-overlay"></div>
             <FocusTrap>
-                <div className="lightbox">
+                <div className="lightbox" ref={lightboxRef}>
                     <ImageLoader key={currentImage} src={gallery[currentImage].image.large}/>
                     <button 
                         className="lightbox_btn prev-btn"

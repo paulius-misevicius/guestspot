@@ -1,10 +1,16 @@
 import { format } from "date-fns"
 import imageCompression from "browser-image-compression"
+import { queryFirebaseDoc } from "./firebase/firestore"
 
 export function toEnglishChars(string) {
     return string
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
+}
+
+export async function checkUsername(field, username) {
+    const usernameMatch = await queryFirebaseDoc("profiles", field, username)
+    return usernameMatch
 }
 
 export function translateDates(dateFrom, dateTo) {

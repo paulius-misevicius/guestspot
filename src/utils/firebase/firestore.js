@@ -57,6 +57,12 @@ export async function getFirebaseDoc(myCollection, documentId) {
     }
 }
 
+export async function queryFirebaseDoc(myCollection, queryThis, queryThat) {
+    const q = query(collection(db, myCollection), where(queryThis, "==", queryThat))
+    const querySnapshot = await getDocs(q)
+    const docData = querySnapshot.docs?.[0]?.data()?.[queryThis] ?? undefined
+    return docData
+}
 export async function queryCollectionFromFirebase(myCollection, queryThis, queryThat, activeListings = false) {
     const constraints = [
         where(queryThis, "==", queryThat),
