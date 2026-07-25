@@ -194,6 +194,7 @@
 }
 .browse_modal_gallery-img {
     border-radius: 12px;
+    overflow: hidden;
 }
 .last-gallery-img {
     position: relative;

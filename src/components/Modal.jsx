@@ -3,14 +3,14 @@ import { X } from "lucide-react"
 import "./components.css"
 import FocusTrap from "focus-trap-react"
 
-export default function Modal({ children, form, onSubmit, onClose, error, title, buttonText, link, buttonIcon }) {
+export default function Modal({ children, form, onSubmit, onClose, error, title, buttonText, link, buttonIcon, isLightboxOn }) {
     
     return createPortal(
         <>
             <div className="content_overlay"/>
             {form 
                 ?
-                    <FocusTrap>
+                    <FocusTrap active={!isLightboxOn}>
                         <form
                             className="modal"
                             onSubmit={onSubmit}
@@ -37,7 +37,7 @@ export default function Modal({ children, form, onSubmit, onClose, error, title,
                         </form>
                     </FocusTrap>
                 :
-                    <FocusTrap>
+                    <FocusTrap active={!isLightboxOn}>
                         <div className="modal">
                             <div className="modal_header">
                                 <h2>{title}</h2>

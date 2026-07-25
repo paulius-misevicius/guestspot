@@ -160,7 +160,12 @@ textarea {
   color: var(--text-primary);
   padding: 8px 12px;
 }
-
+.root-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.75);
+}
 main {
   display: flex;
   justify-content: center;

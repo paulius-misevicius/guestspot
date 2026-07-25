@@ -422,3 +422,67 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .modal_create-btn:hover {
     background-color: var(--btn-hover-color);
 }
+
+/* Lightbox */
+
+.lightbox {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 50%;
+  left: 50%;
+  border-radius: 20px;
+  transform: translate(-50%, -50%);
+  max-width: 90dvw;
+  max-height: 90dvh;
+  min-width: 150px;
+  min-height: 150px;
+  z-index: 1000;
+}
+
+.lightbox img {
+  object-fit: contain;
+  max-width: 90dvw;
+  max-height: 90dvh;
+  border-radius: 20px;
+  width: auto;
+  height: auto;
+}
+.lightbox_btn {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--surface-2);
+  color: var(--text-muted);
+  padding: 8px;
+  border-radius: 8px;
+}
+.lightbox .close-btn {
+  top: -12px;
+  right: -12px;
+}
+.lightbox .prev-btn {
+  left: -16px;
+  padding: 16px 8px;
+}
+.lightbox .next-btn {
+  right: -16px;
+  padding: 16px 8px;
+}
+.lightbox_btn:hover {
+  color: var(--surface-1);
+  background-color: var(--border-light);
+}
+.close-btn:hover {
+  color: var(--surface-1);
+  background-color: var(--failure);
+}
+
+@media (max-width: 768px) {
+  .modal {
+    width: 95dvw;
+    max-height: 75dvh;
+  }
+}

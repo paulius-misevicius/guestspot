@@ -6,9 +6,12 @@ import { queryCollectionFromFirebase } from "../../../utils/firebase/firestore"
 import Modal from "../../../components/Modal"
 import ImageLoader from "../../../components/ImageLoader"
 import { translateDates } from "../../../utils/general"
+import Lightbox from "../../../components/Lightbox"
 
 export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing, setClickedListing, padGallery}) {
 
+    const [isLightboxOn, setIsLightboxOn] = useState(false)
+    const [lightboxImage, setLightboxImage] = useState(null)
     const [userListings, setUserListings] = useState([])
     const [isShowingAll, setIsShowingAll] = useState(false)
 
@@ -36,108 +39,134 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
         setClickedListing(null)
     }
 
+    function handleImageClick(index) {
+        setIsLightboxOn(true)
+        setLightboxImage(index)
+    }
+
     if (!isModalOpen) return
 
     return (
-        <Modal
-            onClose={onClose}
-            title={`${userType.charAt(0).toUpperCase() + userType.slice(1)}'s profile`}
-            buttonText="Message on Instagram"
-            buttonIcon={igIcon}
-            link="https://ig.me/m/inktonite_"
-        >
-            <div className="browse_modal_profile-details">
-                <div className="browse_modal_profile-pic">
-                    <ImageLoader
-                        src={clickedListing.profile.profilePic.small}
-                    />
-                </div>
-                <div className="browse_modal_listing-details">
-                    <h3>{clickedListing.profile.name}</h3>
-                    <div className="listing_details_fields">
-                        <div className="listing_details_field">
-                            <AtSign className="icon-16px icon-stroke-2"/>
-                            <p>{clickedListing.profile.instagram}</p>
-                        </div>
-                        <div className="listing_details_field">
-                            <MapPin className="icon-16px icon-stroke-2" />
-                            <p>
-                                {clickedListing.locations[0].city}, {clickedListing.locations[0].country}
-                                {userLocations.length > 1 && 
-                                    <span>+{userLocations.length - 1} more</span>
-                                }
-                            </p>
+        <>
+            {isLightboxOn && 
+                <Lightbox 
+                    isLightboxOn={isLightboxOn}
+                    setIsLightboxOn={setIsLightboxOn}
+                    lightboxImage={lightboxImage}
+                    gallery={clickedListing.profile.gallery}
+                />
+            }
+            <Modal
+                onClose={onClose}
+                isLightboxOn={isLightboxOn}
+                title={`${userType.charAt(0).toUpperCase() + userType.slice(1)}'s profile`}
+                buttonText="Message on Instagram"
+                buttonIcon={igIcon}
+                link="https://ig.me/m/inktonite_"
+            >
+                <div className="browse_modal_profile-details">
+                    <div className="browse_modal_profile-pic">
+                        <ImageLoader
+                            src={clickedListing.profile.profilePic.small}
+                        />
+                    </div>
+                    <div className="browse_modal_listing-details">
+                        <h3>{clickedListing.profile.name}</h3>
+                        <div className="listing_details_fields">
+                            <div className="listing_details_field">
+                                <AtSign className="icon-16px icon-stroke-2"/>
+                                <p>{clickedListing.profile.instagram}</p>
+                            </div>
+                            <div className="listing_details_field">
+                                <MapPin className="icon-16px icon-stroke-2" />
+                                <p>
+                                    {clickedListing.locations[0].city}, {clickedListing.locations[0].country}
+                                    {userLocations.length > 1 && 
+                                        <span>+{userLocations.length - 1} more</span>
+                                    }
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div>
-                <div className="browse_modal_listing-header">
-                    <p className="browse_modal_label">Available spot</p>
-                    {userListings.length > 0 &&
-                        <button onClick={() => setIsShowingAll(prev => !prev)}>
-                            <ChevronDown className={`icon-14px chevron icon-margin ${isShowingAll ? "chevron-open" : ""}`}/>
-                            {isShowingAll ? "Hide" : "Show"} all ({userListings.length + 1})
-                        </button>
+                <div>
+                    <div className="browse_modal_listing-header">
+                        <p className="browse_modal_label">Available spot</p>
+                        {userListings.length > 0 &&
+                            <button onClick={() => setIsShowingAll(prev => !prev)}>
+                                <ChevronDown className={`icon-14px chevron icon-margin ${isShowingAll ? "chevron-open" : ""}`}/>
+                                {isShowingAll ? "Hide" : "Show"} all ({userListings.length + 1})
+                            </button>
+                        }
+                    </div>
+                    <div className="browse_modal_listing first-listing">
+                        <h4>{clickedListing.locations[0].city}, {clickedListing.locations[0].country}</h4>
+                        <div className="listing_details_field">
+                            <CalendarDays className="icon-16px icon-margin"/>
+                            <p>{clickedListing.dateRange}</p>
+                        </div>
+                    </div>
+                    {isShowingAll &&
+                        <>
+                            <div className="divider-row">
+                                <div className="divider-line"></div>
+                                <span className="divider-label">
+                                    Other open spots
+                                </span>
+                                <div className="divider-line"></div>
+                            </div>
+                            <div className="browse_modal_other-listings">
+                                {userListings.map(item =>
+                                    <div key={item.id} className="browse_modal_listing">
+                                        <h4>{item.locations[0].city}, {item.locations[0].country}</h4>
+                                        <div className="listing_details_field">
+                                            <CalendarDays className="icon-16px icon-margin"/>
+                                            <p>{translateDates(item.dateFrom, item.dateTo)}</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </>
                     }
                 </div>
-                <div className="browse_modal_listing first-listing">
-                    <h4>{clickedListing.locations[0].city}, {clickedListing.locations[0].country}</h4>
-                    <div className="listing_details_field">
-                        <CalendarDays className="icon-16px icon-margin"/>
-                        <p>{clickedListing.dateRange}</p>
+                <div>
+                    <p className="browse_modal_label">About</p>
+                    <p>{clickedListing.profile.bio}</p>
+                </div>
+                <div>
+                    <p className="browse_modal_label">Portfolio</p>
+                    <div className="browse_modal_image-row">
+                        {padGallery(modalGallery, galleryLength).map((img, index) =>
+                            img.isPlaceholder 
+                                ?
+                                    <div key={img.id} className="browse_listing_placeholder browse_modal_gallery-img">
+                                        <CameraOff className="placeholder-img_icon"/>
+                                    </div>
+                                :
+                                    index === (galleryLength - 1) && clickedListing.profile.gallery.length > galleryLength
+                                        ?
+                                            <button 
+                                                key={img.id} 
+                                                className="last-gallery-img browse_modal_gallery-img"
+                                                onClick={() => handleImageClick(index)}
+                                            >
+                                                <ImageLoader src={img.image.small} className="browse_listing_image"/>
+                                                <span className="more-images-hint">
+                                                    +{clickedListing.profile.gallery.length - galleryLength}
+                                                </span>
+                                            </button>
+                                        :   
+                                            <button 
+                                                key={img.id}
+                                                className="browse_modal_gallery-img"
+                                                onClick={() => handleImageClick(index)}
+                                            >
+                                                <ImageLoader src={img.image.small} className="browse_listing_image"/>
+                                            </button>
+                            )}
                     </div>
                 </div>
-                {isShowingAll &&
-                    <>
-                        <div className="divider-row">
-                            <div className="divider-line"></div>
-                            <span className="divider-label">
-                                Other open spots
-                            </span>
-                            <div className="divider-line"></div>
-                        </div>
-                        <div className="browse_modal_other-listings">
-                            {userListings.map(item =>
-                                <div key={item.id} className="browse_modal_listing">
-                                    <h4>{item.locations[0].city}, {item.locations[0].country}</h4>
-                                    <div className="listing_details_field">
-                                        <CalendarDays className="icon-16px icon-margin"/>
-                                        <p>{translateDates(item.dateFrom, item.dateTo)}</p>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </>
-                }
-            </div>
-            <div>
-                <p className="browse_modal_label">About</p>
-                <p>{clickedListing.profile.bio}</p>
-            </div>
-            <div>
-                <p className="browse_modal_label">Portfolio</p>
-                <div className="browse_modal_image-row">
-                    {padGallery(modalGallery, galleryLength).map((img, index) =>
-                        img.isPlaceholder 
-                            ?
-                                <div key={img.id} className="browse_listing_placeholder browse_modal_gallery-img">
-                                    <CameraOff className="placeholder-img_icon"/>
-                                </div>
-                            :
-                                index === (galleryLength - 1) && clickedListing.profile.gallery.length > galleryLength
-                                    ?
-                                        <div key={img.id} className="last-gallery-img browse_modal_gallery-img">
-                                            <ImageLoader src={img.image.small} className="browse_listing_image"/>
-                                            <span className="more-images-hint">
-                                                +{clickedListing.profile.gallery.length - galleryLength}
-                                            </span>
-                                        </div>
-                                    :   
-                                        <ImageLoader key={img.id} src={img.image.small} className="browse_listing_image browse_modal_gallery-img"/>
-                        )}
-                </div>
-            </div>
-        </Modal>
+            </Modal>
+        </>
     )
 }
