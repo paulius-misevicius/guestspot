@@ -88,8 +88,6 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
         setUpdatedGallery(prev => [{image: {small: preview}, file, id: itemId}, ...prev])
     }
 
-    console.log(updatedGallery)
-
     async function updateUserProfile(event) {
         event.preventDefault()
         setIsLoading(true)
@@ -220,6 +218,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
             buttonText="Save changes"
             error={error}
             setError={setError}
+            isLoading={isLoading}
         >
             <div className="profile_modal_picture">
                 <div className="profile_modal-pic-container">

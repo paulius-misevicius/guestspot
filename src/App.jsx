@@ -19,6 +19,7 @@ import Login from "./pages/auth/Login"
 import PasswordReset from "./pages/auth/PasswordReset"
 import Onboarding from "./pages/onboarding/Onboarding"
 import OnboardingGate from "./layouts/OnboardingGate"
+import Settings from "./pages/settings/Settings"
 
 export const UserContext = createContext()
 
@@ -96,6 +97,7 @@ export default function App() {
               <Route path="listings" element={<Listings />}/>
               <Route path="browse" element={<Browse />}/>
               <Route path="profile" element={<Profile />}/>
+              <Route path="settings" element={<Settings />}/>
             </Route>
 
           </Route>

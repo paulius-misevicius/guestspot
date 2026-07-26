@@ -93,14 +93,14 @@
 /* Navbar */
 
 .navbar {
-  position: fixed;
+  position: sticky;
   display: flex;
   gap: 12px;
   padding: 8px 20px;
   background-color: var(--surface-1);
   border-top: 1px solid var(--border);
   width: 100%;
-  height: 60px;
+  min-height: var(--navbar-height);
   bottom: 0%;
 }
 .navbar_tab {
@@ -371,15 +371,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 /* Modal */
 
-.content_overlay {
-  position: fixed;
-  top: 0;
-  left: calc(0% + var(--sidebar-width));
-  bottom: 0;
-  right: 0;
-  z-index: 100;
-  background-color: rgba(0, 0, 0, 0.4);
-}
 .modal {
   position: fixed;
   display: flex;
@@ -437,13 +428,28 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     padding: 8px 28px 24px 28px;
 }
 .modal_create-btn {
-    width: 100%;
-    height: 48px;
-    border-radius: 12px;
-    font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  font-weight: 500;
 }
 .modal_create-btn:hover {
     background-color: var(--btn-hover-color);
+}
+.create_btn_loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.create_btn_loader svg {
+  width: 60%;
+  height: 60%;
 }
 
 /* Lightbox */
@@ -503,7 +509,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: var(--failure);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .modal {
     width: 95dvw;
     max-height: 75dvh;

@@ -3,9 +3,9 @@ import { User, ExternalLink, X, Pencil, Settings, MapPin, AtSign } from "lucide-
 import { UserContext } from "../../App"
 import { uploadImageToFirebase, downloadImageFromFirebase } from "../../utils/firebase/storage"
 import { Link } from "react-router"
+import "./profile.css"
 import ProfileModal from "./components/ProfileModal"
 import ImageLoader from "../../components/ImageLoader"
-import "./profile.css"
 import Lightbox from "../../components/Lightbox"
 
 export default function Profile() {
@@ -44,7 +44,7 @@ export default function Profile() {
                     isModalOpen={isModalOpen} 
                     setIsModalOpen={setIsModalOpen} 
                 />
-            }
+                }
             <section>
                 <div className="profile_header" >
                     <h1>My Profile</h1>
@@ -56,11 +56,12 @@ export default function Profile() {
                             <Pencil className="icon-16px icon-stroke"/>
                             Edit profile
                         </button>
-                        <button
+                        <Link
                             className="profile_header_btn profile_settings-btn"
+                            to="../settings"
                         >
                             <Settings className="icon-17px icon-stroke"/>
-                        </button>
+                        </Link>
                     </div>
                 </div>
                 <div className="profile_content">
@@ -133,6 +134,11 @@ export default function Profile() {
                         )}
                 </div>
             </section>
+            {!profile.gallery || profile.gallery.length === 0 &&
+                <p className="empty_section_message">
+                    {`Edit your profile to showcase your ${profile.type === "studio" ? "studio's work" : "work"}!`}
+                </p>
+                }
         </>
     )
 }

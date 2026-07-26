@@ -14,6 +14,7 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
     const [listingData, setListingData] = useState({})
     const [locations, setLocations] = useState([])
     const [error, setError] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
     const { user, profile } = useContext(UserContext)
 
     useEffect(() => {
@@ -21,27 +22,35 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
         .then(data => setLocations(data))
     }, [])
     
-    function createListing(event) {
+    async function createListing(event) {
         event.preventDefault()
+        setIsLoading(true)
         
         if (!listingData.locations?.[0]?.city || listingData.from === undefined) {
             setError("Please fill out the required fields!")
+            setIsLoading(false)
             return
         }
         setError(null)
-        const { from, to, ...rest } = listingData
-        addToFirebase("listings", 
-            {
-                ...rest, 
-                createdAt: serverTimestamp(), 
-                userId: user.uid, 
-                type: profile.type,
-                dateFrom: from,
-                dateTo: to
-            }
-        )
-        setListingData({})
-        setIsModalOpen(false)
+        try {
+            const { from, to, ...rest } = listingData
+            addToFirebase("listings", 
+                {
+                    ...rest, 
+                    createdAt: serverTimestamp(), 
+                    userId: user.uid, 
+                    type: profile.type,
+                    dateFrom: from,
+                    dateTo: to
+                }
+            )
+            setListingData({})
+        } catch (error) {
+            console.error(error.message)
+        } finally {
+            setIsModalOpen(false)
+            setIsLoading(false)
+        }
     }
 
     function onClose() {
@@ -60,6 +69,7 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
             onSubmit={createListing} 
             onClose={onClose} 
             error={error}
+            isLoading={isLoading}
         >
             <Combobox 
                 data={listingData} 

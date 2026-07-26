@@ -218,7 +218,7 @@ export default function Browse() {
                         )}
                     </section>
                 :
-                    !isLoading && hasLoadedOnce && <p className="browse_listings_empty_message">No listings found for your search!</p>
+                    !isLoading && hasLoadedOnce && <p className="empty_section_message">No listings found for your search!</p>
                 }
             {hasMore && <div ref={sentinelRef} style={{ height: 1 }} />}
             {isLoading && 

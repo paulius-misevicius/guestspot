@@ -13,13 +13,15 @@ export default function AppLayout() {
     }
 
     return (
-        <main>
-            <Sidebar />
-            <section className="content">
-                <Outlet />
-                <div id="portal"></div>
-            </section>
+        <>
+            <main>
+                <Sidebar />
+                <section className="content">
+                    <Outlet />
+                    <div id="portal"></div>
+                </section>
+            </main>
             <Navbar />
-        </main>
+        </>
     )
 }

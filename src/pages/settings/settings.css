@@ -1,0 +1,131 @@
+.settings {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.settings_header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.settings_header a {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: var(--font-size-s);
+}
+.settings_header a:hover {
+    color: var(--text-primary);
+}
+.settings_content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.settings_block {
+    background-color: var(--surface-1);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+.settings_setting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    min-height: 50px;
+    font-weight: 500;
+}
+.btn-setting {
+    width: 100%;
+    font-size: var(--font-size-s);
+    color: var(--text-secondary);
+    background-color: transparent;
+    text-decoration: none;
+}
+.settings_block a {
+    color: var(--text-muted);
+}
+.btn-setting svg {
+    color: var(--text-muted);
+}
+.btn-setting:hover svg {
+    color: var(--text-secondary);
+}
+.btn-setting:hover {
+    background-color: var(--surface-2);
+    color: var(--text-primary);
+}
+.settings_setting:last-child {
+    border: none;
+}
+.user-email {
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: var(--font-size-xs);
+}
+.settings_label {
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: var(--font-size-xs);
+    margin-bottom: 12px;
+}
+.danger_label {
+    color: var(--failure);
+    opacity: 0.5;
+}
+.settings_button {
+    display: flex;
+    font-weight: 500;
+    font-size: var(--font-size-xs);
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    background-color: var(--surface-2);
+}
+.danger-container {
+    border: 1px solid var(--failure);
+    opacity: 0.5;
+}
+.danger-container p,
+.danger-container button {
+    color: var(--failure);
+}
+.danger-container button {
+    background-color: transparent;
+    border: 1px solid var(--failure);
+}
+.danger-container button:hover {
+    background-color: var(--failure);
+}
+.log-out-btn {
+    color: var(--text-muted);
+    border-radius: 8px;
+    background-color: var(--surface-1);
+    border: 1px solid var(--border);
+}
+.log-out-btn:hover {
+    background-color: var(--failure);
+    color: var(--surface-1);
+}
+.log-out-btn:hover svg {
+    color: var(--surface-1);
+}
+.settings_button:hover {
+    background-color: var(--btn-default-color);
+    color: var(--surface-1);
+}
+
+@media (min-width: 640px) {
+    .log-out-btn {
+        gap: 12px;
+        align-self: flex-end;
+        padding-inline: 24px;
+    }
+}
