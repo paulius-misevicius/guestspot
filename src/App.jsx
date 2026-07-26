@@ -93,7 +93,7 @@ export default function App() {
 
           <Route element={<AuthRequired />}>
             <Route path="/" element={<AppLayout />}>
-              <Route index element={<Listings />}/>
+              <Route path="listings" element={<Listings />}/>
               <Route path="browse" element={<Browse />}/>
               <Route path="profile" element={<Profile />}/>
             </Route>

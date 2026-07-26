@@ -227,15 +227,7 @@
     width: 100%;
 }
 
-@media (min-width: 640px) {
-    .mobile-only {
-        display: none;
-    }
-}
 @media (max-width: 640px) {
-    .desktop-only {
-        display: none;
-    }
     .profile_content {
         flex-direction: column;
         padding: 24px;

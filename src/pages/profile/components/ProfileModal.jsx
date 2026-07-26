@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from "react"
 import { Link } from "react-router"
-import { X, UserRound, User, Camera, AtSign, ExternalLink, Plus } from "lucide-react"
+import { X, UserRound, User, Camera, AtSign, ExternalLink, Plus, Trash2, ChevronLeft, ChevronRight } from "lucide-react"
 import { nanoid } from "nanoid"
 import { TailSpin } from "react-loader-spinner"
 import { UserContext } from "../../../App"
@@ -198,6 +198,17 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
         setIsModalOpen(false)
     }
 
+    function moveGalleryItem(array, index, direction) {
+        const newIndex = index + direction
+        
+        if (newIndex < 0 || newIndex >= array.length) return array
+
+        const updated = [...array];
+        [updated[index], updated[newIndex]] = [updated[newIndex], updated[index]]
+
+        return updated
+    }
+
     if (!isModalOpen) return
 
     return (
@@ -313,35 +324,54 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                     <label>Portfolio</label>
                 </div>
                 <div className="input-gallery">
-                    <div className="input_gallery_item">
-                        <input
-                            disabled={updatedGallery.length === 20}
-                            ref={galleryPicRef}
-                            onChange={addToGallery}
-                            type="file"
-                            accept="image/png, image/jpeg, image/webp"
-                            style={{ display: "none" }}
-                        />
-                        <button
-                            className="input_gallery_add-btn modal_portfolio_image"
-                            type="button"
-                            onClick={() => galleryPicRef.current.click()}
-                        >
-                            <Plus className="input_gallery_plus-icon"/>
-                        </button>
-                    </div>
-                    {updatedGallery.map(item =>
+                    {updatedGallery.length !== 20 &&
+                        <div className="input_gallery_item">
+                            <input
+                                disabled={updatedGallery.length === 20}
+                                ref={galleryPicRef}
+                                onChange={addToGallery}
+                                type="file"
+                                accept="image/png, image/jpeg, image/webp"
+                                style={{ display: "none" }}
+                            />
+                            <button
+                                className="input_gallery_add-btn modal_portfolio_image"
+                                type="button"
+                                disabled={updatedGallery.length === 20}
+                                onClick={() => galleryPicRef.current.click()}
+                            >
+                                <Plus className="input_gallery_plus-icon"/>
+                            </button>
+                        </div>
+                        }
+                    {updatedGallery.map((item, index) =>
                         <div className="input_gallery_item" key={item.id}>
                             <ImageLoader src={item.image.small} />
                             <button
                                 onClick={() => deleteFromGallery(item.id)}
                                 type="button"
-                                className="gallery_item_delete-btn"
+                                className="gallery_item_delete-btn gallery_item_btn"
                             >
-                                <X className="item_delete-btn_icon"/>
+                                <Trash2 className="icon-16px icon-stroke"/>
+                            </button>
+                            <button
+                                type="button"
+                                className="gallery_item_btn move-left"
+                                onClick={() => setUpdatedGallery(prev => moveGalleryItem(prev, index, -1))}
+                                disabled={index === 0}
+                            >
+                                <ChevronLeft className="icon-16px icon-stroke"/>
+                            </button>
+                            <button
+                                type="button"
+                                className="gallery_item_btn move-right"
+                                onClick={() => setUpdatedGallery(prev => moveGalleryItem(prev, index, 1))}
+                                disabled={index === updatedGallery.length - 1}
+                            >
+                                <ChevronRight className="icon-16px icon-stroke"/>
                             </button>
                         </div>
-                        )}
+                    )}
                 </div>
                 <span>{updatedGallery.length}/20</span>
             </div>

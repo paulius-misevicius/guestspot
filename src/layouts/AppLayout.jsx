@@ -2,6 +2,7 @@ import { useContext } from "react"
 import { UserContext } from "../App"
 import { Navigate, Outlet } from "react-router"
 import Sidebar from "../components/Sidebar"
+import Navbar from "../components/Navbar"
 
 export default function AppLayout() {
 
@@ -18,6 +19,7 @@ export default function AppLayout() {
                 <Outlet />
                 <div id="portal"></div>
             </section>
+            <Navbar />
         </main>
     )
 }

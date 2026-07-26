@@ -24,10 +24,10 @@ export default function Sidebar() {
                 <h3>Guestspot app</h3>
                 <nav className="sidebar_nav">
                     <NavLink
-                        to="."
+                        to="listings"
                         className="sidebar_nav_tab"
                     >
-                        <MapPin className="icon-18px icon-stroke"/>
+                        <MapPin className="icon-18px icon-stroke-2"/>
                         My listings
                     </NavLink>
                     <NavLink

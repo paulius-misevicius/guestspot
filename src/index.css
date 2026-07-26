@@ -74,7 +74,8 @@ button, .link {
   text-decoration: none;
 }
 .link svg {
-    width: 1.625rem;
+    width: 1.5rem;
+    height: 1.5rem;
     margin-right: 6px;
 }
 .input-container {
@@ -116,6 +117,14 @@ button, .link {
 .icon-18px {
   width: 1.125rem;
   height: 1.125rem;
+}
+.icon-19px {
+  width: 1.1875rem;
+  height: 1.1875rem;
+}
+.icon-20px {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 .icon-margin {
   margin-right: 2px;
@@ -426,6 +435,7 @@ main {
   align-items: center;
   width: 100%;
   max-width: 100%;
+  scrollbar-color: var(--btn-hover-color) transparent;
 }
 .input_gallery_item {
   position: relative;
@@ -442,34 +452,55 @@ main {
   height: 100%;
   border-radius: 8px;
 }
-.input_gallery_add-btn:hover {
+.input_gallery_add-btn:not(:disabled):hover {
   background-color: var(--tab-hover-color);
   color: var(--text-secondary);
+}
+.input_gallery_add-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 .input_gallery_plus-icon {
   width: 28px;
   height: 28px;
 }
-.gallery_item_delete-btn {
-  opacity: 80%;
+.gallery_item_btn {
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 15%;
-  min-width: 26px;
-  aspect-ratio: 1/1;
-  border-radius: 999px;
-  top: 3%;
-  right: 4%;
+  color: var(--text-muted);
+  background-color: var(--surface-2);
+}
+.gallery_item_delete-btn {
+  padding: 8px;
+  border-radius: 4px;
+  top: 8px;
+  right: 8px;
+}
+.move-left {
+  bottom: 8px;
+  left: 8px;
+  padding: 8px;
+  border-radius: 4px;
+}
+.move-right {
+  bottom: 8px;
+  right: 8px;
+  padding: 8px;
+  border-radius: 4px;
 }
 .gallery_item_delete-btn:hover {
-  opacity: 100%;
   background-color: var(--failure);
+  color: var(--surface-1);
 }
-.item_delete-btn_icon {
-  width: 50%;
-  height: 50%;
+.move-left:not(:disabled):hover, .move-right:not(:disabled):hover {
+  background-color: var(--text-muted);
+  color: var(--surface-1);
+}
+.move-left:disabled, .move-right:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .navigation_next-skip-btn {
@@ -482,190 +513,35 @@ main {
   background-color: transparent;
 }
 
-/* .profile_profile-pic {
-  width: 100px;
-  height: 100px;
-  border-radius: 999px;
-  background-color: var(--surface-3);
+@media (min-width: 1024px) {
+  .navbar {
+    display: none !important;
+  }
 }
-.onboarding_location-multiple {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: 16px;
-} */
-/* .onboarding_location-delete-btn {
-  background-color: var(--surface-1);
-  color: var(--text-muted);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 12px;
-  padding: 8px 12px;
-  height: fit-content;
-}
-.onboarding_location-delete-btn:hover {
-  background-color: var(--surface-3);
-  color: var(--text-primary);
-}
-.onboarding_add-location-btn {
-  background-color: transparent;
-  margin-top: 16px;
-} */
-
-/* .profile_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-.profile_header_content {
-  display: flex;
-  gap: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-}
-.profile_edit-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8px;
-  border-radius: 8px;
-  height: fit-content;
-}
-.profile_bio {
-  margin-top: 12px;
-}
-.profile_username-link {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-.profile_instagram {
-  display: flex;
-  align-items: center;
-  text-underline-offset: 4px;
-  font-size: var(--font-size-s);
-  gap: 4px;
-}
-.profile_gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-.profile_modal_header {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.profile_modal {
-  justify-content: flex-start;
-  top: 50dvh;
-  min-width: 500px;
-  max-height: 95dvh;
-  overflow-y: scroll;
-  scrollbar-color: var(--border) transparent;
-}
-.profile_profile-pic {
-  cursor: default;
-}
-.profile_modal_picture {
-  margin-top: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 20px;
-}
-.profile_modal-pic-container {
-  position: relative;
-  overflow: visible;
-}
-.profile_modal_pic-btn {
-  border-radius: 20px;
-  width: 80px;
-  height: 80px;
-}
-.profile_pic-camera-icon {
-  width: 26px;
-  height: 26px;
-  position: absolute;
-  background-color: var(--border);
-  padding: 4px;
-  border-radius: 12px;
-  bottom: -5%;
-  right: -5%;
-}
-.profile_modal_name-instagram {
-  width: 100%;
-  display: flex;
-  gap: 20px;
-  margin-top: 32px;
-}
-.ig-preview {
-  display: inline-block;
-  margin-top: 4px;
-  text-underline-offset: 4px;
-}
-.profile_instagram {
-  font-size: var(--font-size-xs);
-}
-.profile_modal_bio {
-  width: 100%;
-  margin-top: 28px;
-}
-.profile_modal_combobox {
-  width: 100%;
-}
-.profile_modal .onboarding_location-multiple:first-child {
-  margin-top: unset;
-}
-.profile_modal_portfolio {
-  width: 100%;
-  margin-top: 24px;
-}
-.portfolio_label-count {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-}
-.portfolio_label-count label {
-  margin-bottom: unset;
-}
-.profile_modal_portfolio span {
-  display: block;
-  font-size: var(--font-size-xs);
-  color: var(--text-muted);
-  font-weight: 500;
-  text-align: right;
-  margin-top: 8px;
-}
-.profile_modal .modal_portfolio_image {
-  width: clamp(150px, 16vw, 175px);
-}
-.profile_modal::-webkit-scrollbar {
-  position: absolute;
-}
-.profile_modal .input_gallery_add-btn {
-  background-color: var(--surface-1);
-}
-.profile_modal .input_gallery_add-btn:hover {
-  background-color: var(--surface-3);
-} */
 
 @media (max-width: 1024px) {
   :root {
     --sidebar-width: 0px;
   }
   .sidebar {
-    display: none;
+    display: none !important;
   }
   .content {
     padding: 20px 20px
   }
   .onboarding_left {
-    display: none;
+    display: none !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .desktop-only {
+    display: none !important;
   }
 }

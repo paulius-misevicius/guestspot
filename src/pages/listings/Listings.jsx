@@ -37,18 +37,24 @@ export default function Listings() {
           isModalOpen={isModalOpen} 
           setIsModalOpen={setIsModalOpen}
         />
-        <section className="user_listings_header">
-          <div>
+        <section>
+          <div className="user_listings_header">
             <h1>My travel plans</h1>
-            <p>Cities and dates you're available to guest</p>
+            <button 
+              className="header_new-listing-btn desktop-only"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <Plus className="icon-16px icon-stroke" />
+              New Listing
+            </button>
+            <button 
+              className="header_new-listing-btn mobile-only btn_mobile-padding"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <Plus className="icon-16px icon-stroke" />
+            </button>
           </div>
-          <button 
-            className="header_new-listing-btn"
-            onClick={() => setIsModalOpen(true)}
-          >
-            <Plus className="icon-16px icon-stroke" />
-            New Listing
-          </button>
+          <p>Cities and dates you're available to guest</p>
         </section>
         {listings.length > 0 
           ?
