@@ -17,7 +17,7 @@ export default function Navigation({currentStep, setCurrentStep, steps}) {
                 }
             {isNotFirstStep &&
                 <div className="navigation_next-skip-btn">
-                    {isNotLastStep && isSkippable && 
+                    {isNotLastStep && isSkippable && !isFilled &&
                         <button 
                             className="onboarding_navigation_skip-btn"
                             onClick={() => setCurrentStep(prev => prev + 1)}

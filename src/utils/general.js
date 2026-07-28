@@ -10,7 +10,7 @@ export function toEnglishChars(string) {
 
 export async function checkUsername(field, username) {
     const usernameMatch = await queryFirebaseDoc("profiles", field, username)
-    return usernameMatch
+    return usernameMatch?.id
 }
 
 export function toDateParam(date) {

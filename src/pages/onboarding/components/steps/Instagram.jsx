@@ -1,7 +1,7 @@
 import { AtSign } from "lucide-react"
 import { Link } from "react-router"
 
-export default function Instagram({profile, setProfile}) {
+export default function Instagram({profile, setProfile, error, setError}) {
 
     const igPreview = `instagram.com/${profile.instagram || ""}`
 
@@ -19,18 +19,22 @@ export default function Instagram({profile, setProfile}) {
                     <AtSign className="input-icon icon-14px" />
                     <input 
                         value={profile.instagram || ""}
-                        onChange={event => setProfile((
-                            {
-                                ...profile,
-                                instagram: event.target.value
-                            }
-                        ))} 
+                        onChange={event => {
+                            setProfile((
+                                {
+                                    ...profile,
+                                    instagram: event.target.value
+                                }
+                            ))
+                            setError(null)
+                        }} 
                         name="instagram"
                         id="instagram"
                         type="text" 
                     />
                 </div>
             </div>
+            {error && <p className="error-msg">{error}</p>}
             <span>Preview:
                 <Link to={`https://${igPreview}`}>{igPreview}</Link>
             </span>

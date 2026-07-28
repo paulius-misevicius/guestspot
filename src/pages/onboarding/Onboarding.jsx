@@ -4,6 +4,7 @@ import { LogOut } from "lucide-react"
 import { UserContext } from "../../App"
 import { overwriteFirebaseDoc } from "../../utils/firebase/firestore"
 import { signOutUser } from "../../utils/firebase/auth"
+import { checkUsername } from "../../utils/general"
 
 import Navigation from "./components/Navigation"
 
@@ -18,39 +19,76 @@ import ProfilePic from "./components/steps/ProfilePic"
 
 export default function Onboarding() {
 
-    const { user, profile, setProfile, profilePic, setProfilePic, gallery, setGallery, locations } = useContext(UserContext)
+    const { user, profile, setProfile } = useContext(UserContext)
     const [currentStep, setCurrentStep] = useState(0)
-    
+    const [error, setError] = useState()
+
     const STEPS = [
         {key: "welcome", component: Welcome},
-        {key: "type", component: Type, skippable: false, isFilled: profile.type !== undefined && profile.type !== ""},
-        {key: "name", component: Name, skippable: false, isFilled: profile.name !== undefined && profile.name !== ""},
-        {key: "location", component: Location, skippable: false, isFilled: profile.locations !== undefined && profile.locations[0]?.city !== undefined},
-        {key: "instagram", component: Instagram, skippable: false, isFilled: profile.instagram !== undefined && profile.instagram !== ""},
-        {key: "bio", component: Bio, skippable: true, isFilled: profile.bio !== undefined && profile.bio !== ""},
-        {key: "portfolio", component: Portfolio, skippable: true, isFilled: gallery.length > 0},
-        {key: "profilePic", component: ProfilePic, skippable: true, isFilled: profilePic !== undefined && profilePic !== ""}
+        {key: "type", component: Type, skippable: false, isFilled: profile.type && profile.type !== ""},
+        {key: "name", component: Name, skippable: false, isFilled: profile.name && profile.name !== ""},
+        {key: "location", component: Location, skippable: false, isFilled: profile.locations && profile.locations[0]?.city !== undefined},
+        {key: "instagram", component: Instagram, skippable: false, isFilled: profile.instagram && profile.instagram !== ""},
+        {key: "bio", component: Bio, skippable: true, isFilled: profile.bio && profile.bio !== ""},
+        {key: "portfolio", component: Portfolio, skippable: true, isFilled: profile?.gallery?.length > 0},
+        {key: "profilePic", component: ProfilePic, skippable: true, isFilled: profile.profilePic && Object.keys(profile.profilePic) > 0}
     ]
     
     const CurrentComponent = STEPS[currentStep].component
     
     const stepProps = {
-        profile, setProfile, locations, gallery, setGallery, profilePic, setProfilePic
+        profile, setProfile, error, setError
     }
     
     async function submitAnswer(event) {
         event.preventDefault()
-
-        if (!STEPS[currentStep].isFilled && currentStep !== (STEPS.length - 1)) return
+        setError(null)
+        let updatedProfile = {...profile}
         
-        if (currentStep < (STEPS.length - 1)) {
-            setCurrentStep(prev => prev + 1)
-            await overwriteFirebaseDoc("profiles", user.uid, profile)
-        } else {
-            const updatedProfile = {...profile, isProfileCompleted: true}
-            setProfile(updatedProfile)
-            await overwriteFirebaseDoc("profiles", user.uid, updatedProfile)
-            return <Navigate to="/" />
+        if (!STEPS[currentStep].isFilled && currentStep !== (STEPS.length - 1)) return
+
+        try {
+            if (STEPS[currentStep].key === "name" && updatedProfile.name) {
+                const nameMatch = await checkUsername("name", updatedProfile.name)
+                if (nameMatch && nameMatch !== user.uid) {
+                    setError("Name already taken!")
+                    updatedProfile = {... updatedProfile, name: ""}
+                    setProfile(updatedProfile)
+                    return
+                }
+            }
+            if (STEPS[currentStep].key === "instagram" && updatedProfile.instagram) {
+                const instagramMatch = await checkUsername("instagram", updatedProfile.instagram)
+                if (instagramMatch && instagramMatch !== user.uid) {
+                    setError("Instagram handle already taken!")
+                    updatedProfile = {... updatedProfile, instagram: ""}
+                    setProfile(updatedProfile)
+                    return
+                }
+            }
+        } catch(error) {
+            console.error(error.message)
+        }
+
+        try {
+            if (currentStep < (STEPS.length - 1)) {
+                updatedProfile = profile.locations
+                    ?   {
+                            ...updatedProfile, 
+                            locations: updatedProfile.locations.filter(item => item !== undefined)
+                        }
+                    :   updatedProfile
+                setProfile(updatedProfile)
+                setCurrentStep(prev => prev + 1)
+                await overwriteFirebaseDoc("profiles", user.uid, updatedProfile)
+            } else {
+                updatedProfile = {...updatedProfile, isProfileCompleted: true}
+                setProfile(updatedProfile)
+                await overwriteFirebaseDoc("profiles", user.uid, updatedProfile)
+                return <Navigate to="/listings" />
+            }
+        } catch (error) {
+            console.error(error.message)
         }
     }
 

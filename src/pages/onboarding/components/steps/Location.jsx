@@ -1,8 +1,9 @@
 import { useState } from "react"
 import Combobox from "../../../../components/fields/Combobox"
 import { X } from "lucide-react"
+import { cities } from "../../../../utils/cities"
 
-export default function Location({profile, setProfile, locations}) {
+export default function Location({profile, setProfile}) {
 
     const [locationCount, setLocationCount] = useState(profile.locations?.length || 1)
 
@@ -29,7 +30,7 @@ export default function Location({profile, setProfile, locations}) {
                 noLabel={index > 0} 
                 data={profile} 
                 setData={setProfile} 
-                itemList={locations} 
+                itemList={cities} 
                 index={index}
                 placeholder="Enter the city in which you're based..."
             />

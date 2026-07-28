@@ -11,10 +11,11 @@ import Combobox from "../../../components/fields/Combobox"
 import Modal from "../../../components/Modal"
 import ImageLoader from "../../../components/ImageLoader"
 import { checkUsername } from "../../../utils/general"
+import { cities } from "../../../utils/cities"
 
 export default function ProfileModal({isModalOpen, setIsModalOpen}) {
 
-    const { user, profile, setProfile, locations } = useContext(UserContext)
+    const { user, profile, setProfile } = useContext(UserContext)
     const profilePicRef = useRef(null)
     const galleryPicRef = useRef(null)
 
@@ -52,7 +53,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                 noLabel={index > 0} 
                 data={updatedProfile} 
                 setData={setUpdatedProfile} 
-                itemList={locations} 
+                itemList={cities} 
                 index={index}
                 disabled={index !== (locationCount - 1)}
                 error={error}
@@ -102,7 +103,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
 
         try {
             const match = await checkUsername("name", updatedProfile.name)
-            if (match && match !== profile.name) {
+            if (match && match !== user.uid) {
                 setError("Name already taken!")
                 setIsLoading(false)
                 return
@@ -112,7 +113,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
         }
         try {
             const match = await checkUsername("instagram", updatedProfile.instagram)
-            if (match && match !== profile.instagram) {
+            if (match && match !== user.uid) {
                 setError("Instagram handle already taken!")
                 setIsLoading(false)
                 return
@@ -313,7 +314,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                     rows="5"
                     maxLength="165"
                 />
-                <span>{updatedProfile.bio.length}/165</span>
+                <span>{updatedProfile?.bio?.length ?? 0}/165</span>
             </div>
             <div className="profile_modal_portfolio">
                 <div className="portfolio_label-count">

@@ -1,99 +1,95 @@
-import { useState, useRef, useContext, useEffect } from "react"
-import { uploadImageToFirebase, downloadImageFromFirebase, deleteImageFromFirebase, listAllDirectoryFiles } from "../../../../utils/firebase/storage"
-import { UserContext } from "../../../../App"
-import { Plus, X } from "lucide-react"
+import { useState, useContext, useRef } from "react"
 import { nanoid } from "nanoid"
+import { Plus, Trash2, } from "lucide-react"
+import { UserContext } from "../../../../App"
+import { overwriteFirebaseDoc } from "../../../../utils/firebase/firestore"
+import { deleteFolderFromFirebase, uploadImageToFirebase, downloadImageFromFirebase } from "../../../../utils/firebase/storage"
+import ImageLoader from "../../../../components/ImageLoader"
 
-export default function Portfolio({gallery, setGallery, profile}) {
+export default function Portfolio({profile, setProfile}) {
 
     const { user } = useContext(UserContext)
-        
-    const fileInputRef = useRef(null)
-
+    const [gallery, setGallery] = useState(profile?.gallery ?? [])
+    const galleryPicRef = useRef(null)
+    
     async function deleteFromGallery(id) {
-
-        const path = `users/${user.uid}/portfolio/${id}`
-        setGallery(prev => 
-            prev.filter(item => item.id !== id)
-        )
-
         try {
-            await deleteImageFromFirebase(path)
+            setGallery(prev => prev.filter(item => item.id !== id))
+            const updatedGallery = profile?.gallery?.filter(item => item.id !== id) ?? []
+            setProfile(prev => ({...prev, gallery: updatedGallery}))
+            await overwriteFirebaseDoc("profiles", user.uid, {...profile, gallery: updatedGallery})
+            await deleteFolderFromFirebase(`users/${user.uid}/portfolio/${id}`)
         } catch (error) {
             console.error(error.message)
         }
     }
 
     async function addToGallery(event) {
-            
         const itemId = nanoid()
         const file = event.target.files[0]
-        const path = `users/${user.uid}/portfolio/${itemId}`
         
         if (!file) return
 
-        const preview = URL.createObjectURL(file)
-        setGallery(prev => [{image: preview, id: itemId}, ...prev])
-        
         try {
+            const preview = URL.createObjectURL(file)
+            setGallery(prev => [{image: {small: preview}, id: itemId}, ...prev])
+            const path = `users/${user.uid}/portfolio/${itemId}`
             await uploadImageToFirebase(file, path)
-            const picUrl = await downloadImageFromFirebase(path)
-            setGallery(prev => 
-                prev.map(item => item.id === itemId ? {image: picUrl, ...item} : item)
-            )
+            const [thumb, small, large] = await downloadImageFromFirebase(path)
+            const updatedGallery = [
+                ...profile?.gallery ?? [], 
+                {
+                    id: itemId, 
+                    image: {thumb: thumb, small: small, large: large}
+                }
+            ]
+            setProfile(prev => ({...prev, gallery: updatedGallery}))
+            await overwriteFirebaseDoc("profiles", user.uid, {...profile, gallery: updatedGallery})
         } catch (error) {
             console.error(error.message)
-            setGallery(prev => 
-                prev.filter(item => item.id !== itemId)
-            )
         }
     }
 
     return (
-        <>
-            <h1>{profile.type === "artist" 
-                    ? "Add pictures of your portfolio"
-                    : "Add pictures of your studio"
-                    }
-            </h1>
-            <p>{profile.type === "artist" 
-                    ? "Pick up to 20 images of your best work."
-                    : "Upload up to 20 images that best capture your studio."    
-                    }
-            </p>
-            <label>Portfolio pictures</label>
+        <div className="profile_modal_portfolio">
+            <div className="portfolio_label-count">
+                <label>Portfolio</label>
+            </div>
             <div className="input-gallery">
-                <div className="input_gallery_item">
-                    <input
-                        disabled={gallery.length === 20}
-                        ref={fileInputRef}
-                        onChange={addToGallery}
-                        type="file"
-                        accept="image/png, image/jpeg, image/webp"
-                        style={{ display: "none" }}
-                    />
-                    <button
-                        className="input_gallery_add-btn"
-                        type="button"
-                        onClick={() => fileInputRef.current.click()}
-                    >
-                    <Plus className="input_gallery_plus-icon"/>
-                    </button>
-                </div>
-                {gallery.map(item => 
-                    <div className="input_gallery_item" key={item.id}>
-                        <img className="input_gallery_image" src={item.image} />
-                        <button 
-                            onClick={() => deleteFromGallery(item.id)} 
-                            type="button" 
-                            className="gallery_item_delete-btn"
+                {gallery.length !== 20 &&
+                    <div className="input_gallery_item">
+                        <input
+                            disabled={gallery.length === 20}
+                            ref={galleryPicRef}
+                            onChange={addToGallery}
+                            type="file"
+                            accept="image/png, image/jpeg, image/webp"
+                            style={{ display: "none" }}
+                        />
+                        <button
+                            className="input_gallery_add-btn modal_portfolio_image"
+                            type="button"
+                            disabled={gallery.length === 20}
+                            onClick={() => galleryPicRef.current.click()}
                         >
-                            <X className="item_delete-btn_icon"/>
+                            <Plus className="input_gallery_plus-icon"/>
                         </button>
                     </div>
-                    )}
+                    }
+                {gallery.map((item, index) =>
+                    <div className="input_gallery_item" key={item.id}>
+                        <ImageLoader src={item.image.small} />
+                        <button
+                            onClick={() => deleteFromGallery(item.id)}
+                            type="button"
+                            className="gallery_item_delete-btn gallery_item_btn"
+                        >
+                            <Trash2 className="icon-16px icon-stroke"/>
+                        </button>
+                    </div>
+                )}
             </div>
-            <p>{gallery.length}/20</p>
-        </>
+            <span>{gallery.length}/20</span>
+        </div>
     )
 }

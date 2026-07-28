@@ -1,65 +1,70 @@
-import { useState, useRef, useContext, useEffect } from "react"
+import { useState, useRef, useContext } from "react"
 import { uploadImageToFirebase, downloadImageFromFirebase } from "../../../../utils/firebase/storage"
+import { overwriteFirebaseDoc } from "../../../../utils/firebase/firestore"
 import { UserContext } from "../../../../App"
-import { UserRound } from "lucide-react"
+import { User, Camera } from "lucide-react"
+import ImageLoader from "../../../../components/ImageLoader"
 
-export default function ProfilePic({setProfile, profilePic, setProfilePic, profile}) {
+export default function ProfilePic({setProfile, profile}) {
     
     const { user } = useContext(UserContext)
-    
-    const fileInputRef = useRef(null)
-    
-    async function changeProfilePic(event) {
+    const [profilePic, setProfilePic] = useState(profile?.profilePic?.small)
+    const profilePicRef = useRef(null)
         
+    async function changeProfilePic(event) {
         const file = event.target.files[0]
-        const path = `users/${user.uid}/profile.webp`
         
         if (!file) return
 
-        const preview = URL.createObjectURL(file)
-        setProfilePic(preview)
-        
         try {
-            await uploadImageToFirebase(file, path)
-            const picUrl = await downloadImageFromFirebase(path)
-            setProfilePic(picUrl)
-            setProfile(prev => ({...prev, hasProfilePicture: true}))
+            const preview = URL.createObjectURL(file)
+            setProfilePic(preview)
+            await uploadImageToFirebase(file, `users/${user.uid}/profile`)
+            const [thumb, small, large] = await downloadImageFromFirebase(`users/${user.uid}/profile`)
+            setProfile(prev => (
+                {
+                    ...prev, 
+                    profilePic: {thumb: thumb, small: small, large: large}
+                }
+            ))
+            await overwriteFirebaseDoc("profiles", user.uid, 
+                {...profile, profilePic: {thumb: thumb, small: small, large: large}}
+            )
         } catch (error) {
             console.error(error.message)
-            setProfilePic(null)
         }
     }
 
     return (
-            <div>
-                <h1>{profile.type === "artist" 
-                        ? "Add a profile picture or a logo"
-                        : "Add your studio logo"
-                        }
-                </h1>
-                <p>{profile.type === "artist" 
-                        ? "This is the first thing studios see. Make sure to leave a good first impression!"
-                        : "This is the first thing artists see. Make sure they can recognize your studio right away!"
-                        }
-                </p>
-                <label>Profile pic</label>
-                <input 
-                    ref={fileInputRef}
-                    onChange={changeProfilePic} 
-                    type="file" 
-                    accept="image/png, image/jpeg, image/webp" 
-                    style={{ display: "none" }}
-                />
-                <button
-                    className="onboarding_profile"
-                    type="button"
-                    onClick={() => fileInputRef.current.click()}
-                >
-                    {profilePic 
-                        ? <img className="onboarding_profile-pic" src={profilePic} />
-                        : <UserRound className="onboarding_avatar-icon"/>
-                        }
-                </button>
-            </div>
+        <div className="profile_modal-pic-container">
+            <label className="sr-only">Profile picture</label>
+            <input
+                ref={profilePicRef}
+                onChange={changeProfilePic}
+                type="file"
+                accept="image/png, image/jpeg, image/webp"
+                style={{ display: "none" }}
+            />
+            <button
+                className="profile_modal_pic-btn"
+                type="button"
+                onClick={() => profilePicRef.current.click()}
+            >
+                {profilePic
+                    ?
+                        <ImageLoader
+                            border
+                            src={profilePic}
+                        />
+                    :
+                        <div className="profile_pic-preview profile_pic-placeholder">
+                            <User className="profile_pic-placeholder_icon"/>
+                        </div>
+                    }
+                <div className="btn-overlay">
+                    <Camera className="profile_pic-camera-icon"/>
+                </div>
+            </button>
+        </div>
     )
 }
