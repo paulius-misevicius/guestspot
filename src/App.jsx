@@ -20,6 +20,7 @@ import PasswordReset from "./pages/auth/PasswordReset"
 import Onboarding from "./pages/onboarding/Onboarding"
 import OnboardingGate from "./layouts/OnboardingGate"
 import Settings from "./pages/settings/Settings"
+import PageNotFound from "./components/PageNotFound"
 
 export const UserContext = createContext()
 
@@ -28,9 +29,6 @@ export default function App() {
   const [user, setUser] = useState(null)
   const [profile, setProfile] = useState(null)
   const [isAuthLoading, setIsAuthLoading] = useState(true)
-  const [profilePic, setProfilePic] = useState("")
-  const [gallery, setGallery] = useState([])
-  const [locations, setLocations] = useState([])
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async user => {
@@ -42,45 +40,18 @@ export default function App() {
         return
       }
 
-      const profileData = await getFirebaseDoc("profiles", user.uid)
-
-      if (!profileData) {
-        await addToFirebaseWithId("profiles", user.uid, {isProfileCompleted: false, hasProfilePicture: false})
-        setProfile({isProfileCompleted: false})
-      } else {
-        setProfile(profileData)
-      }
-
-      setIsAuthLoading(false)
-      
       try {
-          if (profileData.hasProfilePicture) {
-            const [thumb, small, large] = await downloadImageFromFirebase(`users/${user.uid}/profile`)
-            setProfilePic({thumb: thumb, small: small, large: large})
-          }
+        const profileData = await getFirebaseDoc("profiles", user.uid)
+        if (!profileData) {
+          await addToFirebaseWithId("profiles", user.uid, {isProfileCompleted: false})
+          setProfile({isProfileCompleted: false})
+        } else {
+          setProfile(profileData)
+        }
       } catch (error) {
-          const translatedError = checkErrorMessage(error)
-          console.error(translatedError)
-      }
-
-      try {
-          const userGallery = await listAllDirectoryFiles(`users/${user.uid}/portfolio`)
-          for (let i = 0; i < userGallery.items.length; i++) {
-              const filePath = userGallery.items[i]._location.path
-              const itemId = filePath.replace(`users/${user.uid}/portfolio/`, "")
-              const imageUrl = await downloadImageFromFirebase(filePath)
-              if (gallery.some(item => item.image === imageUrl)) return
-              setGallery(prev => [{image: imageUrl, id: itemId}, ...prev])
-          }
-      } catch (error) {
-          console.error(error.message)
-      }
-
-      try {
-          const dbLocations = await getCollectionFromFirebase("locations")
-          setLocations(dbLocations)
-      } catch (error) {
-          console.error(error.message)
+        console.error(error.message)
+      } finally {
+        setIsAuthLoading(false)
       }
 
     })
@@ -88,9 +59,11 @@ export default function App() {
   }, [])
 
   return (
-    <UserContext.Provider value={{user, isAuthLoading, profile, setProfile, profilePic, setProfilePic, gallery, setGallery, locations}}>
+    <UserContext.Provider value={{user, isAuthLoading, profile, setProfile}}>
       <BrowserRouter>
         <Routes>
+
+          <Route path="*" element={<PageNotFound />}/>
 
           <Route element={<AuthRequired />}>
             <Route path="/" element={<AppLayout />}>
@@ -99,7 +72,6 @@ export default function App() {
               <Route path="profile" element={<Profile />}/>
               <Route path="settings" element={<Settings />}/>
             </Route>
-
           </Route>
 
           <Route element={<OnboardingGate />}>

@@ -462,10 +462,12 @@ main {
 }
 
 .input-gallery {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(175px, 20vw, 250px);
   overflow-x: auto;
   gap: 16px;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
   max-width: 100%;
   scrollbar-color: var(--btn-hover-color) transparent;
@@ -473,7 +475,6 @@ main {
 .input_gallery_item {
   position: relative;
   aspect-ratio: 1/1;
-  min-width: clamp(175px, 15vw, 300px);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -535,6 +536,12 @@ main {
   opacity: 0.5;
   cursor: default;
 }
+.listings_loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block: auto
+}
 
 .navigation_next-skip-btn {
   display: flex;
@@ -564,7 +571,6 @@ main {
   }
   .content {
     padding: 20px 20px;
-    /* min-height: 100%; */
   }
   .content_overlay {
     left: 0;

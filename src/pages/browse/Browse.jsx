@@ -2,9 +2,11 @@ import { useEffect, useContext, useState, useRef } from "react"
 import { UserContext } from "../../App"
 import { CalendarDays, ChevronRight, MapPin, RotateCcw, X, CameraOff } from "lucide-react"
 import { getFirebaseDoc, queryCollectionFromFirebase, fetchBrowseListingsPage } from "../../utils/firebase/firestore"
-import { translateDates } from "../../utils/general"
+import { translateDates, filterFromSearchParams, filterToSearchParams, toDateParam } from "../../utils/general"
 import { TailSpin } from "react-loader-spinner"
+import { useSearchParams } from "react-router"
 import "./browse.css"
+import { cities } from "../../utils/cities"
 
 import BrowseModal from "./components/BrowseModal"
 import BrowseListing from "./components/BrowseListing"
@@ -14,7 +16,7 @@ import ImageLoader from "../../components/ImageLoader"
 
 export default function Browse() {
 
-    const { user, locations } = useContext(UserContext)
+    const { user, profile } = useContext(UserContext)
     const [browseListings, setBrowseListings] = useState([])
     const [clickedListing, setClickedListing] = useState(null)
     const [lastDoc, setLastDoc] = useState(null)
@@ -22,10 +24,35 @@ export default function Browse() {
     const [isLoading, setIsLoading] = useState(false)
     const [hasLoadedOnce, setHasLoadedOnce] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [filter, setFilter] = useState({})
-    const [activeFilter, setActiveFilter] = useState(null)
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [filter, setFilter] = useState(() => filterFromSearchParams(searchParams))
+    const [activeFilter, setActiveFilter] = useState(() => {
+        const initial = filterFromSearchParams(searchParams)
+        return Object.keys(initial).length > 0 ? initial : null
+    })
     const [resetSignal, setResetSignal] = useState(0)
     const sentinelRef = useRef(null)
+
+    const COPY = 
+    profile.type === "studio"
+      ?
+        {
+          TITLE: "Browse artist listings",
+          DESCRIPTION: "Find artists that are looking to guestspot from all over Europe",
+          LISTING: {
+            TITLE: "Artist's profile",
+            HEADER: "Travel plans"
+          }
+        }
+      :
+        {
+          TITLE: "Browse studio listings",
+          DESCRIPTION: "Find guestspotting opportunities from studios all over Europe",
+          LISTING: {
+            TITLE: "Studio's profile",
+            HEADER: "Open spots"
+          }
+        }
 
     useEffect(() => {
         if (isModalOpen) {
@@ -46,9 +73,19 @@ export default function Browse() {
     async function loadMoreListings() {
         if (isLoading || !hasMore) return
         setIsLoading(true)
+        const fetchUserType = profile.type === "studio" ? "artist" : "studio"
 
         try {
-            const { listings, newLastDoc, hasMore: more } = await fetchBrowseListingsPage("studio", lastDoc, 5, activeFilter?.locations, activeFilter?.from, activeFilter?.to)
+            const { listings, newLastDoc, hasMore: more } = await fetchBrowseListingsPage(
+                {
+                    userType: fetchUserType, 
+                    lastDoc, 
+                    pageSize: 5, 
+                    location: activeFilter?.locations, 
+                    dateFrom: activeFilter?.from, 
+                    dateTo: activeFilter?.to
+                }
+            )
 
             const uniqueUserIds = [...new Set(listings.map(item => item.userId))]
             const profileEntries = await Promise.all(
@@ -107,18 +144,19 @@ export default function Browse() {
                     clickedListing={clickedListing}
                     setClickedListing={setClickedListing}
                     padGallery={padGallery}
+                    COPY={COPY.LISTING}
                 />
                 }
             <section className="browse_header">
                 <div>
-                    <h1>Browse listings</h1>
-                    <p>Find guestspotting opportunities with tattoo studios around Europe.</p>
+                    <h1>{COPY.TITLE}</h1>
+                    <p>{COPY.DESCRIPTION}</p>
                 </div>
                 <div className="browse_filter-row">
                     <div className="browse_filters">
                         <Combobox
                             classes="browse_filter"
-                            itemList={locations}
+                            itemList={cities}
                             index={0}
                             data={filter}
                             setData={setFilter}
@@ -142,6 +180,7 @@ export default function Browse() {
                                 setFilter({})
                                 setActiveFilter(null)
                                 setResetSignal(prev => prev + 1)
+                                setSearchParams({})
                             }}
                         >
                             <RotateCcw className="icon-17px icon-stroke"/>
@@ -151,6 +190,7 @@ export default function Browse() {
                             onClick={() => {
                                 if (Object.keys(filter).length === 0 && !filter?.locations?.[0]) return
                                 setActiveFilter(filter)
+                                setSearchParams(filterToSearchParams(filter))
                             }}
                         >
                             Filter
@@ -163,15 +203,14 @@ export default function Browse() {
                             <button 
                                 className="filter-pill"
                                 onClick={() => {
+                                    const { locations, ...rest } = filter
                                     setResetSignal(prev => prev + 1)
-                                    setFilter(prev => {
-                                        const { locations, ...rest } = prev
-                                        return rest
-                                    })
+                                    setFilter(rest)
                                     setActiveFilter(prev => {
-                                        const { locations, ...rest } = prev
-                                        return rest
+                                        const { locations, ...restActive } = prev
+                                        return restActive
                                     })
+                                    setSearchParams(filterToSearchParams(rest))
                                 }}
                             >
                                 <MapPin className="icon-16px icon-stroke-2" />
@@ -185,6 +224,7 @@ export default function Browse() {
                                 onClick={() => {
                                     setFilter(prev => {
                                         const { from, to, ...rest } = prev
+                                        setSearchParams(filterToSearchParams(rest))
                                         return rest
                                     })
                                     setActiveFilter(prev => {
@@ -221,11 +261,7 @@ export default function Browse() {
                     !isLoading && hasLoadedOnce && <p className="empty_section_message">No listings found for your search!</p>
                 }
             {hasMore && <div ref={sentinelRef} style={{ height: 1 }} />}
-            {isLoading && 
-                <div className="browse_listings_loader">
-                    <TailSpin height="50px" width="50px" color="var(--text-muted)" />
-                </div>
-            }
+            {isLoading && <TailSpin wrapperClass="listings_loader" color="var(--text-muted)" />}
         </>
     )
 }

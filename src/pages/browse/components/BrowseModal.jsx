@@ -8,7 +8,7 @@ import ImageLoader from "../../../components/ImageLoader"
 import { translateDates } from "../../../utils/general"
 import Lightbox from "../../../components/Lightbox"
 
-export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing, setClickedListing, padGallery}) {
+export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing, setClickedListing, padGallery, COPY}) {
 
     const [isLightboxOn, setIsLightboxOn] = useState(false)
     const [lightboxImage, setLightboxImage] = useState(null)
@@ -59,7 +59,7 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
             <Modal
                 onClose={onClose}
                 isLightboxOn={isLightboxOn}
-                title={`${userType.charAt(0).toUpperCase() + userType.slice(1)}'s profile`}
+                title={COPY.TITLE}
                 buttonText="Message on Instagram"
                 buttonIcon={igIcon}
                 link="https://ig.me/m/inktonite_"
@@ -91,7 +91,7 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
                 </div>
                 <div>
                     <div className="browse_modal_listing-header">
-                        <p className="browse_modal_label">Available spot</p>
+                        <p className="browse_modal_label">{COPY.HEADER}</p>
                         {userListings.length > 0 &&
                             <button onClick={() => setIsShowingAll(prev => !prev)}>
                                 <ChevronDown className={`icon-14px chevron icon-margin ${isShowingAll ? "chevron-open" : ""}`}/>
@@ -111,7 +111,7 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
                             <div className="divider-row">
                                 <div className="divider-line"></div>
                                 <span className="divider-label">
-                                    Other open spots
+                                    Other listings
                                 </span>
                                 <div className="divider-line"></div>
                             </div>

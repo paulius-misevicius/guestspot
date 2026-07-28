@@ -8,23 +8,18 @@ export default function OnboardingGate() {
     const { user, isAuthLoading, profile } = useContext(UserContext)
 
     if (isAuthLoading) {
-        return (
-            <div className="loading-screen">
-                <TailSpin 
-                    width="120"
-                    height="120"
-                    color="var(--text-muted)"
-                />
-            </div>
-        )
+        return <TailSpin wrapperClass="listings_loader" color="var(--text-muted)"/>
     }
 
     if (!user) {
         return <Navigate to="/log-in"/>
     }
+    if (!profile) {
+        return <TailSpin wrapperClass="listings_loader" color="var(--text-muted)"/>
+    }
 
-    if (profile?.isProfileCompleted) {
-        return <Navigate to="/" />
+    if (profile.isProfileCompleted) {
+        return <Navigate to="/listings" />
     }
 
     return <Outlet />

@@ -100,13 +100,6 @@
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 20px;
 }
-.browse_listings_loader {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 40px;
-    margin-bottom: 12px;
-}
 .browse_listing {
     overflow: hidden;
     background-color: var(--surface-1);

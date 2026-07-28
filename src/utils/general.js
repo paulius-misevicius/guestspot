@@ -1,4 +1,4 @@
-import { format } from "date-fns"
+import { format, parseISO } from "date-fns"
 import imageCompression from "browser-image-compression"
 import { queryFirebaseDoc } from "./firebase/firestore"
 
@@ -11,6 +11,39 @@ export function toEnglishChars(string) {
 export async function checkUsername(field, username) {
     const usernameMatch = await queryFirebaseDoc("profiles", field, username)
     return usernameMatch
+}
+
+export function toDateParam(date) {
+    const d = date instanceof Date ? date : new Date(date)
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, "0")
+    const day = String(d.getDate()).padStart(2, "0")
+    return `${year}-${month}-${day}`
+}
+export function filterFromSearchParams(params) {
+    const city = params.get("city")
+    const country = params.get("country")
+    const dateFrom = params.get("dateFrom")
+    const dateTo = params.get("dateTo")
+
+    const result = {}
+    if (city && country) {
+        result.locations = [{ city, country }]
+    }
+    if (dateFrom) result.from = parseISO(dateFrom)
+    if (dateTo) result.to = parseISO(dateTo)
+
+    return result
+}
+export function filterToSearchParams(activeFilter) {
+    const params = {}
+    if (activeFilter?.locations?.[0]) {
+        params.city = activeFilter.locations[0].city
+        params.country = activeFilter.locations[0].country
+    }
+    if (activeFilter?.from) params.dateFrom = toDateParam(activeFilter.from)
+    if (activeFilter?.to) params.dateTo = toDateParam(activeFilter.to)
+    return params
 }
 
 export function translateDates(dateFrom, dateTo) {

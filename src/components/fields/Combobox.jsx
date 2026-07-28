@@ -3,7 +3,7 @@ import { Search, X, MapPin } from "lucide-react"
 import { toEnglishChars } from "../../utils/general"
 import "../components.css"
 
-export default function Combobox({data, setData, itemList, noLabel, index, setIndex, placeholder, error, setError, classes, resetSignal = undefined}) {
+export default function Combobox({data, setData, itemList, noLabel, index, setIndex, placeholder, error, setError, classes, resetSignal = undefined, studio}) {
 
     const containerRef = useRef(null)
     const commitTypedValueRef = useRef()
@@ -17,8 +17,10 @@ export default function Combobox({data, setData, itemList, noLabel, index, setIn
         && 
         !data?.locations?.some(location => location?.city === item.city)
     )
-    const visibleResults = searchResults.slice(0, 5)
-    const showDropdown = isComboboxOpen && visibleResults.length > 0 && inputValue.length > 0
+    const visibleResults = studio ? searchResults : searchResults.slice(0, 5)
+    const showDropdown = studio 
+        ? (isComboboxOpen && visibleResults.length > 0) 
+        : (isComboboxOpen && visibleResults.length > 0 && inputValue.length > 0)
 
     function commitCity(item) {
         setInputValue(item ? item.city : "")
@@ -46,6 +48,7 @@ export default function Combobox({data, setData, itemList, noLabel, index, setIn
         function handleClickOutside(event) {
             if (containerRef.current && !containerRef.current.contains(event.target)) {
                 commitTypedValueRef.current()
+                setIsComboboxOpen(false)
             }
         }
         document.addEventListener("mousedown", handleClickOutside)
@@ -130,7 +133,6 @@ export default function Combobox({data, setData, itemList, noLabel, index, setIn
                     />
                     }
             </div>
-
 
             {showDropdown &&
                 <ul id="city-listbox" role="listbox">

@@ -14,7 +14,7 @@ import { checkUsername } from "../../../utils/general"
 
 export default function ProfileModal({isModalOpen, setIsModalOpen}) {
 
-    const { user, profile, setProfile, profilePic, setProfilePic, gallery, setGallery, locations } = useContext(UserContext)
+    const { user, profile, setProfile, locations } = useContext(UserContext)
     const profilePicRef = useRef(null)
     const galleryPicRef = useRef(null)
 
@@ -126,7 +126,6 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                 await uploadImageToFirebase(updatedProfilePicFile, `users/${user.uid}/profile`)
                 const [thumb, small, large] = await downloadImageFromFirebase(`users/${user.uid}/profile`)
                 updatedFields.profilePic = {thumb: thumb, small: small, large: large}
-                updatedFields.hasProfilePicture = true
             }
         } catch (error) {
             console.error(error.message)
@@ -181,8 +180,6 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
             if (Object.keys(updatedFields).length > 0) {
                 await overwriteFirebaseDoc("profiles", user.uid, {...profile, ...updatedFields})
                 setProfile(prev => ({...prev, ...updatedFields}))
-                if (updatedFields.profilePic) setProfilePic(updatedFields.profilePic)
-                if (updatedFields.gallery) setGallery(updatedFields.gallery)
             }
         } catch (error) {
             console.error(error.message)
@@ -258,7 +255,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
             </div>
             <div className="profile_modal_name-inputs">
                 <div className="profile_modal_input">
-                    <label htmlFor="name">{profile.type === "studio" ? "Studio" : "Artist"} name</label>
+                    <label htmlFor="name">Name</label>
                     <div className="input-container">
                         <User className="input-icon icon-16px" />
                         <input

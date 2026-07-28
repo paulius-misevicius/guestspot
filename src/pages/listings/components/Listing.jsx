@@ -1,10 +1,49 @@
 import { format } from "date-fns"
-import { Trash2, CalendarDays, Search } from "lucide-react"
+import { Trash2, CalendarDays, Search, User } from "lucide-react"
 import { deleteFromFirebase } from "../../../utils/firebase/firestore"
-import { translateDates } from "../../../utils/general"
+import { translateDates, toDateParam } from "../../../utils/general"
 import "../listings.css"
+import { fetchBrowseListingsPage } from "../../../utils/firebase/firestore"
+import { useState, useContext, useEffect } from "react"
+import { UserContext } from "../../../App"
+import { Link } from "react-router"
+import { useNavigate } from "react-router"
 
 export default function Listing({id, city, country, dateFrom, dateTo, isActive}) {
+
+  const { profile } = useContext(UserContext)
+  const [matches, setMatches] = useState([])
+
+  const navigate = useNavigate()
+  const params = new URLSearchParams({
+    city: city,
+    country: country,
+    dateFrom: toDateParam(dateFrom),
+    dateTo: toDateParam(dateTo)
+  })
+
+  async function checkForMatches() {
+    if (!isActive) return
+
+    try {
+      const fetchUserType = profile.type === "studio" ? "artist" : "studio"
+      const listingMatches = await fetchBrowseListingsPage(
+        {
+          userType: fetchUserType, 
+          dateFrom: dateFrom, 
+          dateTo: dateTo, 
+          location: [{city: city, country: country}]
+        }
+      )
+      setMatches(listingMatches.listings)
+    } catch (error) {
+      console.error (error.message)
+    }
+  }
+
+  useEffect(() => {
+    checkForMatches()
+  }, [])
 
   const dateRange = translateDates(dateFrom, dateTo)
 
@@ -19,11 +58,14 @@ export default function Listing({id, city, country, dateFrom, dateTo, isActive})
               </div>
           </div>
           <div className="listing_right">
-            {isActive &&
-              <button className="listing_matches desktop-only">
-                <p>See matches</p>
-                <span>3</span>
-              </button>
+            {isActive && matches.length > 0 &&
+              <Link 
+                to={`/browse?${params.toString()}`}
+                className="listing_matches desktop-only"
+              >
+                See matches
+                <span>{matches.length}</span>
+              </Link>
               }
             <button
               className="listing_delete-btn"
@@ -33,11 +75,14 @@ export default function Listing({id, city, country, dateFrom, dateTo, isActive})
             </button>
           </div>
         </div>
-        {isActive &&
-            <button className="listing_matches mobile-only">
-              <p>See matches</p>
-              <span>3</span>
-            </button>
+        {isActive && matches.length > 0 &&
+            <Link 
+              to={`/browse?${params.toString()}`}
+              className="listing_matches mobile-only"
+            >
+              See matches
+              <span>{matches.length}</span>
+            </Link>
             }
       </div>
   )

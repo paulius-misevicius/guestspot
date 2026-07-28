@@ -4,23 +4,18 @@ import { UserContext } from "../../../App"
 import { serverTimestamp } from "firebase/firestore"
 import { getCollectionFromFirebase, addToFirebase } from "../../../utils/firebase/firestore"
 import "../listings.css"
+import { cities } from "../../../utils/cities"
 
 import DatePicker from "../../../components/fields/DatePicker"
 import Combobox from "../../../components/fields/Combobox"
 import Modal from "../../../components/Modal"
 
-export default function ListingModal({isModalOpen, setIsModalOpen}) {
+export default function ListingModal({isModalOpen, setIsModalOpen, COPY}) {
     
     const [listingData, setListingData] = useState({})
-    const [locations, setLocations] = useState([])
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const { user, profile } = useContext(UserContext)
-
-    useEffect(() => {
-        getCollectionFromFirebase("locations")
-        .then(data => setLocations(data))
-    }, [])
     
     async function createListing(event) {
         event.preventDefault()
@@ -71,15 +66,29 @@ export default function ListingModal({isModalOpen, setIsModalOpen}) {
             error={error}
             isLoading={isLoading}
         >
-            <Combobox 
-                data={listingData} 
-                setData={setListingData} 
-                error={error}
-                setError={setError}
-                itemList={locations} 
-                index={0} 
-                placeholder="I'm looking to guestspot in..."
-            />
+            {profile.type === "studio"
+                ?
+                    <Combobox 
+                        studio
+                        data={listingData} 
+                        setData={setListingData} 
+                        error={error}
+                        setError={setError}
+                        itemList={profile.locations} 
+                        index={0} 
+                        placeholder={COPY.COMBOBOX}
+                    />
+                :
+                    <Combobox 
+                        data={listingData} 
+                        setData={setListingData} 
+                        error={error}
+                        setError={setError}
+                        itemList={cities} 
+                        index={0} 
+                        placeholder={COPY.COMBOBOX}
+                    />
+            }
             <DatePicker 
                 selected={listingData}
                 setSelected={setListingData}

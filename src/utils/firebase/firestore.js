@@ -93,15 +93,14 @@ export async function queryCollectionFromFirebase(myCollection, queryThis, query
     return queryData
 }
 
-export async function fetchBrowseListingsPage(userType, lastDoc, pageSize, location, dateFrom, dateTo) {
+export async function fetchBrowseListingsPage({userType, lastDoc, pageSize, location, dateFrom, dateTo}) {
     const constraints = [
         where("type", "==", userType),
         where("dateTo", ">", Timestamp.fromDate(new Date())),
-        orderBy("dateFrom"),
-        limit(pageSize)
+        orderBy("dateFrom")
     ]
 
-    if (location && location.length > 0) {
+    if (location && location.length > 0 && location?.[0]) {
         constraints.push(where("locations", "array-contains", { city: location[0].city, country: location[0].country }))
     }
     if (dateFrom) {
@@ -110,7 +109,9 @@ export async function fetchBrowseListingsPage(userType, lastDoc, pageSize, locat
     if (dateTo) {
         constraints.push(where("dateFrom", "<=", Timestamp.fromDate(dateTo)))
     }
-
+    if (pageSize) {
+        constraints.push(limit(pageSize))
+    }
     if (lastDoc) {
         constraints.push(startAfter(lastDoc))
     }

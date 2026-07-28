@@ -509,6 +509,29 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: var(--failure);
 }
 
+/* PageNotFound */
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100dvh;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.not-found a {
+  text-decoration: none;
+  background-color: var(--btn-default-color);
+  color: var(--surface-1);
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: var(--font-size-s);
+}
+.not-found a:hover {
+  background-color: var(--btn-hover-color);
+}
+
 @media (max-width: 1024px) {
   .modal {
     width: 95dvw;

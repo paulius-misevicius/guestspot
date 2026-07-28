@@ -10,7 +10,7 @@ import Lightbox from "../../components/Lightbox"
 
 export default function Profile() {
 
-    const { profile, profilePic, gallery, setGallery } = useContext(UserContext)
+    const { profile, gallery, setGallery } = useContext(UserContext)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isLightboxOn, setIsLightboxOn] = useState(false)
     const [lightboxImage, setLightboxImage] = useState(null)
