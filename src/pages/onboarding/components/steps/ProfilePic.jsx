@@ -5,7 +5,7 @@ import { UserContext } from "../../../../App"
 import { User, Camera } from "lucide-react"
 import ImageLoader from "../../../../components/ImageLoader"
 
-export default function ProfilePic({setProfile, profile}) {
+export default function ProfilePic({setProfile, profile, COPY}) {
     
     const { user } = useContext(UserContext)
     const [profilePic, setProfilePic] = useState(profile?.profilePic?.small)
@@ -36,35 +36,39 @@ export default function ProfilePic({setProfile, profile}) {
     }
 
     return (
-        <div className="profile_modal-pic-container">
-            <label className="sr-only">Profile picture</label>
-            <input
-                ref={profilePicRef}
-                onChange={changeProfilePic}
-                type="file"
-                accept="image/png, image/jpeg, image/webp"
-                style={{ display: "none" }}
-            />
-            <button
-                className="profile_modal_pic-btn"
-                type="button"
-                onClick={() => profilePicRef.current.click()}
-            >
-                {profilePic
-                    ?
-                        <ImageLoader
-                            border
-                            src={profilePic}
-                        />
-                    :
-                        <div className="profile_pic-preview profile_pic-placeholder">
-                            <User className="profile_pic-placeholder_icon"/>
-                        </div>
-                    }
-                <div className="btn-overlay">
-                    <Camera className="profile_pic-camera-icon"/>
-                </div>
-            </button>
-        </div>
+        <>
+            <h1>{COPY.HEADING}</h1>
+            <p>{COPY.DESCRIPTION}</p>
+            <div className="profile_modal-pic-container onboarding_input-field">
+                <label>Profile picture</label>
+                <input
+                    ref={profilePicRef}
+                    onChange={changeProfilePic}
+                    type="file"
+                    accept="image/png, image/jpeg, image/webp"
+                    style={{ display: "none" }}
+                />
+                <button
+                    className="profile_modal_pic-btn"
+                    type="button"
+                    onClick={() => profilePicRef.current.click()}
+                >
+                    {profilePic
+                        ?
+                            <ImageLoader
+                                border
+                                src={profilePic}
+                            />
+                        :
+                            <div className="profile_pic-preview profile_pic-placeholder">
+                                <User className="profile_pic-placeholder_icon"/>
+                            </div>
+                        }
+                    <div className="btn-overlay">
+                        <Camera className="profile_pic-camera-icon"/>
+                    </div>
+                </button>
+            </div>
+        </>
     )
 }

@@ -1,12 +1,12 @@
 import { User } from "lucide-react"
 
-export default function Name({profile, setProfile, error, setError}) {
+export default function Name({profile, setProfile, error, setError, COPY}) {
     return (
         <>
-            <h1>{profile.type === "artist" ? "What's your name or pseudonym?" : "What's the name of your studio"}</h1>
-            <p>{profile.type === "artist" ? "This is how you'll appear to studios." : "This is how you'll appear to artists."}</p>
-            <div className="auth_field">
-                <label htmlFor="name">Name / pseudonym</label>
+            <h1>{COPY.HEADING}</h1>
+            <p>{COPY.DESCRIPTION}</p>
+            <div className="onboarding_input-field">
+                <label htmlFor="name">Name</label>
                 <div className="input-container">
                     <User className="input-icon icon-16px" />
                     <input 

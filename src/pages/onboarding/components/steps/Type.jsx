@@ -1,10 +1,14 @@
+import { Brush, Store } from "lucide-react"
+
 export default function Type({profile, setProfile}) {
     return (
         <>
-            <h1>Which one are you?</h1>
-            <p>Choose what type of profile to create.</p>
+            <div>
+                <h1>Which are you?</h1>
+                <p>This will determine your profile type and what content is shown to you.</p>
+            </div>
             <div className="input_radio_container">
-                <div>
+                <div className="input_radio_wrapper">
                     <input 
                         className="input_radio"
                         onChange={() => setProfile((
@@ -23,10 +27,12 @@ export default function Type({profile, setProfile}) {
                         className={profile.type === "artist" ? "input_radio_label radio_checked" : "input_radio_label"}
                         htmlFor="artist"
                     >
+                        <Brush className="input_radio_icon"/>
                         Tattoo artist
+                        <p>I'm looking for studios to guest spot at</p>
                     </label>
                 </div>
-                <div>
+                <div className="input_radio_wrapper">
                     <input 
                         className="input_radio"
                         onChange={() => setProfile((
@@ -45,7 +51,9 @@ export default function Type({profile, setProfile}) {
                         className={profile.type === "studio" ? "input_radio_label radio_checked" : "input_radio_label"}
                         htmlFor="studio"
                     >
+                        <Store className="input_radio_icon"/>
                         Tattoo studio
+                        <p>I'm looking to host guest spotting artists</p>
                     </label>
                 </div>
             </div>

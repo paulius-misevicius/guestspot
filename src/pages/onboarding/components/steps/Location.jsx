@@ -3,16 +3,16 @@ import Combobox from "../../../../components/fields/Combobox"
 import { X } from "lucide-react"
 import { cities } from "../../../../utils/cities"
 
-export default function Location({profile, setProfile}) {
+export default function Location({profile, setProfile, COPY}) {
 
     const [locationCount, setLocationCount] = useState(profile.locations?.length || 1)
 
     const locationComboboxes = Array.from({length: locationCount}).map((item, index) => 
-        <div key={index} className="onboarding_location-multiple">
+        <div key={index} className="onboarding_location-multiple onboarding_input-field">
             {index > 0 && index === (locationCount - 1) &&
                 <button 
                     type="button"
-                    className="onboarding_location-delete-btn"
+                    className="location_delete-btn"
                     onClick={() => {
                         setLocationCount(prev => prev - 1)
                         setProfile(prev => (
@@ -39,20 +39,12 @@ export default function Location({profile, setProfile}) {
 
     return (
         <>
-            <h1>{profile.type === "artist" 
-                    ? "Where are you based?" 
-                    : "Where's your studio located?"
-                    }
-            </h1>
-            <p>{profile.type === "artist" 
-                    ? "This will let studios know where you're coming from." 
-                    : "This will let artists know where you're based."
-                    }
-            </p>
+            <h1>{COPY.HEADING}</h1>
+            <p>{COPY.DESCRIPTION}</p>
             {locationComboboxes}
             {profile.type === "studio" && (profile?.locations?.filter(Boolean).length ?? 0) >= locationCount && locationCount < 5 &&
                 <button 
-                    className="onboarding_add-location-btn"
+                    className="add-location-btn"
                     type="button"
                     onClick={() => setLocationCount(prev => prev + 1)}
                 >

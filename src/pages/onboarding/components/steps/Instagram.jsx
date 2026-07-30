@@ -1,19 +1,15 @@
-import { AtSign } from "lucide-react"
+import { AtSign, ExternalLink } from "lucide-react"
 import { Link } from "react-router"
 
-export default function Instagram({profile, setProfile, error, setError}) {
+export default function Instagram({profile, setProfile, error, setError, COPY}) {
 
     const igPreview = `instagram.com/${profile.instagram || ""}`
 
     return (
         <>
-            <h1>Link your Instagram</h1>
-            <p>{profile.type === "artist" 
-                    ? "Make sure to enter your correct username since this is how studios will contact you."
-                    : "Make sure to enter your correct username since this is how artists will contact you."
-                    }
-            </p>
-            <div className="auth_field">
+            <h1>{COPY.HEADING}</h1>
+            <p>{COPY.DESCRIPTION}</p>
+            <div className="onboarding_input-field">
                 <label htmlFor="instagram">Instagram username</label>
                 <div className="input-container">
                     <AtSign className="input-icon icon-14px" />
@@ -34,10 +30,13 @@ export default function Instagram({profile, setProfile, error, setError}) {
                     />
                 </div>
             </div>
+            <div className="onboarding_instagram-link_wrapper">
+                <a className="onboarding_instagram-link trunctuate" target="_blank" href={`https://${igPreview}`}>
+                    {igPreview}
+                </a>
+                <ExternalLink className="icon-14px"/>
+            </div>
             {error && <p className="error-msg">{error}</p>}
-            <span>Preview:
-                <Link to={`https://${igPreview}`}>{igPreview}</Link>
-            </span>
         </>
     )
 }

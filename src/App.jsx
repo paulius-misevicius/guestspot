@@ -61,7 +61,7 @@ export default function App() {
   return (
     <UserContext.Provider value={{user, isAuthLoading, profile, setProfile}}>
       <BrowserRouter>
-        <Routes>
+        <Routes key={user?.uid ?? "logged-out"}>
 
           <Route path="*" element={<PageNotFound />}/>
 

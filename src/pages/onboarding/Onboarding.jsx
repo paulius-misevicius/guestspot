@@ -1,14 +1,13 @@
 import { useContext, useState } from "react"
 import { Navigate } from "react-router"
-import { LogOut } from "lucide-react"
+import { LogOut, User } from "lucide-react"
 import { UserContext } from "../../App"
 import { overwriteFirebaseDoc } from "../../utils/firebase/firestore"
 import { signOutUser } from "../../utils/firebase/auth"
 import { checkUsername } from "../../utils/general"
-
+import "./onboarding.css"
 import Navigation from "./components/Navigation"
 
-import Welcome from "./components/steps/Welcome"
 import Type from "./components/steps/Type"
 import Name from "./components/steps/Name"
 import Location from "./components/steps/Location"
@@ -21,10 +20,32 @@ export default function Onboarding() {
 
     const { user, profile, setProfile } = useContext(UserContext)
     const [currentStep, setCurrentStep] = useState(0)
-    const [error, setError] = useState()
+    const [error, setError] = useState(null)
+
+    const COPY = 
+        profile.type === "studio"
+            ?   
+                [
+                    {HEADING: "What's the name of your studio?", DESCRIPTION: "This name will be visible to tattoo artists."},
+                    {HEADING: "Where's your studio located?", DESCRIPTION: "This will let artists know where you're based."},
+                    {HEADING: "What's your studio's Instagram username?", DESCRIPTION: "This is how tattoo artists will contact you, so double-check that the link below leads to your studio's profile."},
+                    {HEADING: "Write a few words about your studio", DESCRIPTION: "Feel free to mention how long you've been open, the tattoo styles your artists specialize in, or anything else you'd like to share with potential guests."},
+                    {HEADING: "Upload pictures of your studio's work", DESCRIPTION: "This will help tattoo artists get a feel for your studio's vibe. Feel free to also add pictures of yourself, your artists or your studio."},
+                    {HEADING: "Upload your studio's logo", DESCRIPTION: "This will help artists recognize your studio across platforms right away."}
+                ]
+            :   
+                [
+                    {HEADING: "What's your name / pseudonym?", DESCRIPTION: "Enter the name you're best known by as a tattoo artist."},
+                    {HEADING: "Where are you currently based?", DESCRIPTION: "This will let studios know where you're coming from."},
+                    {HEADING: "What's your Instagram username?", DESCRIPTION: "This is how tattoo studios will contact you, so double-check that the link below leads to your profile."},
+                    {HEADING: "Write a few words about yourself as a tattoo artist", DESCRIPTION: "Feel free to mention your experience, style, or anything else you'd like to share with potential hosts."},
+                    {HEADING: "Upload pictures of your best work", DESCRIPTION: "This will help tattoo studios get familiar with your style right away and decide if you're the right fit for them."},
+                    {HEADING: "Upload a profile picture", DESCRIPTION: "Feel free to use a photo of yourself or your logo. This will help tattoo studios recognize you across platforms"}
+                ]
+                
 
     const STEPS = [
-        {key: "welcome", component: Welcome},
+        {key: "welcome"},
         {key: "type", component: Type, skippable: false, isFilled: profile.type && profile.type !== ""},
         {key: "name", component: Name, skippable: false, isFilled: profile.name && profile.name !== ""},
         {key: "location", component: Location, skippable: false, isFilled: profile.locations && profile.locations[0]?.city !== undefined},
@@ -37,7 +58,7 @@ export default function Onboarding() {
     const CurrentComponent = STEPS[currentStep].component
     
     const stepProps = {
-        profile, setProfile, error, setError
+        profile, setProfile, error, setError, COPY: COPY[currentStep - 2]
     }
     
     async function submitAnswer(event) {
@@ -52,7 +73,7 @@ export default function Onboarding() {
                 const nameMatch = await checkUsername("name", updatedProfile.name)
                 if (nameMatch && nameMatch !== user.uid) {
                     setError("Name already taken!")
-                    updatedProfile = {... updatedProfile, name: ""}
+                    updatedProfile = {...updatedProfile, name: ""}
                     setProfile(updatedProfile)
                     return
                 }
@@ -61,7 +82,7 @@ export default function Onboarding() {
                 const instagramMatch = await checkUsername("instagram", updatedProfile.instagram)
                 if (instagramMatch && instagramMatch !== user.uid) {
                     setError("Instagram handle already taken!")
-                    updatedProfile = {... updatedProfile, instagram: ""}
+                    updatedProfile = {...updatedProfile, instagram: ""}
                     setProfile(updatedProfile)
                     return
                 }
@@ -103,24 +124,78 @@ export default function Onboarding() {
     return (
         <div className="onboarding">
             <section className="onboarding_left">
-                <h2>Find studios or artists for guestspotting across Europe.</h2>
-                <p>Ensure a good first impression by building out your profile.</p>
-                <button 
-                    onClick={logoutFromAccount} 
-                    className="log-out_btn"
-                >
-                    <LogOut className="log-out_icon" />
-                </button>
+                <div className="onboarding_left_intro">
+                    <h3>Guestspot app</h3>
+                    <h2>Find guest spotting opportunities across Europe</h2>
+                </div>
+                <div className="onboarding_left_content">
+                    <div>
+                        <p className="progress-bar_title">Onboarding progress</p>
+                        <div className="progress-bar">
+                            {Array(STEPS.length - 1).fill().map((item, index) =>
+                                <div key={index} className={`progress-bar_step ${(index + 1) <= currentStep ? "step_filled" : ""}`}/>
+                            )}
+                        </div>
+                        <p className="progress-bar_count">Step {currentStep} out of {STEPS.length - 1}</p>
+                    </div>
+                    <div className="sidebar_profile">
+                        <p
+                            className="trunctuate"
+                            title={user.email}
+                        >
+                            {user.email}
+                        </p>
+                        <button
+                            onClick={logoutFromAccount}
+                            className="profile_log-out-btn input-icon_right-side input-icon"
+                        >
+                            <LogOut className="icon-16px icon-stroke" />
+                        </button>
+                    </div>
+                </div>
             </section>
             <section className="onboarding_right">
+                <div className="onboarding_mobile_header">
+                    <div className="onboarding_mobile_header_top">
+                        <h3>Guestspot app</h3>
+                        <button className="onboarding_mobile_log-out-btn">
+                            <LogOut className="icon-18px"/>
+                        </button>
+                    </div>
+                    <div className="progress-bar">
+                        {Array(STEPS.length - 1).fill().map((item, index) =>
+                            <div key={index} className={`progress-bar_step ${(index + 1) <= currentStep ? "step_filled" : ""}`}/>
+                        )}
+                    </div>
+                </div>
                 <form onSubmit={submitAnswer} id="onboarding">
-                    <CurrentComponent {...stepProps} />
+                    {currentStep === 0 
+                        ?
+                            <div className="onboarding_welcome_step">
+                                <h1>Welcome!</h1>
+                                <p>Set up your profile now to start connecting with other users.</p>
+                                <button 
+                                    type="button"
+                                    className="onboarding_navigation_btn" 
+                                    onClick={() => setCurrentStep(prev => prev + 1)}
+                                >
+                                    Get started
+                                </button>
+                            </div>
+                        :
+                            <CurrentComponent {...stepProps} />
+                        }
                 </form>
-                <Navigation 
-                    currentStep={currentStep} 
-                    setCurrentStep={setCurrentStep} 
-                    steps={STEPS} 
-                />
+                    {currentStep > 0 
+                        ?
+                            <Navigation 
+                                currentStep={currentStep} 
+                                setCurrentStep={setCurrentStep} 
+                                steps={STEPS} 
+                            />
+                        :
+                            <div></div>
+                        }
             </section>
         </div>
     )

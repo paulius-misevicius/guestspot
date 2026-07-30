@@ -338,6 +338,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                                 onClick={() => galleryPicRef.current.click()}
                             >
                                 <Plus className="input_gallery_plus-icon"/>
+                                Add photo
                             </button>
                         </div>
                         }

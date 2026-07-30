@@ -6,7 +6,7 @@ import { overwriteFirebaseDoc } from "../../../../utils/firebase/firestore"
 import { deleteFolderFromFirebase, uploadImageToFirebase, downloadImageFromFirebase } from "../../../../utils/firebase/storage"
 import ImageLoader from "../../../../components/ImageLoader"
 
-export default function Portfolio({profile, setProfile}) {
+export default function Portfolio({profile, setProfile, COPY}) {
 
     const { user } = useContext(UserContext)
     const [gallery, setGallery] = useState(profile?.gallery ?? [])
@@ -51,45 +51,50 @@ export default function Portfolio({profile, setProfile}) {
     }
 
     return (
-        <div className="profile_modal_portfolio">
-            <div className="portfolio_label-count">
-                <label>Portfolio</label>
+        <>
+            <h1>{COPY.HEADING}</h1>
+            <p>{COPY.DESCRIPTION}</p>
+            <div className="profile_modal_portfolio onboarding_input-field">
+                <div className="portfolio_label-count">
+                    <label>Portfolio</label>
+                </div>
+                <div className="input-gallery">
+                    {gallery.length !== 20 &&
+                        <div className="input_gallery_item">
+                            <input
+                                disabled={gallery.length === 20}
+                                ref={galleryPicRef}
+                                onChange={addToGallery}
+                                type="file"
+                                accept="image/png, image/jpeg, image/webp"
+                                style={{ display: "none" }}
+                            />
+                            <button
+                                className="input_gallery_add-btn modal_portfolio_image"
+                                type="button"
+                                disabled={gallery.length === 20}
+                                onClick={() => galleryPicRef.current.click()}
+                            >
+                                <Plus className="input_gallery_plus-icon"/>
+                                Add photo
+                            </button>
+                        </div>
+                        }
+                    {gallery.map((item, index) =>
+                        <div className="input_gallery_item" key={item.id}>
+                            <ImageLoader src={item.image.small} />
+                            <button
+                                onClick={() => deleteFromGallery(item.id)}
+                                type="button"
+                                className="gallery_item_delete-btn gallery_item_btn"
+                            >
+                                <Trash2 className="icon-16px icon-stroke"/>
+                            </button>
+                        </div>
+                    )}
+                </div>
+                <span>{gallery.length}/20</span>
             </div>
-            <div className="input-gallery">
-                {gallery.length !== 20 &&
-                    <div className="input_gallery_item">
-                        <input
-                            disabled={gallery.length === 20}
-                            ref={galleryPicRef}
-                            onChange={addToGallery}
-                            type="file"
-                            accept="image/png, image/jpeg, image/webp"
-                            style={{ display: "none" }}
-                        />
-                        <button
-                            className="input_gallery_add-btn modal_portfolio_image"
-                            type="button"
-                            disabled={gallery.length === 20}
-                            onClick={() => galleryPicRef.current.click()}
-                        >
-                            <Plus className="input_gallery_plus-icon"/>
-                        </button>
-                    </div>
-                    }
-                {gallery.map((item, index) =>
-                    <div className="input_gallery_item" key={item.id}>
-                        <ImageLoader src={item.image.small} />
-                        <button
-                            onClick={() => deleteFromGallery(item.id)}
-                            type="button"
-                            className="gallery_item_delete-btn gallery_item_btn"
-                        >
-                            <Trash2 className="icon-16px icon-stroke"/>
-                        </button>
-                    </div>
-                )}
-            </div>
-            <span>{gallery.length}/20</span>
-        </div>
+        </>
     )
 }

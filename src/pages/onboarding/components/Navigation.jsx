@@ -7,45 +7,49 @@ export default function Navigation({currentStep, setCurrentStep, steps}) {
 
     return (
         <div className="onboarding_navigation">
-            {isNotFirstStep && 
-                <button 
-                    className="onboarding_navigation_btn" 
+            <div className="onboarding_navigation_grouped">
+                <button
+                    type="button"
+                    className="onboarding_navigation_btn back-btn"
                     onClick={() => setCurrentStep(prev => prev - 1)}
                 >
                     Back
                 </button>
-                }
-            {isNotFirstStep &&
-                <div className="navigation_next-skip-btn">
-                    {isNotLastStep && isSkippable && !isFilled &&
-                        <button 
-                            className="onboarding_navigation_skip-btn"
-                            onClick={() => setCurrentStep(prev => prev + 1)}
-                        >
-                            Skip for now
-                        </button>
-                        }
-                    {isFilled || !isNotLastStep
-                        ?
-                            <button
-                                form="onboarding"
-                                className="onboarding_navigation_btn"
-                            >
-                                {!isNotLastStep ? "Finish" : "Continue"}
-                            </button>
-                        :
-                            null
-                        }
-                </div>
-                }
-            {!isNotFirstStep && 
-                <button 
-                    className="onboarding_navigation_btn" 
+                <button
+                    form="onboarding"
+                    disabled={!isFilled && isNotLastStep}
+                    className="onboarding_navigation_btn mobile-only next-btn"
+                >
+                    {!isNotLastStep ? "Finish" : "Continue"}
+                </button>
+            </div>
+            {isNotLastStep && isSkippable && !isFilled &&
+                <button
+                    type="button"
+                    className="mobile-only skip-btn"
                     onClick={() => setCurrentStep(prev => prev + 1)}
                 >
-                    Get started
+                    Skip for now
                 </button>
                 }
+            <div className="desktop-only skip-next-wrapper">
+                {isNotLastStep && isSkippable && !isFilled &&
+                    <button
+                        type="button"
+                        className="skip-btn"
+                        onClick={() => setCurrentStep(prev => prev + 1)}
+                    >
+                        Skip for now
+                    </button>
+                    }
+                <button
+                    form="onboarding"
+                    disabled={!isFilled && isNotLastStep}
+                    className="onboarding_navigation_btn next-btn"
+                >
+                    {!isNotLastStep ? "Finish" : "Continue"}
+                </button>
+            </div>
         </div>
     )
 }
