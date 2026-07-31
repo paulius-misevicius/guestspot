@@ -9,18 +9,15 @@ import { checkErrorMessage } from "./utils/general"
 import AuthRequired from "./layouts/AuthRequired"
 
 import AppLayout from "./layouts/AppLayout"
-import AuthLayout from "./layouts/AuthLayout"
 
 import Listings from "./pages/listings/Listings"
 import Browse from "./pages/browse/Browse"
 import Profile from "./pages/profile/Profile"
-import Signup from "./pages/auth/Signup"
-import Login from "./pages/auth/Login"
-import PasswordReset from "./pages/auth/PasswordReset"
 import Onboarding from "./pages/onboarding/Onboarding"
 import OnboardingGate from "./layouts/OnboardingGate"
 import Settings from "./pages/settings/Settings"
 import PageNotFound from "./components/PageNotFound"
+import Auth from "./pages/auth/Auth"
 
 export const UserContext = createContext()
 
@@ -78,11 +75,7 @@ export default function App() {
             <Route path="onboarding" element={<Onboarding />}/>
           </Route>
 
-          <Route element={<AuthLayout />}>
-            <Route path="sign-up" element={<Signup />}/>
-            <Route path="log-in" element={<Login />}/>
-            <Route path="password-reset" element={<PasswordReset />}/>
-          </Route>
+          <Route path="auth" element={<Auth />}/>
 
         </Routes>
       </BrowserRouter>

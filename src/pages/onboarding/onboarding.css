@@ -40,7 +40,7 @@
     border-radius: 8px;
 }
 .step_filled {
-    background-color: var(--text-muted);
+    background-color: var(--accent);
 }
 .progress-bar_count {
     font-size: var(--font-size-xs);
@@ -89,7 +89,7 @@
     color: var(--text-primary);
     border: 1px solid var(--border);
 }
-.next-btn {
+.onboarding .next-btn {
     width: 100%;
 }
 .skip-btn {
@@ -141,6 +141,7 @@
 }
 .input_radio:not(:checked) + .input_radio_label:hover .input_radio_icon {
     background-color: var(--tab-hover-color);
+    color: var(--accent)
 }
 .input_radio_label > p {
     font-weight: 400;
@@ -160,7 +161,7 @@
     background-color: var(--surface-2);
 }
 .radio_checked .input_radio_icon {
-    background-color: var(--text-primary);
+    background-color: var(--accent);
     color: var(--surface-2);
 }
 .onboarding_welcome_step > button {

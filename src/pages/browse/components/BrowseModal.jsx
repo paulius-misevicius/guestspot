@@ -62,7 +62,7 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
                 title={COPY.TITLE}
                 buttonText="Message on Instagram"
                 buttonIcon={igIcon}
-                link="https://ig.me/m/inktonite_"
+                link={`https://instagram.com/${clickedListing.profile.instagram}`}
             >
                 <div className="browse_modal_profile-details">
                     <div className="browse_modal_profile-pic">

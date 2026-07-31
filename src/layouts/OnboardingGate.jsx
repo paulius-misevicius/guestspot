@@ -12,7 +12,7 @@ export default function OnboardingGate() {
     }
 
     if (!user) {
-        return <Navigate to="/log-in"/>
+        return <Navigate to="/auth"/>
     }
     if (!profile) {
         return <TailSpin wrapperClass="listings_loader" color="var(--text-muted)"/>

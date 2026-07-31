@@ -68,7 +68,7 @@
     color: var(--text-muted);
 }
 .expired_expand_btn:hover {
-    background: var(--tab-hover-color);
+    background: var(--surface-2);
     color: var(--text-primary);
 }
 .expired_expand_btn:hover p {
@@ -131,7 +131,7 @@
     gap: 8px;
     font-size: var(--font-size-xs);
     white-space: nowrap;
-    transition: background 0.1s ease;
+    transition: background 0.1s ease, color 0.1s ease;
     text-decoration: none;
     color: var(--text-primary);
 }
@@ -139,7 +139,8 @@
     background-color: var(--surface-2);
 }
 .listing_matches:hover > span {
-    background-color: var(--tab-hover-color);
+    background-color: var(--accent);
+    color: var(--surface-1);
 }
 .listing_matches > p,
 .listing_matches > span {
@@ -148,7 +149,7 @@
     transition: background 0.1s ease;
 }
 .listing_matches > span {
-    background-color: var(--surface-2);
+    background-color: var(--tab-hover-color);
     color: var(--text-primary);
     padding: 4px 8px;
     font-weight: 600;
@@ -159,7 +160,7 @@
     color: var(--text-muted);
 }
 .listing_delete-btn:hover {
-    color: var(--failure);
+    color: var(--accent);
 }
 
 .user_listings_expired_empty {

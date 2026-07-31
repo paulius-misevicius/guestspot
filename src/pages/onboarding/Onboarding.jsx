@@ -54,7 +54,7 @@ export default function Onboarding() {
         {key: "portfolio", component: Portfolio, skippable: true, isFilled: profile?.gallery?.length > 0},
         {key: "profilePic", component: ProfilePic, skippable: true, isFilled: profile.profilePic && Object.keys(profile.profilePic) > 0}
     ]
-    
+
     const CurrentComponent = STEPS[currentStep].component
     
     const stepProps = {
@@ -65,7 +65,7 @@ export default function Onboarding() {
         event.preventDefault()
         setError(null)
         let updatedProfile = {...profile}
-        
+
         if (!STEPS[currentStep].isFilled && currentStep !== (STEPS.length - 1)) return
 
         try {
@@ -159,7 +159,7 @@ export default function Onboarding() {
                     <div className="onboarding_mobile_header_top">
                         <h3>Guestspot app</h3>
                         <button className="onboarding_mobile_log-out-btn">
-                            <LogOut className="icon-18px"/>
+                            <LogOut onClick={logoutFromAccount} className="icon-18px"/>
                         </button>
                     </div>
                     <div className="progress-bar">

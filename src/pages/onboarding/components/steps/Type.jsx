@@ -13,7 +13,7 @@ export default function Type({profile, setProfile}) {
                         className="input_radio"
                         onChange={() => setProfile((
                             {
-                                ...profile, 
+                                isProfileCompleted: false, 
                                 type: "artist"
                             }
                         ))} 
@@ -37,7 +37,7 @@ export default function Type({profile, setProfile}) {
                         className="input_radio"
                         onChange={() => setProfile((
                             {
-                                ...profile, 
+                                isProfileCompleted: false, 
                                 type: "studio"
                             }
                         ))} 

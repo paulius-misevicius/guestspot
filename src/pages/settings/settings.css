@@ -76,8 +76,8 @@
     margin-bottom: 12px;
 }
 .danger_label {
-    color: var(--failure);
-    opacity: 0.5;
+    color: var(--accent);
+    opacity: 0.7;
 }
 .settings_button {
     display: flex;
@@ -90,19 +90,19 @@
     background-color: var(--surface-2);
 }
 .danger-container {
-    border: 1px solid var(--failure);
-    opacity: 0.5;
+    border: 1px solid var(--accent);
+    opacity: 0.7;
 }
 .danger-container p,
 .danger-container button {
-    color: var(--failure);
+    color: var(--accent);
 }
 .danger-container button {
     background-color: transparent;
-    border: 1px solid var(--failure);
+    border: 1px solid var(--accent);
 }
 .danger-container button:hover {
-    background-color: var(--failure);
+    background-color: var(--accent);
 }
 .log-out-btn {
     color: var(--text-muted);
@@ -111,7 +111,7 @@
     border: 1px solid var(--border);
 }
 .log-out-btn:hover {
-    background-color: var(--failure);
+    background-color: var(--accent);
     color: var(--surface-1);
 }
 .log-out-btn:hover svg {

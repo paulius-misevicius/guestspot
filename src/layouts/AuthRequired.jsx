@@ -21,7 +21,7 @@ export default function AuthRequired() {
     }
 
     if (!user) {
-        return <Navigate to="/log-in" />
+        return <Navigate to="/auth" />
     }
 
     return <Outlet />

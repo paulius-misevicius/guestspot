@@ -11,6 +11,7 @@ export default function Email({...rest}) {
                     name="email" 
                     id="email" 
                     type="email" 
+                    placeholder="your@email.com"
                 />
             </div>
         </div>

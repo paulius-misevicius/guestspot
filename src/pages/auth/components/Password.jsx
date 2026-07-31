@@ -1,7 +1,7 @@
 import { Lock, Eye, EyeOff } from "lucide-react"
 import { useState } from "react"
 
-export default function Password({password, ...rest}) {
+export default function Password({password, label = "Password", ...rest}) {
 
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
@@ -18,7 +18,7 @@ export default function Password({password, ...rest}) {
 
     return (
         <div className="auth_field">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{label}</label>
             <div className="input-container">
                 <Lock className="input-icon icon-14px" />
                 <input 
@@ -26,6 +26,7 @@ export default function Password({password, ...rest}) {
                     name="password" 
                     id="password" 
                     type={isPasswordVisible ? "text" : "password"}
+                    placeholder="********"
                 />
                 {password.length > 0 && passwordToggleIcon}
             </div>

@@ -87,7 +87,7 @@
     justify-content: center;
 }
 .profile_log-out-btn:hover {
-    color: var(--failure)
+    color: var(--accent)
 }
 
 /* Navbar */
@@ -220,7 +220,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .date-picker .rdp-root {
-  --rdp-accent-color: var(--text-primary);
+  --rdp-accent-color: var(--accent);
   --rdp-range_start-color: var(--surface-2);
   --rdp-range_middle-background-color: var(--surface-2);
   --rdp-day_button-height: 40px;
@@ -301,7 +301,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .rdp-range_start .rdp-day_button:hover,
 .rdp-range_end .rdp-day_button:hover {
-  background-color: var(--text-primary);
+  background-color: var(--accent);
 }
 .rdp-range_middle .rdp-day_button:hover {
   background-color: var(--border);
@@ -409,14 +409,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     color: var(--text-muted);
 }
 .modal_close-btn:hover {
-    background-color: var(--failure);
+    background-color: var(--accent);
     color: var(--surface-1);
 }
 .modal_content {
     display: flex;
     flex: 1 1 auto;
     overflow-y: auto;
-    scrollbar-color: var(--btn-hover-color) transparent;
+    scrollbar-color: var(--text-muted) transparent;
     flex-direction: column;
     padding: 24px 28px 16px 28px;
     gap: 24px;
@@ -439,17 +439,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .modal_create-btn:hover {
     background-color: var(--btn-hover-color);
-}
-.create_btn_loader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-.create_btn_loader svg {
-  width: 60%;
-  height: 60%;
 }
 
 /* Lightbox */
@@ -506,7 +495,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .close-btn:hover {
   color: var(--surface-1);
-  background-color: var(--failure);
+  background-color: var(--btn-hover-color);
 }
 
 /* PageNotFound */
