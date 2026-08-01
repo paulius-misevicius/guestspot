@@ -24,5 +24,9 @@ export default function AuthRequired() {
         return <Navigate to="/auth" />
     }
 
+    // if (!user.emailVerified) {
+    //     return <Navigate to="/email-verification"/>
+    // }
+
     return <Outlet />
 }

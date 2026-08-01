@@ -1,4 +1,4 @@
-import { sendPasswordResetEmail, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, sendEmailVerification } from "firebase/auth"
+import { sendPasswordResetEmail, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, sendEmailVerification, checkActionCode } from "firebase/auth"
 import { auth, provider } from "./config"
 
 export function signUpNewUser(email, password) {
@@ -23,4 +23,8 @@ export function resetPassword(email) {
 
 export function verifyEmail() {
     return sendEmailVerification(auth.currentUser)
+}
+
+export function checkEmailVerification(oobCode) {
+    return checkActionCode(auth, oobCode)
 }

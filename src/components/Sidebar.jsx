@@ -5,6 +5,7 @@ import { UserContext } from "../App"
 import { useContext } from "react"
 import "./components.css"
 import ImageLoader from "./ImageLoader"
+import Logo from "./Logo"
 
 export default function Sidebar() {
 
@@ -21,7 +22,7 @@ export default function Sidebar() {
     return (
         <section className="sidebar">
             <div className="sidebar_content">
-                <h3>Guestspot app</h3>
+                <Logo classes="sidebar_logo" />
                 <nav className="sidebar_nav">
                     <NavLink
                         to="listings"

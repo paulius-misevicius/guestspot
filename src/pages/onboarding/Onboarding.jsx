@@ -1,13 +1,11 @@
 import { useContext, useState } from "react"
 import { Navigate } from "react-router"
-import { LogOut, User } from "lucide-react"
 import { UserContext } from "../../App"
 import { overwriteFirebaseDoc } from "../../utils/firebase/firestore"
-import { signOutUser } from "../../utils/firebase/auth"
 import { checkUsername } from "../../utils/general"
 import "./onboarding.css"
 import Navigation from "./components/Navigation"
-
+import OnboardingScreen from "../../components/OnboardingScreen"
 import Type from "./components/steps/Type"
 import Name from "./components/steps/Name"
 import Location from "./components/steps/Location"
@@ -15,6 +13,7 @@ import Instagram from "./components/steps/Instagram"
 import Bio from "./components/steps/Bio"
 import Portfolio from "./components/steps/Portfolio"
 import ProfilePic from "./components/steps/ProfilePic"
+import Logo from "../../components/Logo"
 
 export default function Onboarding() {
 
@@ -113,90 +112,40 @@ export default function Onboarding() {
         }
     }
 
-    async function logoutFromAccount() {
-        try {
-            await signOutUser()
-        } catch (error) {
-            console.error(error.message)
-        }
-    }
-
     return (
-        <div className="onboarding">
-            <section className="onboarding_left">
-                <div className="onboarding_left_intro">
-                    <h3>Guestspot app</h3>
-                    <h2>Find guest spotting opportunities across Europe</h2>
-                </div>
-                <div className="onboarding_left_content">
-                    <div>
-                        <p className="progress-bar_title">Onboarding progress</p>
-                        <div className="progress-bar">
-                            {Array(STEPS.length - 1).fill().map((item, index) =>
-                                <div key={index} className={`progress-bar_step ${(index + 1) <= currentStep ? "step_filled" : ""}`}/>
-                            )}
+        <OnboardingScreen
+            progressBar
+            step={currentStep}
+            stepCount={STEPS.length - 1}
+        >
+            <form onSubmit={submitAnswer} id="onboarding">
+                {currentStep === 0 
+                    ?
+                        <div className="onboarding_welcome_step">
+                            <h1>Welcome!</h1>
+                            <p>Set up your profile now to start connecting with other users.</p>
+                            <button 
+                                type="button"
+                                className="onboarding_navigation_btn" 
+                                onClick={() => setCurrentStep(prev => prev + 1)}
+                            >
+                                Get started
+                            </button>
                         </div>
-                        <p className="progress-bar_count">Step {currentStep} out of {STEPS.length - 1}</p>
-                    </div>
-                    <div className="sidebar_profile">
-                        <p
-                            className="trunctuate"
-                            title={user.email}
-                        >
-                            {user.email}
-                        </p>
-                        <button
-                            onClick={logoutFromAccount}
-                            className="profile_log-out-btn input-icon_right-side input-icon"
-                        >
-                            <LogOut className="icon-16px icon-stroke" />
-                        </button>
-                    </div>
-                </div>
-            </section>
-            <section className="onboarding_right">
-                <div className="onboarding_mobile_header">
-                    <div className="onboarding_mobile_header_top">
-                        <h3>Guestspot app</h3>
-                        <button className="onboarding_mobile_log-out-btn">
-                            <LogOut onClick={logoutFromAccount} className="icon-18px"/>
-                        </button>
-                    </div>
-                    <div className="progress-bar">
-                        {Array(STEPS.length - 1).fill().map((item, index) =>
-                            <div key={index} className={`progress-bar_step ${(index + 1) <= currentStep ? "step_filled" : ""}`}/>
-                        )}
-                    </div>
-                </div>
-                <form onSubmit={submitAnswer} id="onboarding">
-                    {currentStep === 0 
-                        ?
-                            <div className="onboarding_welcome_step">
-                                <h1>Welcome!</h1>
-                                <p>Set up your profile now to start connecting with other users.</p>
-                                <button 
-                                    type="button"
-                                    className="onboarding_navigation_btn" 
-                                    onClick={() => setCurrentStep(prev => prev + 1)}
-                                >
-                                    Get started
-                                </button>
-                            </div>
-                        :
-                            <CurrentComponent {...stepProps} />
-                        }
-                </form>
-                    {currentStep > 0 
-                        ?
-                            <Navigation 
-                                currentStep={currentStep} 
-                                setCurrentStep={setCurrentStep} 
-                                steps={STEPS} 
-                            />
-                        :
-                            <div></div>
-                        }
-            </section>
-        </div>
+                    :
+                        <CurrentComponent {...stepProps} />
+                    }
+            </form>
+            {currentStep > 0 
+                ?
+                    <Navigation 
+                        currentStep={currentStep} 
+                        setCurrentStep={setCurrentStep} 
+                        steps={STEPS} 
+                    />
+                :
+                    <div></div>
+                }
+        </OnboardingScreen>
     )
 }

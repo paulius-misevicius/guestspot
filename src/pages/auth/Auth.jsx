@@ -9,6 +9,7 @@ import "./auth.css"
 import Email from "./components/Email"
 import Password from "./components/Password"
 import AuthGoogle from "./components/AuthGoogle"
+import Logo from "../../components/Logo"
 
 export default function Auth() {
 
@@ -77,12 +78,11 @@ export default function Auth() {
 
     return (
         <main className="auth">
-            <h3 className="auth_logo">Guestspot app</h3>
+            <Logo classes="auth_logo"/>
             <form 
                 onSubmit={submitAuth} 
                 className="auth_form"
             >
-                <h3 className="auth_logo_mobile">Guestspot app</h3>
                 <div className="auth_switch">
                     <button 
                         onClick={() => {

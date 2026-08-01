@@ -18,6 +18,7 @@ import OnboardingGate from "./layouts/OnboardingGate"
 import Settings from "./pages/settings/Settings"
 import PageNotFound from "./components/PageNotFound"
 import Auth from "./pages/auth/Auth"
+import VerifyEmail from "./pages/auth/components/VerifyEmail"
 
 export const UserContext = createContext()
 
@@ -69,11 +70,12 @@ export default function App() {
               <Route path="profile" element={<Profile />}/>
               <Route path="settings" element={<Settings />}/>
             </Route>
+            <Route path="email-verification" element={<VerifyEmail />}/>
+            <Route element={<OnboardingGate />}>
+              <Route path="onboarding" element={<Onboarding />}/>
+            </Route>
           </Route>
 
-          <Route element={<OnboardingGate />}>
-            <Route path="onboarding" element={<Onboarding />}/>
-          </Route>
 
           <Route path="auth" element={<Auth />}/>
 

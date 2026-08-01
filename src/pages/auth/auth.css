@@ -1,20 +1,23 @@
 .auth {
     position: relative;
     display: flex;
+    flex-direction: column;
+    gap: 32px;
     justify-content: center;
     align-items: center;
     min-height: 100dvh;
     background-color: var(--bg-color);
     padding: 20px;
 }
-.auth_logo {
-    position: absolute;
-    left: 20px;
-    top: 20px;
-}
+
 .auth_logo_mobile {
     position: absolute;
-    top: -44px;
+    top: -48px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.auth_logo_mobile svg {
+    width: 148px;
 }
 .auth h1 {
     font-size: 1.5rem;
@@ -151,21 +154,93 @@
     margin: unset;
     font-weight: 400;
 }
-
+.verification {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.verification span {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+.verification_btn-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+}
+.verification_btn-info p {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+.verification button,
+.verification a {
+    background-color: var(--accent);
+    color: var(--surface-1);
+    font-size: var(--font-size-s);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    height: 44px;
+}
+.verification .create_btn_loader svg {
+    width: 100%;
+    height: 100%;
+}
+.verification button:hover,
+.verification a:hover {
+    background-color: var(--btn-hover-color);
+}
+.verification > svg {
+    background-color: var(--tab-hover-color);
+    color: var(--accent);
+    padding: 12px;
+    border-radius: 12px;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 24px;
+    opacity: 1;
+}
 
 @media (min-width: 1024px) {
-    .auth_logo_mobile {
-        display: none;
+    .auth_logo {
+        position: absolute;
+        left: 28px;
+        top: 20px;
+    }
+    .auth_logo svg {
+        width: 140px;
     }
 }
 @media (max-width: 1024px) {
     .auth_logo {
-        display: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .auth_logo svg {
+        width: 148px;
     }
 }
 @media (max-width: 640px) {
-    .auth_content {
+    .auth_content, .auth_form {
         width: 95dvw;
         max-height: 75dvh;
+    }
+    .verification button {
+        width: 100%;
+    }
+    .verification_btn-info {
+        flex-direction: column;
+        width: 100%;
+    }
+    .verification .error-msg {
+        align-self: center;
     }
 }
