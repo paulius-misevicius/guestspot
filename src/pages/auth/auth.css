@@ -231,7 +231,7 @@
 @media (max-width: 640px) {
     .auth_content, .auth_form {
         width: 95dvw;
-        max-height: 75dvh;
+        /* max-height: 75dvh; */
     }
     .verification button {
         width: 100%;

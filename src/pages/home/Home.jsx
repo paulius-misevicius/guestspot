@@ -20,7 +20,7 @@ export default function Home() {
                 <div className="hero_image_overlay"/>
                 <div className="hero_content">
                     <h1>Find your next <span className="accent-span">guest spot</span> today</h1>
-                    <p>The first guest spotting platform designed specifically to connect tattoo artists and studios in Europe</p>
+                    <p>The first guest spotting platform built specifically to connect tattoo artists and studios across Europe.</p>
                     <div className="hero_buttons">
                         <Link 
                             to="auth?type=sign-up"
@@ -40,26 +40,26 @@ export default function Home() {
             </section>
             <section ref={sectionRef} className="home_how-it-works">
                 <div className="how-it-works_intro">
-                    <h2>How <span className="accent-span">guestme</span> helps guest spot</h2>
-                    <p>Guestme allows you to easily find studios and artists from all over Europe that are looking to find or fill an empty studio spot</p>
+                    <h2>How <span className="accent-span">Guestme</span> helps you guest spot</h2>
+                    <p>Guestme makes it easy to find studios and artists across Europe looking to fill or find an open guest spot.</p>
                 </div>
                 <div className="how-it-works_steps">
                     <div className="step">
                         <User />
                         <span>Step 1</span>
                         <h3>Build your profile</h3>
-                        <p>Create an account as a studio or artist. Add your name, location, portfolio pictures and other details.</p>
+                        <p>Create an account as a studio or artist. Add your name, location, portfolio pictures, and other details.</p>
                     </div>
                     <div className="home_divider"/>
                     <div className="step wide">
                         <Split />
                         <span>Step 2</span>
-                        <h3>Find listings yourself or wait to be found</h3>
+                        <h3>Find listings yourself, or wait to be found</h3>
                         <p>Create an account as a studio or artist. Add your name, location, portfolio pictures and other details.</p>
                         <div className="step_middle">
                             <div className="step_middle_child">
                                 <h4>Post a listing</h4>
-                                <p>Artists share where they're travelling and when. Studios share when a guest spot is open. It shows up in the other side's browse tab.</p>
+                                <p>Artists share where and when they're travelling. Studios share when a guest spot is open. It shows up in the other side's browse tab.</p>
                             </div>
                             <span className="home_or">or</span>
                             <div className="divider-row">
@@ -71,7 +71,7 @@ export default function Home() {
                             </div>
                             <div className="step_middle_child">
                                 <h4>Browse listings</h4>
-                                <p>Scroll artists and studios across 17 European countries, filter by location and dates until something catches your eye.</p>
+                                <p>Scroll artists and studios across 17 European countries, and filter by location and dates until something catches your eye.</p>
                             </div>
                         </div>
                     </div>
@@ -80,7 +80,7 @@ export default function Home() {
                         {igIcon}
                         <span>Step 3</span>
                         <h3>Connect on Instagram</h3>
-                        <p>Guestme is for discovery only. All further communication is done off-platform. All listings include a link to the user's Instagram for further communication.</p>
+                        <p>Guestme is for discovery only. All further communication happens off-platform. Every listing includes a link to the user's Instagram to take the conversation from there.</p>
                     </div>
                 </div>
             </section>

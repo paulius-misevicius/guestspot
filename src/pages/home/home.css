@@ -101,6 +101,9 @@
     align-items: center;
     max-width: 550px;
 }
+.hero_content p {
+    max-width: 475px;
+}
 .hero_content h1,
 .hero_content span {
     font-size: clamp(2.25rem, 8vw, 4rem);
@@ -168,7 +171,7 @@
     max-width: 1140px;
 }
 .how-it-works_intro p {
-    max-width: 600px;
+    max-width: 500px;
 }
 .how-it-works_steps {
     max-width: 1280px;
