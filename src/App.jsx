@@ -23,6 +23,7 @@ import Home from "./pages/home/Home"
 import VerifyEmail from "./pages/auth/components/VerifyEmail"
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy"
 import TermsOfService from "./pages/legal/TermsOfService"
+import PasswordReset from "./pages/auth/PasswordReset"
 
 export const UserContext = createContext()
 
@@ -67,11 +68,12 @@ export default function App() {
 
           <Route element={<HomeLayout/>}>
             <Route index element={<Home />}/>
-            <Route path="privacy-policy" element={<PrivacyPolicy />}/>
-            <Route path="terms-of-service" element={<TermsOfService />}/>
+            <Route path="/privacy-policy" element={<PrivacyPolicy />}/>
+            <Route path="/terms-of-service" element={<TermsOfService />}/>
           </Route>
           
           <Route path="auth" element={<Auth />}/>
+          <Route path="password-reset" element={<PasswordReset />}/>
 
           <Route element={<AuthRequired />}>
             <Route path="/" element={<AppLayout />}>

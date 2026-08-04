@@ -284,6 +284,12 @@ main {
   text-align: center;
   margin-top: 12px;
 }
+.info-msg {
+  font-weight: 500;
+  font-size: var(--font-size-xs);
+  text-align: center;
+  margin-top: 12px;
+}
 .sr-only {
   position: absolute;
   width: 1px;

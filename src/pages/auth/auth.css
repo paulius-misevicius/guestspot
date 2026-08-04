@@ -208,6 +208,13 @@
     opacity: 1;
 }
 
+.password-reset_intro {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+}
+
 @media (min-width: 1024px) {
     .auth_logo {
         position: absolute;

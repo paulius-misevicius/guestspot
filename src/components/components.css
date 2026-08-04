@@ -518,6 +518,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   align-items: center;
   justify-content: center;
   gap: 12px;
+  text-align: center;
 }
 .not-found a {
   text-decoration: none;

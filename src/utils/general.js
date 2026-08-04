@@ -93,7 +93,7 @@ export function checkErrorMessage(error) {
     } else if (error.message === "Firebase: Error (auth/missing-password).") {
         return "Please check your password."
     } else if (error.message === "Firebase: Error (auth/missing-email).") {
-        return "Please check your email."
+        return "Please check your email address."
     } else if (error.message === "Firebase: Error (auth/too-many-requests).") {
         return "Please try again in a few seconds."
     } else if (error.message === "Firebase: Password should be at least 6 characters (auth/weak-password).") {

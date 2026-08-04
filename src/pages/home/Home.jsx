@@ -40,7 +40,7 @@ export default function Home() {
             </section>
             <section ref={sectionRef} className="home_how-it-works">
                 <div className="how-it-works_intro">
-                    <h2>How <span className="accent-span">Guestme</span> helps you guest spot</h2>
+                    <h2>How <span className="accent-span">guestme</span> helps you guest spot</h2>
                     <p>Guestme makes it easy to find studios and artists across Europe looking to fill or find an open guest spot.</p>
                 </div>
                 <div className="how-it-works_steps">

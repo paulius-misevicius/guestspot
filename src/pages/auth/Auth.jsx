@@ -42,7 +42,7 @@ export default function Auth() {
         if (authType === "log-in") {
             try {
                 await signInExistingUser(email, password)
-                navigate("/")
+                navigate("/listings")
             } catch(error) {
                 const translatedError = checkErrorMessage(error)
                 setError(translatedError)
