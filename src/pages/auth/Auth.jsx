@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { Link, useNavigate } from "react-router"
+import { useState, useEffect } from "react"
+import { Link, useNavigate, useSearchParams } from "react-router"
 import { TailSpin } from "react-loader-spinner"
 import { signInExistingUser, signInWithGoogle, signUpNewUser, verifyEmail } from "../../utils/firebase/auth"
 import { checkErrorMessage } from "../../utils/general"
@@ -13,10 +13,11 @@ import Logo from "../../components/Logo"
 
 export default function Auth() {
 
+    const [searchParams, setSearchParams] = useSearchParams()
+
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [authType, setAuthType] = useState("log in")
-
+    const [authType, setAuthType] = useState(searchParams.get("type") ?? "log-in")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
@@ -30,6 +31,7 @@ export default function Auth() {
         setConfirmPassword("")
         setHasConsented(false)
         setError(null)
+        setSearchParams({})
     }
 
     async function submitAuth(event) {
@@ -37,7 +39,7 @@ export default function Auth() {
         setError(null)
         setIsLoading(true)
 
-        if (authType === "log in") {
+        if (authType === "log-in") {
             try {
                 await signInExistingUser(email, password)
                 navigate("/")
@@ -49,7 +51,7 @@ export default function Auth() {
             }
         }
 
-        if (authType === "sign up") {
+        if (authType === "sign-up") {
 
             if (password !== confirmPassword) {
                 setError("Password confirmation doesn't match!")
@@ -86,34 +88,34 @@ export default function Auth() {
                 <div className="auth_switch">
                     <button 
                         onClick={() => {
-                            setAuthType("log in")
+                            setAuthType("log-in")
                             reset()
                         }}
                         type="button"
-                        className={`auth_type ${authType === "log in" ? "chosen" : undefined}`}
+                        className={`auth_type ${authType === "log-in" ? "chosen" : undefined}`}
                     >
                         Log in
                     </button>
                     <button 
                         onClick={() => {
-                            setAuthType("sign up")
+                            setAuthType("sign-up")
                             reset()
                         }}
                         type="button"
-                        className={`auth_type ${authType === "sign up" ? "chosen" : undefined}`}
+                        className={`auth_type ${authType === "sign-up" ? "chosen" : undefined}`}
                     >
                         Sign up
                     </button>
                 </div>
                 <div className="auth_intro-text">
                     <h1>
-                        {authType === "log in"
+                        {authType === "log-in"
                             ?   "Welcome back"
                             :   "Create an account"
                         }
                     </h1>
                     <p>
-                        {authType === "log in"
+                        {authType === "log-in"
                             ?   "Log in to your guestme account"
                             :   "Find guest spotting opportunities in Europe"
                         }
@@ -137,7 +139,7 @@ export default function Auth() {
                         }}
                         password={password}
                     />
-                    {authType === "sign up" &&
+                    {authType === "sign-up" &&
                         <Password 
                             className={error && error === "Password confirmation doesn't match!" ? "input_error" : undefined}
                             value={confirmPassword}
@@ -150,7 +152,7 @@ export default function Auth() {
                         />
                         }
                 </div>
-                {authType === "log in"
+                {authType === "log-in"
                     ?
                         <div className="auth_forgot-password">
                             <Link to="../password-reset">
@@ -168,7 +170,7 @@ export default function Auth() {
                             <label
                                 htmlFor="consent"
                             >
-                                I agree to the <Link>Terms of Service</Link> and <Link>Privacy Policy</Link>
+                                I agree to the <Link target="_blank" to="/terms-of-service">Terms of Service</Link> and <Link target="_blank" to="/privacy-policy">Privacy Policy</Link>
                             </label>
                         </div>
                     }
@@ -178,7 +180,7 @@ export default function Auth() {
                 <button className="auth_submit-button">
                     {isLoading 
                         ?   <TailSpin wrapperClass="create_btn_loader" color="var(--text-muted)"/> 
-                        :   authType === "log in" ? "Log in" : "Sign up"
+                        :   authType === "log-in" ? "Log in" : "Sign up"
                     }
                 </button>
                 <div className="auth_divider">

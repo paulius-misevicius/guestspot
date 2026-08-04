@@ -18,9 +18,9 @@ export default function OnboardingGate() {
         return <TailSpin wrapperClass="listings_loader" color="var(--text-muted)"/>
     }
 
-    // if (profile.isProfileCompleted) {
-    //     return <Navigate to="/listings" />
-    // }
+    if (profile.isProfileCompleted) {
+        return <Navigate to="/listings" />
+    }
 
     return <Outlet />
 }

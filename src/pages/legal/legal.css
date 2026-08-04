@@ -1,0 +1,10 @@
+.privacy-policy, .terms-of-service {
+    align-self: center;
+    padding-top: 120px;
+    padding-inline: 20px;
+    max-width: 1280px;
+}
+.privacy-policy p,
+.terms-of-service p {
+    margin-bottom: 20px;
+}

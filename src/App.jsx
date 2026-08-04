@@ -9,6 +9,7 @@ import { checkErrorMessage } from "./utils/general"
 import AuthRequired from "./layouts/AuthRequired"
 
 import AppLayout from "./layouts/AppLayout"
+import HomeLayout from "./layouts/HomeLayout"
 
 import Listings from "./pages/listings/Listings"
 import Browse from "./pages/browse/Browse"
@@ -18,7 +19,10 @@ import OnboardingGate from "./layouts/OnboardingGate"
 import Settings from "./pages/settings/Settings"
 import PageNotFound from "./components/PageNotFound"
 import Auth from "./pages/auth/Auth"
+import Home from "./pages/home/Home"
 import VerifyEmail from "./pages/auth/components/VerifyEmail"
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy"
+import TermsOfService from "./pages/legal/TermsOfService"
 
 export const UserContext = createContext()
 
@@ -61,7 +65,13 @@ export default function App() {
       <BrowserRouter>
         <Routes key={user?.uid ?? "logged-out"}>
 
-          <Route path="*" element={<PageNotFound />}/>
+          <Route element={<HomeLayout/>}>
+            <Route index element={<Home />}/>
+            <Route path="privacy-policy" element={<PrivacyPolicy />}/>
+            <Route path="terms-of-service" element={<TermsOfService />}/>
+          </Route>
+          
+          <Route path="auth" element={<Auth />}/>
 
           <Route element={<AuthRequired />}>
             <Route path="/" element={<AppLayout />}>
@@ -70,14 +80,15 @@ export default function App() {
               <Route path="profile" element={<Profile />}/>
               <Route path="settings" element={<Settings />}/>
             </Route>
+
             <Route path="email-verification" element={<VerifyEmail />}/>
+            
             <Route element={<OnboardingGate />}>
               <Route path="onboarding" element={<Onboarding />}/>
             </Route>
           </Route>
 
-
-          <Route path="auth" element={<Auth />}/>
+          <Route path="*" element={<PageNotFound />}/>
 
         </Routes>
       </BrowserRouter>
