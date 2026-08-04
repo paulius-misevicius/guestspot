@@ -19,7 +19,8 @@ export default function Home() {
                 <img className="hero_image" src={Hero}/>
                 <div className="hero_image_overlay"/>
                 <div className="hero_content">
-                    <h1>Guestme: Find your next <span className="accent-span">guest spot</span> today</h1>
+                    {/* <h1>Guestme: Find your next <span className="accent-span">guest spot</span> today</h1> */}
+                    <h1>Guestme: Connect with tattoo studios and artists today</h1>
                     <p>Guestme is the first guest spotting platform built specifically to connect tattoo artists and studios across Europe.</p>
                     <div className="hero_buttons">
                         <Link 
