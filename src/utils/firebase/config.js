@@ -5,7 +5,7 @@ import { getStorage } from "firebase/storage"
 
 const firebaseConfig = {
   apiKey: "AIzaSyBwJ0VbqIb6wFUcsGcqp7GiTRJwmPN9OUI",
-  authDomain: "guestme.eu",
+  authDomain: "guestspot-251bb.firebaseapp.com",
   projectId: "guestspot-251bb",
   storageBucket: "guestspot-251bb.firebasestorage.app",
   messagingSenderId: "192858564096",
