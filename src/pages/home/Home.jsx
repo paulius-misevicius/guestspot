@@ -20,7 +20,7 @@ export default function Home() {
                 <div className="hero_image_overlay"/>
                 <div className="hero_content">
                     <h1>Find your next <span className="accent-span">guest spot</span> today</h1>
-                    <p>The first guest spotting platform built specifically to connect tattoo artists and studios across Europe.</p>
+                    <p>Guestme is the first guest spotting platform built specifically to connect tattoo artists and studios across Europe.</p>
                     <div className="hero_buttons">
                         <Link 
                             to="auth?type=sign-up"
@@ -40,7 +40,7 @@ export default function Home() {
             </section>
             <section ref={sectionRef} className="home_how-it-works">
                 <div className="how-it-works_intro">
-                    <h2>How <span className="accent-span">guestme</span> helps you guest spot</h2>
+                    <h2>How <span className="accent-span">Guestme</span> helps you guest spot</h2>
                     <p>Guestme makes it easy to find studios and artists across Europe looking to fill or find an open guest spot.</p>
                 </div>
                 <div className="how-it-works_steps">
