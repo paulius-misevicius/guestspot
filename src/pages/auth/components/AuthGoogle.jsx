@@ -11,7 +11,7 @@ export default function AuthGoogle({setError}) {
 
         try {
             await signInWithGoogle()
-            navigate("/")
+            navigate("/listings")
         } catch (error) {
             const translatedError = checkErrorMessage(error)
             setError(translatedError)

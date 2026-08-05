@@ -125,6 +125,7 @@
     gap: 12px;
     justify-content: center;
     padding: 16px 20px;
+    transition: background 0.1s ease;
 }
 .listing_name {
     display: flex;
@@ -183,7 +184,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: var(--surface-1);
+    color: var(--btn-text);
     font-weight: 500;
 }
 .last-gallery-img > .more-images-hint {

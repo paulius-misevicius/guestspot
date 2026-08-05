@@ -18,11 +18,11 @@
     border: 1px solid transparent;
 }
 .home_primary-btn {
-    background-color: var(--accent);
-    border: 1px solid var(--accent);
+    background-color: rgb(196, 108, 108);
+    border: 1px solid rgb(196, 108, 108);
 }
 .accent-span {
-    color: var(--accent) !important;
+    color: rgb(196, 108, 108) !important;
 }
 .home p,
 .home span {
@@ -187,13 +187,13 @@
     text-align: center;
 }
 .step svg {
-    color: var(--accent);
+    color: rgb(196, 108, 108);
     display: flex;
     width: 4.5rem;
     height: 4.5rem;
     background-color: rgba(28, 28, 26, 1);
     padding: 12px;
-    border: 1px solid var(--btn-hover-color);
+    border: 1px solid rgba(196, 108, 108, 0.5);
     border-radius: 8px;
     margin-bottom: 24px;
 }
@@ -265,7 +265,7 @@
 }
 @media (min-width: 1024px) {
     .home_button:hover {
-        background-color: var(--btn-hover-color);
+        background-color: rgba(196, 108, 108, 0.5);
     }
     .home_footer a:hover {
         font-weight: 500;
@@ -274,7 +274,7 @@
 }
 @media (max-width: 1024px) {
     .home_button:active {
-        background-color: var(--btn-hover-color);
+        background-color: rgba(196, 108, 108, 0.5);
     }
     .home_footer a:active {
         font-weight: 500;

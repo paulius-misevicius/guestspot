@@ -98,7 +98,7 @@
     display: flex;
     flex-direction: column;
     margin-top: 28px;
-    height: 100%;
+    /* height: 100%; */
 }
 .profile_gallery > p {
     font-size: 1rem;
@@ -115,6 +115,7 @@
     aspect-ratio: 1/1;
     border-radius: 12px;
     overflow: hidden;
+    border: 1px solid var(--border);
 }
 
 .profile_modal_picture {
@@ -223,7 +224,7 @@
         background-color: rgba(0, 0, 0, 0.75);
     }
     .profile_modal_pic-btn:hover .profile_pic-camera-icon {
-        color: var(--surface-1);
+        color: var(--btn-text);
     }
     .add-location-btn:hover {
         color: var(--text-primary);
@@ -245,7 +246,7 @@
         background-color: rgba(0, 0, 0, 0.75);
     }
     .profile_modal_pic-btn:active .profile_pic-camera-icon {
-        color: var(--surface-1);
+        color: var(--btn-text);
     }
     .add-location-btn:active {
         color: var(--text-primary);

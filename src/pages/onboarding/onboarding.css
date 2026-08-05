@@ -89,7 +89,7 @@
     margin-top: 28px;
 }
 .onboarding_navigation_btn {
-    color: var(--surface-1);
+    color: var(--btn-text);
     font-weight: 500;
     padding: 12px 20px;
     border-radius: 8px;

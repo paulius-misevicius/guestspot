@@ -4,7 +4,7 @@ import "./components.css"
 import FocusTrap from "focus-trap-react"
 import { TailSpin } from "react-loader-spinner"
 
-export default function Modal({ children, form, onSubmit, onClose, error, title, buttonText, link, buttonIcon, isLightboxOn, isLoading }) {
+export default function Modal({ children, form, onSubmit, onClose, error, title, buttonText, link, buttonIcon, isLightboxOn, isLoading, info, setInfo }) {
     
     return createPortal(
         <>
@@ -35,6 +35,7 @@ export default function Modal({ children, form, onSubmit, onClose, error, title,
                                         {!isLoading ? buttonText : <TailSpin visible={isLoading} strokeWidth="3" wrapperClass="create_btn_loader" color="currentColor"/>}
                                     </button>
                                     {error && <p className="error-msg">{error}</p>}
+                                    {info && <p className="info-msg">{info}</p>}
                                 </div>
                             </form>
                         :
@@ -68,6 +69,7 @@ export default function Modal({ children, form, onSubmit, onClose, error, title,
                                             </button>
                                         }
                                     {error && <p className="error-msg">{error}</p>}
+                                    {info && <p className="info-msg">{info}</p>}
                                 </div>
                             </div>
                         }

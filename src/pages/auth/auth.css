@@ -166,7 +166,7 @@
 .verification button,
 .verification a {
     background-color: var(--accent);
-    color: var(--surface-1);
+    color: var(--btn-text);
     font-size: var(--font-size-s);
     text-decoration: none;
     display: flex;

@@ -32,6 +32,11 @@ export default function App() {
   const [user, setUser] = useState(null)
   const [profile, setProfile] = useState(null)
   const [isAuthLoading, setIsAuthLoading] = useState(true)
+  const [theme, setTheme] = useState(profile?.themePref ?? "light")
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme)
+  }, [theme])
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async user => {
@@ -50,6 +55,7 @@ export default function App() {
           setProfile({isProfileCompleted: false})
         } else {
           setProfile(profileData)
+          setTheme(profileData?.themePref ?? "light")
         }
       } catch (error) {
         console.error(error.message)
@@ -62,7 +68,7 @@ export default function App() {
   }, [])
 
   return (
-    <UserContext.Provider value={{user, isAuthLoading, profile, setProfile}}>
+    <UserContext.Provider value={{user, isAuthLoading, profile, setProfile, theme, setTheme}}>
       <BrowserRouter>
         <Routes key={user?.uid ?? "logged-out"}>
 

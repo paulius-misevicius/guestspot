@@ -134,7 +134,7 @@ export default function Profile() {
                         )}
                 </div>
             </section>
-            {!profile.gallery || profile.gallery.length === 0 &&
+            {(!profile.gallery || profile.gallery.length === 0) &&
                 <p className="empty_section_message">
                     {`Edit your profile to showcase your ${profile.type === "studio" ? "studio's work" : "work"}!`}
                 </p>

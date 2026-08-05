@@ -50,7 +50,7 @@
 }
 .active {
     background-color: var(--tab-active-color) !important;
-    color: var(--surface-1) !important;
+    color: var(--btn-text) !important;
 }
 
 .sidebar_profile {
@@ -284,6 +284,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .date-picker .rdp-selected button{
   transition: unset;
+  color: var(--btn-text);
 }
 .rdp-range_start .rdp-day_button,
 .rdp-range_end .rdp-day_button {
@@ -481,7 +482,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .not-found a {
   text-decoration: none;
   background-color: var(--btn-default-color);
-  color: var(--surface-1);
+  color: var(--btn-text);
   padding: 12px 20px;
   border-radius: 8px;
   font-size: var(--font-size-s);
@@ -516,17 +517,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
   .modal_close-btn:hover {
     background-color: var(--accent);
-    color: var(--surface-1);
+    color: var(--btn-text);
   }
   .modal_create-btn:hover {
     background-color: var(--btn-hover-color);
   }
   .lightbox_btn:hover {
-    color: var(--surface-1);
+    color: var(--btn-text);
     background-color: var(--border-light);
   }
   .close-btn:hover {
-    color: var(--surface-1);
+    color: var(--btn-text);
     background-color: var(--btn-hover-color);
   }
   .not-found a:hover {
@@ -563,17 +564,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
   .modal_close-btn:active {
     background-color: var(--accent);
-    color: var(--surface-1);
+    color: var(--btn-text);
   }
   .modal_create-btn:active {
     background-color: var(--btn-hover-color);
   }
   .lightbox_btn:active {
-    color: var(--surface-1);
+    color: var(--btn-text);
     background-color: var(--border-light);
   }
   .close-btn:active {
-    color: var(--surface-1);
+    color: var(--btn-text);
     background-color: var(--btn-hover-color);
   }
   .not-found a:active {

@@ -9,6 +9,7 @@ import { cities } from "../../../utils/cities"
 import DatePicker from "../../../components/fields/DatePicker"
 import Combobox from "../../../components/fields/Combobox"
 import Modal from "../../../components/Modal"
+import { checkErrorMessage } from "../../../utils/general"
 
 export default function ListingModal({isModalOpen, setIsModalOpen, COPY}) {
     
@@ -41,7 +42,8 @@ export default function ListingModal({isModalOpen, setIsModalOpen, COPY}) {
             )
             setListingData({})
         } catch (error) {
-            console.error(error.message)
+            const errMsg = checkErrorMessage(error)
+            setError(errMsg)
         } finally {
             setIsModalOpen(false)
             setIsLoading(false)
