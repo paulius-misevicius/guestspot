@@ -8,12 +8,10 @@ export default function Password({password, label = "Password", ...rest}) {
     const passwordToggleIcon = 
         isPasswordVisible
             ? <EyeOff 
-                className="input-icon input-icon_right-side icon-16px"
-                onClick={() => setIsPasswordVisible(prev => !prev)} 
+                    className="input-icon input-icon_right-side icon-16px"
                 /> 
             : <Eye 
-                className="input-icon input-icon_right-side icon-16px"
-                onClick={() => setIsPasswordVisible(prev => !prev)} 
+                    className="input-icon input-icon_right-side icon-16px"
                 />
 
     return (
@@ -28,7 +26,16 @@ export default function Password({password, label = "Password", ...rest}) {
                     type={isPasswordVisible ? "text" : "password"}
                     placeholder="********"
                 />
-                {password.length > 0 && passwordToggleIcon}
+                {password.length > 0 && 
+                    <button
+                        type="button"
+                        aria-pressed={isPasswordVisible}
+                        aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+                        onClick={() => setIsPasswordVisible(prev => !prev)}
+                    >
+                        {passwordToggleIcon}
+                    </button>
+                }
             </div>
         </div>
     )

@@ -67,6 +67,7 @@ export default function ListingModal({isModalOpen, setIsModalOpen, COPY}) {
             onClose={onClose} 
             error={error}
             isLoading={isLoading}
+            ariaLabel="Create new listing"
         >
             {profile.type === "studio"
                 ?

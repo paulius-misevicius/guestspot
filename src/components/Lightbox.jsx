@@ -32,10 +32,20 @@ export default function Lightbox({isLightboxOn, setIsLightboxOn, lightboxImage, 
         <>
             <div className="root-overlay"></div>
             <FocusTrap>
-                <div className="lightbox" ref={lightboxRef}>
-                    <ImageLoader key={currentImage} src={gallery[currentImage].image.large}/>
+                <div 
+                    className="lightbox" 
+                    ref={lightboxRef}
+                    role="dialog"
+                    aria-modal="true"
+                >
+                    <ImageLoader 
+                        key={currentImage} 
+                        src={gallery[currentImage].image.large}
+                        alt={`Lightbox image ${currentImage + 1}`}
+                    />
                     <button 
                         className="lightbox_btn prev-btn"
+                        aria-label="Go to previous image"
                         onClick={() => {
                             if (currentImage === 0) {
                                 setCurrentImage(gallery.length - 1)
@@ -46,6 +56,7 @@ export default function Lightbox({isLightboxOn, setIsLightboxOn, lightboxImage, 
                     </button>
                     <button 
                         className="lightbox_btn next-btn"
+                        aria-label="Go to next image"
                         onClick={() => {
                             if (currentImage === (gallery.length - 1)) {
                                 setCurrentImage(0)
@@ -56,6 +67,7 @@ export default function Lightbox({isLightboxOn, setIsLightboxOn, lightboxImage, 
                     </button>
                     <button
                         className="lightbox_btn close-btn"
+                        aria-label="Close image lightbox modal"
                         onClick={() => setIsLightboxOn(false)}
                     >
                         <X className="icon-16px icon-stroke"/>

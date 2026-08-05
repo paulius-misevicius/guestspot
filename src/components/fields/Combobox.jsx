@@ -127,10 +127,15 @@ export default function Combobox({data, setData, itemList, noLabel, index, setIn
                     onKeyDown={handleKeyDown}
                 />
                 {inputValue.length > 0 && 
-                    <X 
-                        className="input-icon input-icon_right-side icon-16px" 
+                    <button
                         onClick={() => commitCity(null)}
-                    />
+                        aria-label="Clear city selection"
+                        type="button"
+                    >
+                        <X
+                            className="input-icon input-icon_right-side icon-16px"
+                        />
+                    </button>
                     }
             </div>
 

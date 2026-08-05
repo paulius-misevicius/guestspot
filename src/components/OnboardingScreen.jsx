@@ -26,11 +26,15 @@ export default function OnboardingScreen({progressBar = false, children, step, s
                 </div>
                 <div className="onboarding_left_content">
                     {progressBar && 
-                        <div>
+                        <div role="progressbar" aria-valuenow={step} aria-valuemin={0} aria-valuemax={stepCount}>
                             <p className="progress-bar_title">Onboarding progress</p>
                             <div className="progress-bar">
                                 {Array(stepCount).fill().map((item, index) =>
-                                    <div key={index} className={`progress-bar_step ${(index + 1) <= step ? "step_filled" : ""}`}/>
+                                    <div 
+                                        key={index} 
+                                        className={`progress-bar_step ${(index + 1) <= step ? "step_filled" : ""}`}
+                                        aria-label={`Step ${index + 1} ${(index + 1) <= step ? "completed" : "pending"}`}
+                                    />
                                 )}
                             </div>
                             <p className="progress-bar_count">Step {step} out of {stepCount}</p>
@@ -45,6 +49,7 @@ export default function OnboardingScreen({progressBar = false, children, step, s
                         </p>
                         <button
                             onClick={logoutFromAccount}
+                            aria-label="Log out"
                             className="profile_log-out-btn input-icon_right-side input-icon"
                         >
                             <LogOut className="icon-16px icon-stroke" />
@@ -56,14 +61,22 @@ export default function OnboardingScreen({progressBar = false, children, step, s
                 <div className="onboarding_mobile_header">
                     <div className="onboarding_mobile_header_top">
                         <Logo classes="onboarding_logo_mobile"/>
-                        <button className="onboarding_mobile_log-out-btn">
-                            <LogOut onClick={logoutFromAccount} className="icon-18px"/>
+                        <button 
+                            onClick={logoutFromAccount}
+                            className="onboarding_mobile_log-out-btn"
+                            aria-label="Log out"
+                        >
+                            <LogOut className="icon-18px"/>
                         </button>
                     </div>
                     {progressBar && 
-                        <div className="progress-bar">
+                        <div role="progressbar" aria-valuenow={step} aria-valuemin={0} aria-valuemax={stepCount} className="progress-bar">
                             {Array(stepCount).fill().map((item, index) =>
-                                <div key={index} className={`progress-bar_step ${(index + 1) <= step ? "step_filled" : ""}`}/>
+                                <div 
+                                    key={index} 
+                                    className={`progress-bar_step ${(index + 1) <= step ? "step_filled" : ""}`}
+                                    aria-label={`Step ${index + 1} ${(index + 1) <= step ? "completed" : "pending"}`}
+                                />
                             )}
                         </div>
                         }

@@ -56,6 +56,7 @@ export default function ProfilePic({setProfile, profile, COPY}) {
                     {profilePic
                         ?
                             <ImageLoader
+                                alt="Profile picture"
                                 border
                                 src={profilePic}
                             />

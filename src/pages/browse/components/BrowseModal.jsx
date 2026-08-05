@@ -62,12 +62,14 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
                 title={COPY.TITLE}
                 buttonText="Message on Instagram"
                 buttonIcon={igIcon}
+                ariaLabel={`Open ${clickedListing.profile.name} Instagram in new tab`}
                 link={`https://instagram.com/${clickedListing.profile.instagram}`}
             >
                 <div className="browse_modal_profile-details">
                     <div className="browse_modal_profile-pic">
                         <ImageLoader
                             src={clickedListing.profile.profilePic.small}
+                            alt={`${clickedListing.profile.name} profile picture`}
                         />
                     </div>
                     <div className="browse_modal_listing-details">
@@ -93,7 +95,11 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
                     <div className="browse_modal_listing-header">
                         <p className="browse_modal_label">{COPY.HEADER}</p>
                         {userListings.length > 0 &&
-                            <button onClick={() => setIsShowingAll(prev => !prev)}>
+                            <button 
+                                onClick={() => setIsShowingAll(prev => !prev)}
+                                aria-label={`Show all listings from ${clickedListing.profile.name}`}
+                                aria-expanded={isShowingAll}
+                            >
                                 <ChevronDown className={`icon-14px chevron icon-margin ${isShowingAll ? "chevron-open" : ""}`}/>
                                 {isShowingAll ? "Hide" : "Show"} all ({userListings.length + 1})
                             </button>
@@ -151,8 +157,13 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
                                                 key={img.id} 
                                                 className="last-gallery-img browse_modal_gallery-img"
                                                 onClick={() => handleImageClick(index)}
+                                                aria-label={`Open lightbox modal for image ${index + 1}`}
                                             >
-                                                <ImageLoader src={img.image.small} className="browse_listing_image"/>
+                                                <ImageLoader 
+                                                    src={img.image.small} 
+                                                    alt={`Portfolio image ${index + 1} from ${clickedListing.profile.name}`}
+                                                    className="browse_listing_image"
+                                                />
                                                 <span className="more-images-hint">
                                                     +{clickedListing.profile.gallery.length - galleryLength}
                                                 </span>
@@ -162,8 +173,13 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
                                                 key={img.id}
                                                 className="browse_modal_gallery-img"
                                                 onClick={() => handleImageClick(index)}
+                                                aria-label={`Open lightbox modal for image ${index + 1}`}
                                             >
-                                                <ImageLoader src={img.image.small} className="browse_listing_image"/>
+                                                <ImageLoader 
+                                                    src={img.image.small} 
+                                                    alt={`Portfolio image ${index + 1} from ${clickedListing.profile.name}`}
+                                                    className="browse_listing_image"
+                                                />
                                             </button>
                             )}
                     </div>

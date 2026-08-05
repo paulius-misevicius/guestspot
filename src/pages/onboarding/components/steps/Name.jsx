@@ -26,7 +26,7 @@ export default function Name({profile, setProfile, error, setError, COPY}) {
                     />
                 </div>
             </div>
-            {error && <p className="error-msg">{error}</p>}
+            {error && <p role="alert" className="error-msg">{error}</p>}
         </>
     )
 }

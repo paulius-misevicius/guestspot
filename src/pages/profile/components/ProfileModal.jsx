@@ -217,6 +217,7 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
             error={error}
             setError={setError}
             isLoading={isLoading}
+            ariaLabel="Save profile edit changes"
         >
             <div className="profile_modal_picture">
                 <div className="profile_modal-pic-container">

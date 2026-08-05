@@ -6,20 +6,26 @@ export default function BrowseListing({setIsModalOpen, setClickedListing, galler
     return (
         <button 
             className="browse_listing"
+            aria-label={`View listing for ${name} in ${location}, available ${dateRange}`}
             onClick={() => {
                 setIsModalOpen(true)
                 setClickedListing()
             }}
         >
             <div className="listing_image-grid">
-                {padGallery(gallery, 3).map(img =>
+                {padGallery(gallery, 3).map((img, index) =>
                     img.isPlaceholder 
                         ?
                             <div key={img.id} className="browse_listing_placeholder">
                                 <CameraOff className="placeholder-img_icon"/>
                             </div>
                         :
-                            <ImageLoader key={img.id} src={img.image.small} className="browse_listing_image"/>         
+                            <ImageLoader 
+                                key={img.id} 
+                                src={img.image.small} 
+                                className="browse_listing_image"
+                                aria-label={`Preview image ${index + 1} of ${name} listing in ${location}, available ${dateRange}`}
+                            />         
                     )}
             </div>
             <div className="listing_details">

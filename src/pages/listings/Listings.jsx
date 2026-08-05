@@ -75,6 +75,7 @@ export default function Listings() {
               New Listing
             </button>
             <button 
+              aria-label="Add new listing"
               className="header_new-listing-btn mobile-only btn_mobile-padding"
               onClick={() => setIsModalOpen(true)}
             >
@@ -101,8 +102,10 @@ export default function Listings() {
                     />
                   )}
                 </section>
-                <section className="user_listings_expired_section">
+                <section id="expired-listings-section" className="user_listings_expired_section">
                   <button 
+                    aria-expanded={isExpiredOpen}
+                    aria-controls="expired-listings-section"
                     className="expired_expand_btn"
                     onClick={() => setIsExpiredOpen(prev => !prev)}
                   >

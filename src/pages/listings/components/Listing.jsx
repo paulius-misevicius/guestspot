@@ -68,6 +68,7 @@ export default function Listing({id, city, country, dateFrom, dateTo, isActive})
               </Link>
               }
             <button
+              aria-label={`Delete listing for ${city}, ${country}`}
               className="listing_delete-btn"
               onClick={() => deleteFromFirebase("listings", id)}
             >

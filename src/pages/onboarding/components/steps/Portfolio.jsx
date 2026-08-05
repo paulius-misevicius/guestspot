@@ -73,6 +73,8 @@ export default function Portfolio({profile, setProfile, COPY}) {
                                 className="input_gallery_add-btn modal_portfolio_image"
                                 type="button"
                                 disabled={gallery.length === 20}
+                                aria-disabled={gallery.length === 20}
+                                aria-label="Upload new portfolio image"
                                 onClick={() => galleryPicRef.current.click()}
                             >
                                 <Plus className="input_gallery_plus-icon"/>
@@ -82,10 +84,11 @@ export default function Portfolio({profile, setProfile, COPY}) {
                         }
                     {gallery.map((item, index) =>
                         <div className="input_gallery_item" key={item.id}>
-                            <ImageLoader src={item.image.small} />
+                            <ImageLoader alt={`Portfolio image ${index + 1}`} src={item.image.small} />
                             <button
                                 onClick={() => deleteFromGallery(item.id)}
                                 type="button"
+                                aria-label={`Delete portfolio image ${index + 1}`}
                                 className="gallery_item_delete-btn gallery_item_btn"
                             >
                                 <Trash2 className="icon-16px icon-stroke"/>

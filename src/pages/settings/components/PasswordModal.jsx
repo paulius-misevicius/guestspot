@@ -59,6 +59,7 @@ export default function PasswordModal({isModalOpen, setIsModalOpen}) {
             info={info}
             setInfo={setInfo}
             isLoading={isLoading}
+            ariaLabel="Confirm password change"
         >
             <div className="auth_fields">
                 <Password 

@@ -23,10 +23,11 @@ export default function Sidebar() {
         <section className="sidebar">
             <div className="sidebar_content">
                 <Logo classes="sidebar_logo" />
-                <nav className="sidebar_nav">
+                <nav className="sidebar_nav" aria-label="Main navigation">
                     <NavLink
                         to="listings"
                         className="sidebar_nav_tab"
+                        aria-label="My listings"
                     >
                         <MapPin className="icon-18px icon-stroke-2"/>
                         My listings
@@ -34,6 +35,7 @@ export default function Sidebar() {
                     <NavLink
                         to="browse"
                         className="sidebar_nav_tab"
+                        aria-label="Browse listings"
                     >
                         <Search className="icon-17px icon-stroke"/>
                         Browse
@@ -41,6 +43,7 @@ export default function Sidebar() {
                     <NavLink
                         to="profile"
                         className="sidebar_nav_tab"
+                        aria-label="My profile"
                     >
                         <User className="icon-18px icon-stroke"/>
                         Profile
@@ -51,6 +54,7 @@ export default function Sidebar() {
                         {profile.profilePic?.small
                             ?
                                 <ImageLoader
+                                    alt="Profile picture"
                                     border
                                     src={profile.profilePic.small}
                                 />
@@ -68,6 +72,7 @@ export default function Sidebar() {
                     </p>
                     <button
                         onClick={logoutFromAccount}
+                        aria-label="Log out from account"
                         className="profile_log-out-btn input-icon_right-side input-icon"
                     >
                         <LogOut className="icon-18px icon-stroke" />

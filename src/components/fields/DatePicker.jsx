@@ -80,6 +80,7 @@ export default function DatePicker({selected, setSelected, error, setError, noLa
                             onClick={isModal ? () => setIsCalendarOpen(prev => !prev) : null}
                             onKeyDown={handleEnterKey}
                             readOnly
+                            aria-expanded={isCalendarOpen}
                         />
                         <CalendarDays className="input-icon icon-14px" />
                     </div>
@@ -102,6 +103,7 @@ export default function DatePicker({selected, setSelected, error, setError, noLa
                             onClick={isModal ? () => setIsCalendarOpen(prev => !prev) : null}
                             onKeyDown={handleEnterKey}
                             readOnly
+                            aria-expanded={isCalendarOpen}
                         />
                         <CalendarDays className="input-icon icon-14px"/>
                     </div>

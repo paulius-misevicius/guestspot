@@ -71,6 +71,7 @@ export default function Profile() {
                             ?
                                 <ImageLoader
                                     border
+                                    alt="Profile picture"
                                     src={profile.profilePic.small}
                                 />
                             :
@@ -125,6 +126,8 @@ export default function Profile() {
                 <div className="profile_gallery_grid">
                     {profile?.gallery && profile.gallery.map((item, index) =>
                         <button 
+                            alt={`Portfolio image ${index + 1}`}
+                            aria-label={`View portfolio image ${index + 1}`}
                             key={item.id} 
                             className="profile_gallery_image"
                             onClick={() => handleImageClick(index)}

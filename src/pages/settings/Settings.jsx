@@ -85,6 +85,7 @@ export default function Settings() {
                                 <button 
                                     onClick={() => setIsEmailModalOpen(true)}
                                     className="settings_button"
+                                    aria-label="Change email address"
                                 >
                                     Change
                                 </button>
@@ -94,6 +95,7 @@ export default function Settings() {
                                 <button 
                                     onClick={() => setIsPasswordModalOpen(true)}
                                     className="settings_button"
+                                    aria-label="Change password"
                                 >
                                     Change
                                 </button>
@@ -149,6 +151,7 @@ export default function Settings() {
                     <button 
                         onClick={logoutFromAccount}
                         className="settings_setting log-out-btn"
+                        aria-label="Log out of account"
                     >
                         Log out
                         <LogOut className="icon-14px icon-stroke"/>
@@ -168,6 +171,7 @@ export default function Settings() {
                                         <button 
                                             onClick={() => setIsDeletePressed(true)}
                                             className="settings_button"
+                                            aria-label="Delete account"
                                         >
                                             Delete
                                         </button>
@@ -175,6 +179,7 @@ export default function Settings() {
                                         <button 
                                             onClick={deleteUserAccount}
                                             className="settings_button"
+                                            aria-label="Confirm delete account - this action cannot be undone"
                                         >
                                             Confirm
                                         </button>

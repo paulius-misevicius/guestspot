@@ -12,6 +12,7 @@ export default function Location({profile, setProfile, COPY}) {
             {index > 0 && index === (locationCount - 1) &&
                 <button 
                     type="button"
+                    aria-label={`Delete location ${index + 1}`}
                     className="location_delete-btn"
                     onClick={() => {
                         setLocationCount(prev => prev - 1)
@@ -46,6 +47,7 @@ export default function Location({profile, setProfile, COPY}) {
                 <button 
                     className="add-location-btn"
                     type="button"
+                    aria-label="Add another studio location"
                     onClick={() => setLocationCount(prev => prev + 1)}
                 >
                     Add another

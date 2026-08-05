@@ -92,6 +92,7 @@ export default function Auth() {
                             setAuthType("log-in")
                             reset()
                         }}
+                        aria-selected={authType === "log-in"}
                         type="button"
                         className={`auth_type ${authType === "log-in" ? "chosen" : undefined}`}
                     >
@@ -102,6 +103,7 @@ export default function Auth() {
                             setAuthType("sign-up")
                             reset()
                         }}
+                        aria-selected={authType === "sign-up"}
                         type="button"
                         className={`auth_type ${authType === "sign-up" ? "chosen" : undefined}`}
                     >
@@ -176,9 +178,12 @@ export default function Auth() {
                         </div>
                     }
                 {error && 
-                    <p className="error-msg">{error}</p>
+                    <p role="alert" aria-live="polite" className="error-msg">{error}</p>
                     }
-                <button className="auth_submit-button">
+                <button 
+                    aria-busy={isLoading}
+                    className="auth_submit-button"
+                >
                     {isLoading 
                         ?   <TailSpin wrapperClass="create_btn_loader" color="var(--text-muted)"/> 
                         :   authType === "log-in" ? "Log in" : "Sign up"

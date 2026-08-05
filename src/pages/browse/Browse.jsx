@@ -175,6 +175,7 @@ export default function Browse() {
                     <div className="browse_filter_buttons">
                         <button 
                             className="filter-reset-btn"
+                            aria-label="Reset filters"
                             onClick={() => {
                                 if (Object.keys(filter).length === 0 && !filter?.locations?.[0]) return
                                 setFilter({})
@@ -187,6 +188,7 @@ export default function Browse() {
                         </button>
                         <button 
                             className="filter-btn"
+                            aria-label="Apply filter"
                             onClick={() => {
                                 if (Object.keys(filter).length === 0 && !filter?.locations?.[0]) return
                                 setActiveFilter(filter)
@@ -202,6 +204,7 @@ export default function Browse() {
                         {activeFilter?.locations?.[0]?.city && 
                             <button 
                                 className="filter-pill"
+                                aria-label={`Remove ${activeFilter.locations[0].city}, ${activeFilter.locations[0].country} filter`}
                                 onClick={() => {
                                     const { locations, ...rest } = filter
                                     setResetSignal(prev => prev + 1)
@@ -221,6 +224,7 @@ export default function Browse() {
                         {activeFilter.from && 
                             <button 
                                 className="filter-pill"
+                                aria-label="Remove date filter"
                                 onClick={() => {
                                     setFilter(prev => {
                                         const { from, to, ...rest } = prev
@@ -258,9 +262,12 @@ export default function Browse() {
                         )}
                     </section>
                 :
-                    !isLoading && hasLoadedOnce && <p className="empty_section_message">No listings found for your search!</p>
+                    !isLoading && hasLoadedOnce && 
+                        <p className="empty_section_message" role="status">
+                            No listings found for your search!
+                        </p>
                 }
-            {hasMore && <div ref={sentinelRef} style={{ height: 1 }} />}
+            {hasMore && <div aria-hidden="true" ref={sentinelRef} style={{ height: 1 }} />}
             {isLoading && <TailSpin wrapperClass="listings_loader" color="var(--text-muted)" />}
         </>
     )

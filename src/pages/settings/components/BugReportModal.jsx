@@ -57,6 +57,7 @@ export default function BugReportModal({isModalOpen, setIsModalOpen}) {
             info={info}
             setInfo={setInfo}
             isLoading={isLoading}
+            ariaLabel="Submit bug report"
         >
             <div className="profile_modal_bio">
                 <label htmlFor="bio">Bug description</label>

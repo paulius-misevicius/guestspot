@@ -31,12 +31,17 @@ export default function Instagram({profile, setProfile, error, setError, COPY}) 
                 </div>
             </div>
             <div className="onboarding_instagram-link_wrapper">
-                <a className="onboarding_instagram-link trunctuate" target="_blank" href={`https://${igPreview}`}>
+                <a 
+                    aria-label={`Open ${igPreview} in new tab`} 
+                    className="onboarding_instagram-link trunctuate" 
+                    target="_blank" 
+                    href={`https://${igPreview}`}
+                >
                     {igPreview}
                 </a>
                 <ExternalLink className="icon-14px"/>
             </div>
-            {error && <p className="error-msg">{error}</p>}
+            {error && <p role="alert" className="error-msg">{error}</p>}
         </>
     )
 }

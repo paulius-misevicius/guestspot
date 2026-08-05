@@ -59,6 +59,7 @@ export default function EmailModal({isModalOpen, setIsModalOpen}) {
             info={info}
             setInfo={setInfo}
             isLoading={isLoading}
+            ariaLabel="Confirm email change"
         >
             <div className="auth_fields">
                 <Email 
