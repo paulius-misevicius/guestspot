@@ -20,7 +20,7 @@ import Settings from "./pages/settings/Settings"
 import PageNotFound from "./components/PageNotFound"
 import Auth from "./pages/auth/Auth"
 import Home from "./pages/home/Home"
-import VerifyEmail from "./pages/auth/components/VerifyEmail"
+import Account from "./pages/auth/components/Account"
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy"
 import TermsOfService from "./pages/legal/TermsOfService"
 import PasswordReset from "./pages/auth/PasswordReset"
@@ -68,22 +68,22 @@ export default function App() {
 
           <Route element={<HomeLayout/>}>
             <Route index element={<Home />}/>
-            <Route path="/privacy-policy" element={<PrivacyPolicy />}/>
-            <Route path="/terms-of-service" element={<TermsOfService />}/>
+            <Route path="privacy-policy" element={<PrivacyPolicy />}/>
+            <Route path="terms-of-service" element={<TermsOfService />}/>
           </Route>
           
           <Route path="auth" element={<Auth />}/>
           <Route path="password-reset" element={<PasswordReset />}/>
 
           <Route element={<AuthRequired />}>
-            <Route path="/" element={<AppLayout />}>
+            <Route element={<AppLayout />}>
               <Route path="listings" element={<Listings />}/>
               <Route path="browse" element={<Browse />}/>
               <Route path="profile" element={<Profile />}/>
               <Route path="settings" element={<Settings />}/>
             </Route>
 
-            <Route path="email-verification" element={<VerifyEmail />}/>
+            <Route path="account" element={<Account />}/>
             
             <Route element={<OnboardingGate />}>
               <Route path="onboarding" element={<Onboarding />}/>

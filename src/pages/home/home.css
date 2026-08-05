@@ -21,9 +21,6 @@
     background-color: var(--accent);
     border: 1px solid var(--accent);
 }
-.home_button:hover {
-    background-color: var(--btn-hover-color);
-}
 .accent-span {
     color: var(--accent) !important;
 }
@@ -263,15 +260,26 @@
     font-size: var(--font-size-s);
     color: rgba(148, 148, 144, 1);
 }
-.home_footer a:hover {
-    font-weight: 500;
-    color: rgba(200, 200, 196, 1);
-}
 .home .divider-line {
     background-color: rgba(58, 57, 53, 1);
 }
-
+@media (min-width: 1024px) {
+    .home_button:hover {
+        background-color: var(--btn-hover-color);
+    }
+    .home_footer a:hover {
+        font-weight: 500;
+        color: rgba(200, 200, 196, 1);
+    }
+}
 @media (max-width: 1024px) {
+    .home_button:active {
+        background-color: var(--btn-hover-color);
+    }
+    .home_footer a:active {
+        font-weight: 500;
+        color: rgba(200, 200, 196, 1);
+    }
     .home_divider {
         display: none;
     }

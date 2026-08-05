@@ -8,9 +8,9 @@ export default function AppLayout() {
 
     const { profile } = useContext(UserContext)
 
-    // if (!profile?.isProfileCompleted) {
-    //     return <Navigate to="/onboarding" />
-    // }
+    if (!profile?.isProfileCompleted) {
+        return <Navigate to="/onboarding" />
+    }
 
     return (
         <>

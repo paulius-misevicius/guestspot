@@ -21,9 +21,6 @@
 .btn_mobile-padding {
     padding: 12px;
 }
-.header_new-listing-btn:hover {
-    background: var(--btn-hover-color);
-}
 .user_listings_active {
     display: flex;
     flex-direction: column;
@@ -66,13 +63,6 @@
 }
 .expired_expand_btn span {
     color: var(--text-muted);
-}
-.expired_expand_btn:hover {
-    background: var(--surface-2);
-    color: var(--text-primary);
-}
-.expired_expand_btn:hover p {
-    color: var(--text-primary);
 }
 .expand_btn_left {
     display: flex;
@@ -135,13 +125,6 @@
     text-decoration: none;
     color: var(--text-primary);
 }
-.listing_matches:hover {
-    background-color: var(--surface-2);
-}
-.listing_matches:hover > span {
-    background-color: var(--accent);
-    color: var(--surface-1);
-}
 .listing_matches > p,
 .listing_matches > span {
     font-size: var(--font-size-xs);
@@ -158,9 +141,6 @@
 .listing_delete-btn {
     background-color: transparent;
     color: var(--text-muted);
-}
-.listing_delete-btn:hover {
-    color: var(--accent);
 }
 
 .user_listings_expired_empty {
@@ -187,5 +167,52 @@
 .user_listings_empty_message {
     margin-top: 12px;
     margin-bottom: 20px;
-    color: var(--text-muted)
+    color: var(--text-muted);
+    text-align: center;
+}
+
+@media (min-width: 1024px) {
+    .header_new-listing-btn:hover {
+        background: var(--btn-hover-color);
+    }
+    .expired_expand_btn:hover {
+        background: var(--surface-2);
+        color: var(--text-primary);
+    }
+    .expired_expand_btn:hover p {
+        color: var(--text-primary);
+    }
+    .listing_matches:hover {
+        background-color: var(--surface-2);
+    }
+    .listing_matches:hover > span {
+        background-color: var(--accent);
+        color: var(--surface-1);
+    }
+    .listing_delete-btn:hover {
+        color: var(--accent);
+    }
+}
+
+@media (max-width: 1024px) {
+    .header_new-listing-btn:active {
+        background: var(--btn-hover-color);
+    }
+    .expired_expand_btn:active {
+        background: var(--surface-2);
+        color: var(--text-primary);
+    }
+    .expired_expand_btn:active p {
+        color: var(--text-primary);
+    }
+    .listing_matches:active {
+        background-color: var(--surface-2);
+    }
+    .listing_matches:active > span {
+        background-color: var(--accent);
+        color: var(--surface-1);
+    }
+    .listing_delete-btn:active {
+        color: var(--accent);
+    }
 }

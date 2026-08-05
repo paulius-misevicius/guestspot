@@ -57,13 +57,6 @@
     color: var(--text-muted);
     border: 1px solid var(--border);
 }
-.filter-btn:hover {
-    background: var(--btn-hover-color);
-}
-.filter-reset-btn:hover {
-    background: var(--tab-hover-color);
-    color: var(--text-secondary)
-}
 .active-filters {
     display: flex;
     flex-wrap: wrap;
@@ -80,12 +73,6 @@
     border-radius: 8px;
     padding: 8px 12px;
     color: var(--text-muted);
-}
-.filter-pill:hover {
-    background-color: var(--tab-hover-color);
-}
-.filter-pill:hover .filter-pill_clear-icon {
-    color: var(--accent);
 }
 .filter-pill_clear-icon {
     transition: color 0.1s ease;
@@ -146,12 +133,6 @@
 }
 .listing_name > h3 {
     color: var(--text-primary);
-}
-.browse_listing:hover .listing_details {
-    background-color: var(--tab-hover-color);
-}
-.browse_listing:hover .listing_details_btn-icon {
-    color: var(--text-secondary);
 }
 .listing_details_fields {
     display: flex;
@@ -296,7 +277,48 @@
     font-size: var(--font-size-xs);
     color: var(--text-muted);
 }
-
+@media (min-width: 1024px) {
+    .filter-btn:hover {
+        background: var(--btn-hover-color);
+    }
+    .filter-reset-btn:hover {
+        background: var(--tab-hover-color);
+        color: var(--text-secondary)
+    }
+    .filter-pill:hover {
+        background-color: var(--tab-hover-color);
+    }
+    .filter-pill:hover .filter-pill_clear-icon {
+        color: var(--accent);
+    }
+    .browse_listing:hover .listing_details {
+        background-color: var(--tab-hover-color);
+    }
+    .browse_listing:hover .listing_details_btn-icon {
+        color: var(--text-secondary);
+    }
+}
+@media (max-width: 1024px) {
+    .filter-btn:active {
+        background: var(--btn-hover-color);
+    }
+    .filter-reset-btn:active {
+        background: var(--tab-hover-color);
+        color: var(--text-secondary)
+    }
+    .filter-pill:active {
+        background-color: var(--tab-hover-color);
+    }
+    .filter-pill:active .filter-pill_clear-icon {
+        color: var(--accent);
+    }
+    .browse_listing:active .listing_details {
+        background-color: var(--tab-hover-color);
+    }
+    .browse_listing:active .listing_details_btn-icon {
+        color: var(--text-secondary);
+    }
+}
 @media (max-width: 640px) {
     .browse_filters {
         flex-wrap: wrap;

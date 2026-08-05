@@ -1,31 +1,37 @@
 import { useContext, useEffect, useState } from "react"
-import { Link } from "react-router"
+import { Link, useSearchParams } from "react-router"
 import { UserContext } from "../../../App"
 import { signOutUser } from "../../../utils/firebase/auth"
-import { LogOut, Send, BadgeCheck, BadgeX } from "lucide-react"
+import { LogOut, Send, BadgeCheck, BadgeX, BadgeAlert } from "lucide-react"
 import { verifyEmail } from "../../../utils/firebase/auth"
 import { checkErrorMessage } from "../../../utils/general"
 import Logo from "../../../components/Logo"
 import OnboardingScreen from "../../../components/OnboardingScreen"
 import { TailSpin } from "react-loader-spinner"
 
-export default function VerifyEmail() {
+export default function Account() {
 
     const STATUS = {
-        PENDING: "PENDING",
+        PENDING: "pending",
         SUCCESS: "SUCCESS",
         EXPIRED: "EXPIRED",
-        ALREADY_VERIFIED: "ALREADY_VERIFIED"
+        ALREADY_VERIFIED: "ALREADY_VERIFIED",
+        NOT_VERIFIED: "NOT_VERIFIED",
+        RESET_PASSWORD: "RESET_PASSWORD"
     }
 
     const { user } = useContext(UserContext)
     const [error, setError] = useState(null)
     const [info, setInfo] = useState("")
     const [isLoading, setIsLoading] = useState(false)
-    const [status, setStatus] = useState()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [status, setStatus] = useState(searchParams.get("status") ?? null)
 
     useEffect(() => {
-        if (user.emailVerified) setStatus(STATUS.ALREADY_VERIFIED)
+        if (searchParams.get("status") === null) {
+            if (user.emailVerified) setStatus(STATUS.SUCCESS)
+            if (!user.emailVerified) setStatus(STATUS.NOT_VERIFIED)
+        }
     },[])
 
     console.log(user)
@@ -46,7 +52,7 @@ export default function VerifyEmail() {
                 setIsLoading(false)
             }
         }
-        if (status === STATUS.EXPIRED) {
+        if (status === STATUS.EXPIRED || status === STATUS.NOT_VERIFIED) {
             try {
                 await verifyEmail()
                 setStatus(STATUS.PENDING)
@@ -60,7 +66,7 @@ export default function VerifyEmail() {
     }
 
     const CONTENT = {
-        PENDING: {
+        pending: {
             ICON: <Send />,
             TITLE: <h1>Verify your email</h1>,
             DESCRIPTION: <p>A verification link was sent to your email<span> {user?.email}</span>. Verify your email to start using the app.</p>,
@@ -107,8 +113,22 @@ export default function VerifyEmail() {
                 <Link
                     to="/listings"
                 >
-                    Return home
+                    Continue to app
                 </Link>
+        },
+        NOT_VERIFIED: {
+            ICON: <BadgeAlert />,
+            TITLE: <h1>Your email has not yet been verified</h1>,
+            DESCRIPTION: <p>You must verify your email to use the app. Press the button below to receive a verification link.</p>,
+            BUTTON: 
+                <button
+                    onClick={() => sendEmailVerification()}
+                >
+                    {isLoading 
+                        ?   <TailSpin wrapperClass="create_btn_loader" color="var(--surface-1)"/>
+                        :   "Verify email"
+                        }
+                </button>
         }
     }
 

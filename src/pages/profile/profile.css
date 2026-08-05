@@ -19,9 +19,6 @@
     background-color: var(--surface-1);
     border-radius: 8px;
 }
-.profile_header_btn:hover {
-    background-color: var(--tab-hover-color);
-}
 .profile_edit-btn {
     font-weight: 500;
     padding: 12px 20px;
@@ -78,10 +75,6 @@
 }
 .profile_instagram svg {
     color: var(--text-muted);
-}
-.profile_instagram:hover {
-    color: var(--text-primary);
-    font-weight: 500;
 }
 .profile_details_field > svg {
     color: var(--text-muted);
@@ -162,12 +155,6 @@
     inset: 0;
     transition: background 0.1s ease;
 }
-.profile_modal_pic-btn:hover .btn-overlay {
-    background-color: rgba(0, 0, 0, 0.75);
-}
-.profile_modal_pic-btn:hover .profile_pic-camera-icon {
-    color: var(--surface-1);
-}
 .profile_picture_title {
     font-size: 1rem;
     color: var(--text-primary);
@@ -201,9 +188,6 @@
     align-self: flex-end;
     font-size: var(--font-size-xs);
 }
-.add-location-btn:hover {
-    color: var(--text-primary);
-}
 .location_delete-btn {
     display: flex;
     align-items: center;
@@ -215,9 +199,6 @@
     border-radius: 8px;
     background-color: var(--surface-2);
 }
-.location_delete-btn:hover {
-    background-color: var(--tab-hover-color);
-}
 .profile_modal_bio span,
 .profile_modal_portfolio span {
     display: flex;
@@ -228,6 +209,50 @@
 }
 .profile_modal_portfolio {
     width: 100%;
+}
+
+@media (min-width: 1024px) {
+    .profile_header_btn:hover {
+        background-color: var(--tab-hover-color);
+    }
+    .profile_instagram:hover {
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+    .profile_modal_pic-btn:hover .btn-overlay {
+        background-color: rgba(0, 0, 0, 0.75);
+    }
+    .profile_modal_pic-btn:hover .profile_pic-camera-icon {
+        color: var(--surface-1);
+    }
+    .add-location-btn:hover {
+        color: var(--text-primary);
+    }
+    .location_delete-btn:hover {
+        background-color: var(--tab-hover-color);
+    }
+}
+
+@media (max-width: 1024px) {
+    .profile_header_btn:active {
+        background-color: var(--tab-hover-color);
+    }
+    .profile_instagram:active {
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+    .profile_modal_pic-btn:active .btn-overlay {
+        background-color: rgba(0, 0, 0, 0.75);
+    }
+    .profile_modal_pic-btn:active .profile_pic-camera-icon {
+        color: var(--surface-1);
+    }
+    .add-location-btn:active {
+        color: var(--text-primary);
+    }
+    .location_delete-btn:active {
+        background-color: var(--tab-hover-color);
+    }
 }
 
 @media (max-width: 640px) {

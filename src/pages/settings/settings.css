@@ -18,9 +18,6 @@
     font-weight: 500;
     font-size: var(--font-size-s);
 }
-.settings_header a:hover {
-    color: var(--text-primary);
-}
 .settings_content {
     display: flex;
     flex-direction: column;
@@ -53,13 +50,6 @@
 }
 .btn-setting svg {
     color: var(--text-muted);
-}
-.btn-setting:hover svg {
-    color: var(--text-secondary);
-}
-.btn-setting:hover {
-    background-color: var(--surface-2);
-    color: var(--text-primary);
 }
 .settings_setting:last-child {
     border: none;
@@ -101,27 +91,64 @@
     background-color: transparent;
     border: 1px solid var(--accent);
 }
-.danger-container button:hover {
-    background-color: var(--accent);
-}
 .log-out-btn {
     color: var(--text-muted);
     border-radius: 8px;
     background-color: var(--surface-1);
     border: 1px solid var(--border);
 }
-.log-out-btn:hover {
-    background-color: var(--accent);
-    color: var(--surface-1);
+@media (min-width: 1024px) {
+    .settings_header a:hover {
+        color: var(--text-primary);
+    }
+    .btn-setting:hover svg {
+        color: var(--text-secondary);
+    }
+    .btn-setting:hover {
+        background-color: var(--surface-2);
+        color: var(--text-primary);
+    }
+    .danger-container button:hover {
+        background-color: var(--accent);
+    }
+    .log-out-btn:hover {
+        background-color: var(--accent);
+        color: var(--surface-1);
+    }
+    .log-out-btn:hover svg {
+        color: var(--surface-1);
+    }
+    .settings_button:hover {
+        background-color: var(--btn-default-color);
+        color: var(--surface-1);
+    }
 }
-.log-out-btn:hover svg {
-    color: var(--surface-1);
+@media (max-width: 1024px) {
+    .settings_header a:active {
+        color: var(--text-primary);
+    }
+    .btn-setting:active svg {
+        color: var(--text-secondary);
+    }
+    .btn-setting:active {
+        background-color: var(--surface-2);
+        color: var(--text-primary);
+    }
+    .danger-container button:active {
+        background-color: var(--accent);
+    }
+    .log-out-btn:active {
+        background-color: var(--accent);
+        color: var(--surface-1);
+    }
+    .log-out-btn:active svg {
+        color: var(--surface-1);
+    }
+    .settings_button:active {
+        background-color: var(--btn-default-color);
+        color: var(--surface-1);
+    }
 }
-.settings_button:hover {
-    background-color: var(--btn-default-color);
-    color: var(--surface-1);
-}
-
 @media (min-width: 640px) {
     .log-out-btn {
         gap: 12px;

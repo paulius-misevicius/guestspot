@@ -68,7 +68,8 @@ export default function Auth() {
                 const userCredential = await signUpNewUser(email, password)
                 const user = userCredential.user
                 await addToFirebaseWithId("profiles", user.uid, {isProfileCompleted: false})
-                navigate("/onboarding")
+                await verifyEmail()
+                navigate("/account?status=pending")
             } catch (error) {
                 const translatedError = checkErrorMessage(error)
                 setError(translatedError)
