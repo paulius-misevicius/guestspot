@@ -198,6 +198,18 @@
     width: 100%;
     align-items: flex-start;
 }
+.password-reset_return-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: var(--font-size-s);
+    align-self: flex-start;
+    margin-bottom: 16px;
+}
+.auth .password-reset_return-btn {
+    color: var(--text-muted);
+}
 
 @media (min-width: 1024px) {
     .auth_type:hover {
@@ -224,6 +236,9 @@
     .auth_logo svg {
         width: 140px;
     }
+    .auth .password-reset_return-btn:hover {
+        color: var(--text-secondary);
+    }
 }
 @media (max-width: 1024px) {
     .auth_type:active {
@@ -249,6 +264,9 @@
     }
     .auth_logo svg {
         width: 148px;
+    }
+    .auth .password-reset_return-btn:active {
+        color: var(--text-secondary);
     }
 }
 @media (max-width: 640px) {

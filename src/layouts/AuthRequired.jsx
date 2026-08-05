@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react"
-import { Outlet, Navigate } from "react-router"
+import { Outlet, Navigate, useLocation } from "react-router"
 import { UserContext } from "../App"
 import { TailSpin } from "react-loader-spinner"
 import { getFirebaseDoc } from "../utils/firebase/firestore"
@@ -7,6 +7,8 @@ import { getFirebaseDoc } from "../utils/firebase/firestore"
 export default function AuthRequired() {
 
     const { user, isAuthLoading } = useContext(UserContext)
+
+    const location = useLocation()
 
     if (isAuthLoading) {
         return (
@@ -24,9 +26,9 @@ export default function AuthRequired() {
         return <Navigate to="/auth" />
     }
 
-    // if (!user.emailVerified) {
-    //     return <Navigate to="/email-verification"/>
-    // }
+    if (!user.emailVerified && location.pathname !== "/account") {
+        return <Navigate to="/account"/>
+    }
 
     return <Outlet />
 }

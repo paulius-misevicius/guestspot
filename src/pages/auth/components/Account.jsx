@@ -26,11 +26,18 @@ export default function Account() {
     const [isLoading, setIsLoading] = useState(false)
     const [searchParams, setSearchParams] = useSearchParams()
     const [status, setStatus] = useState(searchParams.get("status") ?? null)
+     
+    console.log(status)
 
     useEffect(() => {
+        if (!user) return
+
         if (searchParams.get("status") === null) {
             if (user.emailVerified) setStatus(STATUS.SUCCESS)
             if (!user.emailVerified) setStatus(STATUS.NOT_VERIFIED)
+        }
+        if (searchParams.get("status") === STATUS.PENDING && user.emailVerified) {
+            setStatus(STATUS.SUCCESS)
         }
     },[])
 
