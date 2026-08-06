@@ -278,6 +278,12 @@
     font-size: var(--font-size-xs);
     color: var(--text-muted);
 }
+.browse_modal_profile-pic .profile_pic-placeholder {
+    border: unset;
+    background-color: var(--surface-2);
+}
+
+
 @media (min-width: 1024px) {
     .filter-btn:hover {
         background: var(--btn-hover-color);

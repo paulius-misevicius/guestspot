@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { X, CameraOff, MapPin, CalendarDays, ChevronDown, AtSign } from "lucide-react"
+import { X, CameraOff, MapPin, CalendarDays, ChevronDown, AtSign, User } from "lucide-react"
 import { Link } from "react-router"
 import { queryCollectionFromFirebase } from "../../../utils/firebase/firestore"
 
@@ -15,10 +15,11 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
     const [userListings, setUserListings] = useState([])
     const [isShowingAll, setIsShowingAll] = useState(false)
 
+    const userGallery = clickedListing.profile?.gallery ?? []
     const userLocations = clickedListing.profile.locations
     const userType = clickedListing.profile.type
-    const galleryLength = clickedListing.profile.gallery.length < 6 ? 3 : 6
-    const modalGallery = clickedListing.profile.gallery.slice(0, galleryLength)
+    const galleryLength = userGallery.length < 6 ? 3 : 6
+    const modalGallery = userGallery.slice(0, galleryLength)
     const igIcon = <svg fill="currentColor" viewBox="0 0 32 32" id="Camada_1" version="1.1" xmlSpace="preserve" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M22.3,8.4c-0.8,0-1.4,0.6-1.4,1.4c0,0.8,0.6,1.4,1.4,1.4c0.8,0,1.4-0.6,1.4-1.4C23.7,9,23.1,8.4,22.3,8.4z"></path> <path d="M16,10.2c-3.3,0-5.9,2.7-5.9,5.9s2.7,5.9,5.9,5.9s5.9-2.7,5.9-5.9S19.3,10.2,16,10.2z M16,19.9c-2.1,0-3.8-1.7-3.8-3.8 c0-2.1,1.7-3.8,3.8-3.8c2.1,0,3.8,1.7,3.8,3.8C19.8,18.2,18.1,19.9,16,19.9z"></path> <path d="M20.8,4h-9.5C7.2,4,4,7.2,4,11.2v9.5c0,4,3.2,7.2,7.2,7.2h9.5c4,0,7.2-3.2,7.2-7.2v-9.5C28,7.2,24.8,4,20.8,4z M25.7,20.8 c0,2.7-2.2,5-5,5h-9.5c-2.7,0-5-2.2-5-5v-9.5c0-2.7,2.2-5,5-5h9.5c2.7,0,5,2.2,5,5V20.8z"></path> </g> </g></svg>
 
     useEffect(() => {
@@ -53,7 +54,7 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
                     isLightboxOn={isLightboxOn}
                     setIsLightboxOn={setIsLightboxOn}
                     lightboxImage={lightboxImage}
-                    gallery={clickedListing.profile.gallery}
+                    gallery={userGallery}
                 />
             }
             <Modal
@@ -67,10 +68,17 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
             >
                 <div className="browse_modal_profile-details">
                     <div className="browse_modal_profile-pic">
-                        <ImageLoader
-                            src={clickedListing.profile.profilePic.small}
-                            alt={`${clickedListing.profile.name} profile picture`}
-                        />
+                        {clickedListing.profile.profilePic?.small 
+                            ?
+                                <ImageLoader
+                                    src={clickedListing.profile.profilePic.small}
+                                    alt={`${clickedListing.profile.name} profile picture`}
+                                />
+                            :
+                                <div className="profile_pic-preview profile_pic-placeholder">
+                                    <User className="profile_pic-placeholder_icon"/>
+                                </div>
+                        }
                     </div>
                     <div className="browse_modal_listing-details">
                         <h3>{clickedListing.profile.name}</h3>
@@ -151,7 +159,7 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
                                         <CameraOff className="placeholder-img_icon"/>
                                     </div>
                                 :
-                                    index === (galleryLength - 1) && clickedListing.profile.gallery.length > galleryLength
+                                    index === (galleryLength - 1) && userGallery.length > galleryLength
                                         ?
                                             <button 
                                                 key={img.id} 
@@ -165,7 +173,7 @@ export default function BrowseModal({isModalOpen, setIsModalOpen, clickedListing
                                                     className="browse_listing_image"
                                                 />
                                                 <span className="more-images-hint">
-                                                    +{clickedListing.profile.gallery.length - galleryLength}
+                                                    +{userGallery.length - galleryLength}
                                                 </span>
                                             </button>
                                         :   
