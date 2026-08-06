@@ -78,25 +78,27 @@ export default function Settings() {
                     <div>
                         <p className="settings_label">Account</p>
                         <div className="settings_block">
-                            <div className="settings_setting demo_profile_type_setting">
-                                <div>
-                                    <p>Demo profile type</p>
+                            {IS_DEMO &&
+                                <div className="settings_setting demo_profile_type_setting">
+                                    <div>
+                                        <p>Demo profile type</p>
+                                    </div>
+                                    <label className="sr-only" htmlFor="demo-profile-type-switcher">Theme</label>
+                                    <select 
+                                        id="demo-profile-type-switcher"
+                                        className="settings_button"
+                                        value={demoProfileType}
+                                        onChange={event => setDemoProfileType(event.target.value)}
+                                    >
+                                        <option value="artist">Artist</option>
+                                        <option value="studio">Studio</option>
+                                    </select>
                                 </div>
-                                <label className="sr-only" htmlFor="demo-profile-type-switcher">Theme</label>
-                                <select 
-                                    id="demo-profile-type-switcher"
-                                    className="settings_button"
-                                    value={demoProfileType}
-                                    onChange={event => setDemoProfileType(event.target.value)}
-                                >
-                                    <option value="artist">Artist</option>
-                                    <option value="studio">Studio</option>
-                                </select>
-                            </div>
+                            }
                             <div className="settings_setting">
-                                <div>
+                                <div className="email_setting">
                                     <p>Email</p>
-                                    <p className="user-email">{user.email}</p>
+                                    <p className="user-email trunctuate">{user.email}</p>
                                 </div>
                                 <button 
                                     onClick={() => setIsEmailModalOpen(true)}

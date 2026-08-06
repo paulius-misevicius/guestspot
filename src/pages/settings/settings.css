@@ -39,6 +39,9 @@
     min-height: 50px;
     font-weight: 500;
 }
+.email_setting {
+    min-width: 0;
+}
 .btn-setting {
     width: 100%;
     font-size: var(--font-size-s);
@@ -79,6 +82,7 @@
     border: 1px solid var(--border);
     color: var(--text-secondary);
     background-color: var(--surface-2);
+    margin-left: 20px;
 }
 .danger-container {
     border: 1px solid var(--accent);
@@ -107,9 +111,9 @@
 .demo_profile_type_setting select {
     background-color: var(--btn-hover-color) !important;
     border: 1px solid var(--accent) !important;
-    /* color: var(--btn-text) !important; */
     padding-inline: 16px;
 }
+
 
 
 @media (min-width: 1024px) {

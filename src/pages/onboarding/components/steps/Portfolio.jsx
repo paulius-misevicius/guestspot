@@ -2,7 +2,7 @@ import { useState, useContext, useRef } from "react"
 import { nanoid } from "nanoid"
 import { Plus, Trash2, } from "lucide-react"
 import { UserContext } from "../../../../App"
-import { addToFirebaseArrayField, overwriteFirebaseDoc } from "../../../../utils/firebase/firestore"
+import { addToFirebaseArrayField, overwriteFirebaseDoc, getFirebaseDoc } from "../../../../utils/firebase/firestore"
 import { deleteFolderFromFirebase, uploadImageToFirebase, downloadImageFromFirebase } from "../../../../utils/firebase/storage"
 import ImageLoader from "../../../../components/ImageLoader"
 
