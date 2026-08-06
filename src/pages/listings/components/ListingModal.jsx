@@ -10,13 +10,14 @@ import DatePicker from "../../../components/fields/DatePicker"
 import Combobox from "../../../components/fields/Combobox"
 import Modal from "../../../components/Modal"
 import { checkErrorMessage } from "../../../utils/general"
+import { IS_DEMO } from "../../../utils/demo"
 
 export default function ListingModal({isModalOpen, setIsModalOpen, COPY}) {
     
     const [listingData, setListingData] = useState({})
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
-    const { user, profile } = useContext(UserContext)
+    const { user, profile, setListings } = useContext(UserContext)
     
     async function createListing(event) {
         event.preventDefault()
@@ -30,16 +31,22 @@ export default function ListingModal({isModalOpen, setIsModalOpen, COPY}) {
         setError(null)
         try {
             const { from, to, ...rest } = listingData
-            addToFirebase("listings", 
-                {
-                    ...rest, 
-                    createdAt: serverTimestamp(), 
-                    userId: user.uid, 
-                    type: profile.type,
-                    dateFrom: from,
-                    dateTo: to
-                }
-            )
+            const newListing = {
+                ...rest, 
+                userId: user.uid, 
+                type: profile.type,
+                dateFrom: from,
+                dateTo: to
+            }
+
+            if (IS_DEMO) {
+                setListings(prev => [
+                    {...newListing, id: nanoid(), isActive: to >= new Date()},
+                    ...prev
+                ])
+            } else {
+                addToFirebase("listings", {...newListing, createdAt: serverTimestamp()})
+            }
             setListingData({})
         } catch (error) {
             const errMsg = checkErrorMessage(error)

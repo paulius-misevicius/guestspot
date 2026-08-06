@@ -1,19 +1,19 @@
 import { useState, useEffect, useContext } from "react"
 import { Plus, Archive, ChevronDown, Map } from "lucide-react"
-import { getRealTimeCollectionFromFirebase } from "../../utils/firebase/firestore.js"
+import { getRealTimeCollectionFromFirebase, getListingsOnceFromFirebase } from "../../utils/firebase/firestore.js"
 import { UserContext } from "../../App.jsx"
 
 import Listing from "./components/Listing.jsx"
 import ListingModal from "./components/ListingModal.jsx"
 import { TailSpin } from "react-loader-spinner"
+import { IS_DEMO } from "../../utils/demo.js"
 
 export default function Listings() {
 
   const [isExpiredOpen, setIsExpiredOpen] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [listings, setListings] = useState([])
-  const { user, profile } = useContext(UserContext)
+  const { user, profile, listings, setListings } = useContext(UserContext)
 
   const activeListings = listings.filter(item => item.isActive)
   const expiredListings = listings.filter(item => !item.isActive)
@@ -41,11 +41,30 @@ export default function Listings() {
 
   useEffect(() => {
     setIsLoading(true)
-    const unsubscribe = getRealTimeCollectionFromFirebase("listings", data => {
-      setListings(data),
-      setIsLoading(false)
-    }, user.uid)
-    return () => unsubscribe()
+
+    if (IS_DEMO) {
+      async function getDemoUserListings() {
+        try {
+          const demoListings = await getListingsOnceFromFirebase(user.uid)
+          setListings(prev => {
+            const existingIds = new Set(prev.map(item => item.id))
+            const newListings = demoListings.filter(item => !existingIds.has(item.id))
+            return [...prev, ...newListings]
+          })
+        } catch (error) {
+          console.error(error.message)
+        } finally {
+          setIsLoading(false)
+        }
+      }
+      getDemoUserListings()
+    } else {
+      const unsubscribe = getRealTimeCollectionFromFirebase("listings", data => {
+        setListings(data),
+        setIsLoading(false)
+      }, user.uid)
+      return () => unsubscribe()
+    }
   }, [])
 
   useEffect(() => {
@@ -63,6 +82,7 @@ export default function Listings() {
           isModalOpen={isModalOpen} 
           setIsModalOpen={setIsModalOpen}
           COPY={COPY.MODAL}
+          setListings={setListings}
         />
         <section>
           <div className="user_listings_header">
@@ -99,6 +119,7 @@ export default function Listings() {
                       country={item.locations[0].country}
                       dateFrom={item.dateFrom}
                       dateTo={item.dateTo}
+                      setListings={setListings}
                     />
                   )}
                 </section>
@@ -129,6 +150,7 @@ export default function Listings() {
                           country={item.locations[0].country}
                           dateFrom={item.dateFrom}
                           dateTo={item.dateTo}
+                          setListings={setListings}
                         />
                       )}
                     </div>

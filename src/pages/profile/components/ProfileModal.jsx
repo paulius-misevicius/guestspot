@@ -12,6 +12,7 @@ import Modal from "../../../components/Modal"
 import ImageLoader from "../../../components/ImageLoader"
 import { checkUsername } from "../../../utils/general"
 import { cities } from "../../../utils/cities"
+import { IS_DEMO } from "../../../utils/demo"
 
 export default function ProfileModal({isModalOpen, setIsModalOpen}) {
 
@@ -124,9 +125,13 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
 
         try {
             if (profile?.profilePic?.small !== updatedProfilePic) {
-                await uploadImageToFirebase(updatedProfilePicFile, `users/${user.uid}/profile`)
-                const [thumb, small, large] = await downloadImageFromFirebase(`users/${user.uid}/profile`)
-                updatedFields.profilePic = {thumb: thumb, small: small, large: large}
+                if (IS_DEMO) {
+                    updatedFields.profilePic = { thumb: updatedProfilePic, small: updatedProfilePic, large: updatedProfilePic }
+                } else {
+                    await uploadImageToFirebase(updatedProfilePicFile, `users/${user.uid}/profile`)
+                    const [thumb, small, large] = await downloadImageFromFirebase(`users/${user.uid}/profile`)
+                    updatedFields.profilePic = {thumb: thumb, small: small, large: large}
+                }
             }
         } catch (error) {
             console.error(error.message)
@@ -145,34 +150,47 @@ export default function ProfileModal({isModalOpen, setIsModalOpen}) {
                 const oldIds = new Set(oldGallery.map(item => item.id) ?? [])
                 const newIds = new Set(updatedGallery.map(item => item.id))
 
-                const deletedItems = oldGallery.filter(item => !newIds.has(item.id))
-                const addedItems = updatedGallery.filter(item => !oldIds.has(item.id))
-
-                await Promise.all(
-                    deletedItems.map(item =>
-                        deleteFolderFromFirebase(`users/${user.uid}/portfolio/${item.id}`)
-                    )
-                )
-
-                const uploadedItems = await Promise.all(
-                    addedItems.map(async item => {
-                        const path = `users/${user.uid}/portfolio/${item.id}`
-                        await uploadImageToFirebase(item.file, path)
-                        const [thumb, small, large] = await downloadImageFromFirebase(path)
-                        return {id: item.id, image: {thumb: thumb, small: small, large: large}}
+                if (IS_DEMO) {
+                    updatedFields.gallery = updatedGallery.map(item => {
+                        if (newIds.has(item.id) && oldIds.has(item.id)) {
+                            return oldGallery.find(img => img.id === item.id)
+                        }
+                        return {
+                            id: item.id,
+                            image: { thumb: item.image.small, small: item.image.small, large: item.image.small }
+                        }
                     })
-                )
-
-                const finalGallery = updatedGallery.map(item => {
-                    if (newIds.has(item.id) && oldIds.has(item.id)) {
-                        return oldGallery.find(img => img.id === item.id)
-                    }
-                    const uploaded = uploadedItems.find(img => img.id === item.id)
-                    return uploaded ?? item
-                })
-
-                updatedFields.gallery = finalGallery
+                } else {
+                    const deletedItems = oldGallery.filter(item => !newIds.has(item.id))
+                    const addedItems = updatedGallery.filter(item => !oldIds.has(item.id))
+    
+                    await Promise.all(
+                        deletedItems.map(item =>
+                            deleteFolderFromFirebase(`users/${user.uid}/portfolio/${item.id}`)
+                        )
+                    )
+    
+                    const uploadedItems = await Promise.all(
+                        addedItems.map(async item => {
+                            const path = `users/${user.uid}/portfolio/${item.id}`
+                            await uploadImageToFirebase(item.file, path)
+                            const [thumb, small, large] = await downloadImageFromFirebase(path)
+                            return {id: item.id, image: {thumb: thumb, small: small, large: large}}
+                        })
+                    )
+    
+                    const finalGallery = updatedGallery.map(item => {
+                        if (newIds.has(item.id) && oldIds.has(item.id)) {
+                            return oldGallery.find(img => img.id === item.id)
+                        }
+                        const uploaded = uploadedItems.find(img => img.id === item.id)
+                        return uploaded ?? item
+                    })
+    
+                    updatedFields.gallery = finalGallery
+                }
             }
+
         } catch (error) {
             console.error(error.message)
         }

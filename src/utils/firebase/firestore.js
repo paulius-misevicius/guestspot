@@ -1,5 +1,6 @@
 import { collection, addDoc, getDocs, getDoc, query, orderBy, onSnapshot, doc, startAfter, deleteDoc, where, setDoc, limit, Timestamp } from "firebase/firestore"
 import { db } from "./config"
+import { IS_DEMO } from "../demo"
 
 export async function addToFirebase(myCollection, myDocument) {
     const docRef = await addDoc(collection(db, myCollection), myDocument)
@@ -42,7 +43,26 @@ export function getRealTimeCollectionFromFirebase(myCollection, onData, userId) 
     })
 }
 
+export async function getListingsOnceFromFirebase(userId) {
+    const q = query(collection(db, "listings"), where("userId", "==", userId), orderBy("createdAt", "desc"))
+    const querySnapshot = await getDocs(q)
+
+    return querySnapshot.docs.map(item => {
+        const now = new Date()
+        const itemDateFrom = item.data().dateFrom
+        const itemDateTo = item.data().dateTo
+        return {
+            ...item.data(),
+            id: item.id,
+            dateFrom: itemDateFrom.toDate(),
+            dateTo: itemDateTo.toDate(),
+            isActive: itemDateTo.toDate() >= now
+        }
+    })
+}
+
 export async function overwriteFirebaseDoc(myCollection, documentId, myDocument) {
+    if (IS_DEMO && myCollection === "profiles") return
     await setDoc(doc(db, myCollection, documentId), myDocument)
 }
 

@@ -8,8 +8,9 @@ import { useState, useContext, useEffect } from "react"
 import { UserContext } from "../../../App"
 import { Link } from "react-router"
 import { useNavigate } from "react-router"
+import { IS_DEMO } from "../../../utils/demo"
 
-export default function Listing({id, city, country, dateFrom, dateTo, isActive}) {
+export default function Listing({id, city, country, dateFrom, dateTo, isActive, setListings}) {
 
   const { profile } = useContext(UserContext)
   const [matches, setMatches] = useState([])
@@ -70,7 +71,13 @@ export default function Listing({id, city, country, dateFrom, dateTo, isActive})
             <button
               aria-label={`Delete listing for ${city}, ${country}`}
               className="listing_delete-btn"
-              onClick={() => deleteFromFirebase("listings", id)}
+              onClick={() => {
+                if (IS_DEMO) {
+                  setListings(prev => prev.filter(item => item.id !== id))
+                } else {
+                  deleteFromFirebase("listings", id)
+                }
+              }}
             >
               <Trash2 className="icon-16px"/>
             </button>

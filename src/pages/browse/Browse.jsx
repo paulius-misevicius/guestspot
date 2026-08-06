@@ -38,7 +38,7 @@ export default function Browse() {
       ?
         {
           TITLE: "Browse artist listings",
-          DESCRIPTION: "Find artists that are looking to guestspot from all over Europe",
+          DESCRIPTION: "Find artists that are looking to guest spot from all over Europe",
           LISTING: {
             TITLE: "Artist's profile",
             HEADER: "Travel plans"
@@ -47,7 +47,7 @@ export default function Browse() {
       :
         {
           TITLE: "Browse studio listings",
-          DESCRIPTION: "Find guestspotting opportunities from studios all over Europe",
+          DESCRIPTION: "Find guest spotting opportunities from studios all over Europe",
           LISTING: {
             TITLE: "Studio's profile",
             HEADER: "Open spots"

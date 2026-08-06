@@ -3,6 +3,7 @@ import { Outlet, Navigate, useLocation } from "react-router"
 import { UserContext } from "../App"
 import { TailSpin } from "react-loader-spinner"
 import { getFirebaseDoc } from "../utils/firebase/firestore"
+import { IS_DEMO } from "../utils/demo"
 
 export default function AuthRequired() {
 
@@ -23,12 +24,19 @@ export default function AuthRequired() {
     }
 
     if (!user) {
+        if (IS_DEMO) {
+            return (
+                <div className="loading-screen">
+                    <TailSpin width="120" height="120" color="var(--text-muted)" />
+                </div>
+            )
+        }
         return <Navigate to="/auth" />
     }
 
-    if (!user.emailVerified && location.pathname !== "/account") {
-        return <Navigate to="/account"/>
-    }
+    // if (!IS_DEMO && !user.emailVerified && location.pathname !== "/account") {
+    //     return <Navigate to="/account"/>
+    // }
 
     return <Outlet />
 }

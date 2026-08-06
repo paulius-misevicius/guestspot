@@ -6,10 +6,11 @@ import { useContext } from "react"
 import "./components.css"
 import ImageLoader from "./ImageLoader"
 import Logo from "./Logo"
+import { IS_DEMO } from "../utils/demo"
 
 export default function Sidebar() {
 
-    const { user, profile } = useContext(UserContext)
+    const { user, profile, demoProfileType, setDemoProfileType } = useContext(UserContext)
 
     async function logoutFromAccount() {
         try {
@@ -49,34 +50,58 @@ export default function Sidebar() {
                         Profile
                     </NavLink>
                 </nav>
-                <div className="sidebar_profile">
-                    <div className="profile_pic_container">
-                        {profile.profilePic?.small
-                            ?
-                                <ImageLoader
-                                    alt="Profile picture"
-                                    border
-                                    src={profile.profilePic.small}
-                                />
-                            :
-                                <div className="profile_pic-preview profile_pic-placeholder">
-                                    <User className="profile_pic-placeholder_icon"/>
-                                </div>
-                            }
+                <div className="margin-top_auto">
+                    {IS_DEMO &&
+                        <div className="demo_profile-type_switcher">
+                            <p>Demo profile type:</p>
+                            <div className="demo_switcher_buttons">
+                                <button 
+                                    onClick={() => setDemoProfileType("artist")}
+                                    aria-label="Switch profile type to artist"
+                                    className={demoProfileType === "artist" ? "demo_active-button" : undefined}
+                                >
+                                    Artist
+                                </button>
+                                <button
+                                    onClick={() => setDemoProfileType("studio")}
+                                    aria-label="Switch profile type to studio"
+                                    className={demoProfileType === "studio" ? "demo_active-button" : undefined}
+                                >
+                                    Studio
+                                </button>
+                            </div>
+                        </div>
+                    }
+                    <div className="sidebar_profile">
+                        <div className="profile_pic_container">
+                            {profile.profilePic?.small
+                                ?
+                                    <ImageLoader
+                                        alt="Profile picture"
+                                        border
+                                        src={profile.profilePic.small}
+                                    />
+                                :
+                                    <div className="profile_pic-preview profile_pic-placeholder">
+                                        <User className="profile_pic-placeholder_icon"/>
+                                    </div>
+                                }
+                        </div>
+                        <p
+                            className="trunctuate"
+                            title={user.email}
+                        >
+                            {user.email}
+                        </p>
+                        <button
+                            onClick={logoutFromAccount}
+                            aria-label="Log out from account"
+                            className={`profile_log-out-btn input-icon_right-side input-icon ${IS_DEMO ? "demo_disabled-btn" : ""}`}
+                            disabled={IS_DEMO}
+                        >
+                            <LogOut className="icon-18px icon-stroke" />
+                        </button>
                     </div>
-                    <p
-                        className="trunctuate"
-                        title={user.email}
-                    >
-                        {user.email}
-                    </p>
-                    <button
-                        onClick={logoutFromAccount}
-                        aria-label="Log out from account"
-                        className="profile_log-out-btn input-icon_right-side input-icon"
-                    >
-                        <LogOut className="icon-18px icon-stroke" />
-                    </button>
                 </div>
             </div>
         </section>

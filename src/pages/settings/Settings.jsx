@@ -8,10 +8,11 @@ import { overwriteFirebaseDoc } from "../../utils/firebase/firestore"
 import "./settings.css"
 import PasswordModal from "./components/PasswordModal"
 import EmailModal from "./components/EmailModal"
+import { IS_DEMO } from "../../utils/demo"
 
 export default function Settings() {
 
-    const { user, profile, theme, setTheme } = useContext(UserContext)
+    const { user, profile, theme, setTheme, demoProfileType, setDemoProfileType } = useContext(UserContext)
     const [isDeletePressed, setIsDeletePressed] = useState(false)
     const [isBugModalOpen, setIsBugModalOpen] = useState(false)
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
@@ -77,6 +78,21 @@ export default function Settings() {
                     <div>
                         <p className="settings_label">Account</p>
                         <div className="settings_block">
+                            <div className="settings_setting demo_profile_type_setting">
+                                <div>
+                                    <p>Demo profile type</p>
+                                </div>
+                                <label className="sr-only" htmlFor="demo-profile-type-switcher">Theme</label>
+                                <select 
+                                    id="demo-profile-type-switcher"
+                                    className="settings_button"
+                                    value={demoProfileType}
+                                    onChange={event => setDemoProfileType(event.target.value)}
+                                >
+                                    <option value="artist">Artist</option>
+                                    <option value="studio">Studio</option>
+                                </select>
+                            </div>
                             <div className="settings_setting">
                                 <div>
                                     <p>Email</p>
@@ -84,7 +100,8 @@ export default function Settings() {
                                 </div>
                                 <button 
                                     onClick={() => setIsEmailModalOpen(true)}
-                                    className="settings_button"
+                                    className={`settings_button ${IS_DEMO ? "demo_disabled-btn" : ""}`}
+                                    disabled={IS_DEMO}
                                     aria-label="Change email address"
                                 >
                                     Change
@@ -94,8 +111,9 @@ export default function Settings() {
                                 <p>Password</p>
                                 <button 
                                     onClick={() => setIsPasswordModalOpen(true)}
-                                    className="settings_button"
+                                    className={`settings_button ${IS_DEMO ? "demo_disabled-btn" : ""}`}
                                     aria-label="Change password"
+                                    disabled={IS_DEMO}
                                 >
                                     Change
                                 </button>
@@ -131,17 +149,17 @@ export default function Settings() {
                                 <ChevronRight className="icon-18px icon-stroke"/>
                             </button>
                             <Link 
-                                target="_blank"
-                                to="/privacy-policy"
-                                className="btn-setting settings_setting"
+                                target={IS_DEMO ? "" : "_blank"}
+                                to={IS_DEMO ? "#" : "/privacy-policy"}
+                                className={`btn-setting settings_setting ${IS_DEMO ? "demo_disabled-btn" : ""}`}
                             >
                                 Privacy policy
                                 <ExternalLink className="icon-14px icon-stroke"/>
                             </Link>
                             <Link 
-                                target="_blank"
-                                to="/terms-of-service"
-                                className="btn-setting settings_setting"
+                                target={IS_DEMO ? "" : "_blank"}
+                                to={IS_DEMO ? "#" : "/terms-of-service"}
+                                className={`btn-setting settings_setting ${IS_DEMO ? "demo_disabled-btn" : ""}`}
                             >
                                 Terms of service
                                 <ExternalLink className="icon-14px icon-stroke"/>
@@ -150,8 +168,9 @@ export default function Settings() {
                     </div>
                     <button 
                         onClick={logoutFromAccount}
-                        className="settings_setting log-out-btn"
+                        className={`settings_setting log-out-btn ${IS_DEMO ? "demo_disabled-btn" : ""}`}
                         aria-label="Log out of account"
+                        disabled={IS_DEMO}
                     >
                         Log out
                         <LogOut className="icon-14px icon-stroke"/>
@@ -170,16 +189,18 @@ export default function Settings() {
                                     ?
                                         <button 
                                             onClick={() => setIsDeletePressed(true)}
-                                            className="settings_button"
+                                            className={`settings_button ${IS_DEMO ? "demo_disabled-btn" : ""}`}
                                             aria-label="Delete account"
+                                            disabled={IS_DEMO}
                                         >
                                             Delete
                                         </button>
                                     :
                                         <button 
                                             onClick={deleteUserAccount}
-                                            className="settings_button"
+                                            className={`settings_button ${IS_DEMO ? "demo_disabled-btn" : ""}`}
                                             aria-label="Confirm delete account - this action cannot be undone"
+                                            disabled={IS_DEMO}
                                         >
                                             Confirm
                                         </button>

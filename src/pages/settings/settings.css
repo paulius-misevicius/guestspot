@@ -104,8 +104,18 @@
     margin: unset;
 }
 
+.demo_profile_type_setting select {
+    background-color: var(--btn-hover-color) !important;
+    border: 1px solid var(--accent) !important;
+    /* color: var(--btn-text) !important; */
+    padding-inline: 16px;
+}
+
 
 @media (min-width: 1024px) {
+    .demo_profile_type_setting {
+        display: none;
+    }
     .settings_header a:hover {
         color: var(--text-primary);
     }

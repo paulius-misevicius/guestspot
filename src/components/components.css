@@ -487,7 +487,49 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: 8px;
   font-size: var(--font-size-s);
 }
+
+/* Demo */
+
+.demo_profile-type_switcher {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+}
+.demo_profile-type_switcher p {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+.demo_switcher_buttons {
+  display: flex;
+  gap: 8px;
+}
+.demo_switcher_buttons button {
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding-block: 12px;
+  color: var(--text-muted);
+  flex: 1;
+  border-radius: 8px;
+  font-weight: 500;
+}
+.demo_switcher_buttons .demo_active-button {
+  background-color: var(--btn-hover-color) !important;
+  border: 1px solid var(--accent) !important;
+  color: var(--btn-text) !important;
+}
+.margin-top_auto {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
 @media (min-width: 1024px) {
+  .demo_switcher_buttons button:hover {
+    background-color: var(--btn-hover-color);
+    color: var(--text-secondary);
+  }
   .sidebar_nav_tab:hover {
     background-color: var(--tab-hover-color);
     color: var(--text-primary);
@@ -535,6 +577,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 }
 @media (max-width: 1024px) {
+  .demo_switcher_buttons button:active {
+    background-color: var(--btn-hover-color);
+  }
   .sidebar_nav_tab:active {
     background-color: var(--tab-hover-color);
     color: var(--text-primary);
