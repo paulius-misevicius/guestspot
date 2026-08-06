@@ -117,30 +117,30 @@ export default function App() {
             <>
               <Route element={<HomeLayout/>}>
                 <Route index element={<Home />}/>
-                <Route path="privacy-policy" element={<PrivacyPolicy />}/>
-                <Route path="terms-of-service" element={<TermsOfService />}/>
+                <Route path="/privacy-policy" element={<PrivacyPolicy />}/>
+                <Route path="/terms-of-service" element={<TermsOfService />}/>
               </Route>
 
-              <Route path="auth" element={<Auth />}/>
-              <Route path="password-reset" element={<PasswordReset />}/>
+              <Route path="/auth" element={<Auth />}/>
+              <Route path="/password-reset" element={<PasswordReset />}/>
             </>
           )}
           
 
           <Route element={<AuthRequired />}>
             <Route element={<AppLayout />}>
-              <Route path="listings" element={<Listings />}/>
-              <Route path="browse" element={<Browse />}/>
-              <Route path="profile" element={<Profile />}/>
-              <Route path="settings" element={<Settings />}/>
+              <Route path="/listings" element={<Listings />}/>
+              <Route path="/browse" element={<Browse />}/>
+              <Route path="/profile" element={<Profile />}/>
+              <Route path="/settings" element={<Settings />}/>
             </Route>
 
             {!IS_DEMO && (
               <>
-                <Route path="account" element={<Account />}/>
+                <Route path="/account" element={<Account />}/>
                 
                 <Route element={<OnboardingGate />}>
-                  <Route path="onboarding" element={<Onboarding />}/>
+                  <Route path="/onboarding" element={<Onboarding />}/>
                 </Route>
               </>
             )}

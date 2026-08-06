@@ -139,7 +139,10 @@ export async function fetchBrowseListingsPage({userType, lastDoc, pageSize, loca
     const q = query(collection(db, "listings"), ...constraints)
     const snapshot = await getDocs(q)
 
-    const listings = snapshot.docs.map(item => ({id: item.id, ...item.data()}))
+    const listings = snapshot.docs
+        .map(item => ({id: item.id, ...item.data()}))
+        .filter(listing => IS_DEMO || listing.isDemo !== true)
+
     const newLastDoc = snapshot.docs[snapshot.docs.length - 1] ?? null
     const hasMore = snapshot.docs.length === pageSize
     
