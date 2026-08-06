@@ -188,6 +188,8 @@ a, button svg {
   transform: rotate(180deg);
 }
 .input-icon_right-side {
+  display: flex;
+  background-color: transparent;
   left: unset;
   right: 16px;
   cursor: pointer;
@@ -202,11 +204,16 @@ input {
   background-color: var(--surface-2);
   color: var(--text-primary);
   transition: background 0.1s ease;
+  caret-color: var(--text-primary) !important;
 }
 input:focus, textarea {
   background-color: var(--surface-1);
   outline: 1px solid var(--border);
   font-size: var(--font-size-s);
+  caret-color: var(--text-primary) !important;
+}
+input:focus-visible {
+  caret-color: var(--text-primary) !important;
 }
 .bio_textarea {
   width: 100%;

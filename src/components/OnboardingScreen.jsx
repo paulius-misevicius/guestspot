@@ -4,14 +4,18 @@ import { UserContext } from "../App"
 import { signOutUser } from "../utils/firebase/auth"
 import "../pages/onboarding/onboarding.css"
 import Logo from "./Logo"
+import { useNavigate } from "react-router"
 
 export default function OnboardingScreen({progressBar = false, children, step, stepCount}) {
 
     const { user } = useContext(UserContext)
 
+    let navigate = useNavigate()
+
     async function logoutFromAccount() {
         try {
             await signOutUser()
+            navigate("/auth")
         } catch (error) {
             console.error(error.message)
         }
@@ -40,21 +44,23 @@ export default function OnboardingScreen({progressBar = false, children, step, s
                             <p className="progress-bar_count">Step {step} out of {stepCount}</p>
                         </div>
                         }
-                    <div className="sidebar_profile">
-                        <p
-                            className="trunctuate"
-                            title={user?.email}
-                        >
-                            {user?.email}
-                        </p>
-                        <button
-                            onClick={logoutFromAccount}
-                            aria-label="Log out"
-                            className="profile_log-out-btn input-icon_right-side input-icon"
-                        >
-                            <LogOut className="icon-16px icon-stroke" />
-                        </button>
-                    </div>
+                    {user &&
+                        <div className="sidebar_profile">
+                            <p
+                                className="trunctuate"
+                                title={user?.email}
+                            >
+                                {user?.email}
+                            </p>
+                            <button
+                                onClick={logoutFromAccount}
+                                aria-label="Log out"
+                                className="profile_log-out-btn input-icon_right-side input-icon"
+                            >
+                                <LogOut className="icon-16px icon-stroke" />
+                            </button>
+                        </div>
+                    }
                 </div>
             </section>
             <section className="onboarding_right">

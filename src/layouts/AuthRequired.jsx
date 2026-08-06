@@ -34,8 +34,8 @@ export default function AuthRequired() {
         return <Navigate to="/auth" />
     }
 
-    if (!IS_DEMO && !user.emailVerified && location.pathname !== "/account") {
-        return <Navigate to="/account"/>
+    if (!IS_DEMO && !user.emailVerified && location.pathname !== "/account/__/auth/action") {
+        return <Navigate to="/account/__/auth/action"/>
     }
 
     return <Outlet />

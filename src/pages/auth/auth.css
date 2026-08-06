@@ -163,8 +163,7 @@
     font-weight: 500;
     color: var(--text-primary);
 }
-.verification button,
-.verification a {
+.verification_button {
     background-color: var(--accent);
     color: var(--btn-text);
     font-size: var(--font-size-s);
@@ -210,6 +209,13 @@
 .auth .password-reset_return-btn {
     color: var(--text-muted);
 }
+.verification .auth_fields {
+    flex-direction: row;
+    margin-top: unset;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+
 
 @media (min-width: 1024px) {
     .auth_type:hover {
@@ -224,8 +230,7 @@
     .auth-btn_google:hover {
         background-color: var(--surface-2);
     }
-    .verification button:hover,
-    .verification a:hover {
+    .verification_button:hover {
         background-color: var(--btn-hover-color);
     }
     .auth_logo {
@@ -253,8 +258,7 @@
     .auth-btn_google:active {
         background-color: var(--surface-2);
     }
-    .verification button:active,
-    .verification a:active {
+    .verification_button:active {
         background-color: var(--btn-hover-color);
     }
     .auth_logo {
@@ -270,11 +274,16 @@
     }
 }
 @media (max-width: 640px) {
+    .reset-password_container {
+        width: 100%;
+    }
+    .verification .auth_fields {
+        flex-direction: column;
+    }
     .auth_content, .auth_form {
         width: 95dvw;
-        /* max-height: 75dvh; */
     }
-    .verification button {
+    .verification_button {
         width: 100%;
     }
     .verification_btn-info {

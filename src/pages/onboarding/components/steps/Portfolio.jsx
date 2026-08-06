@@ -2,7 +2,7 @@ import { useState, useContext, useRef } from "react"
 import { nanoid } from "nanoid"
 import { Plus, Trash2, } from "lucide-react"
 import { UserContext } from "../../../../App"
-import { overwriteFirebaseDoc } from "../../../../utils/firebase/firestore"
+import { addToFirebaseArrayField, overwriteFirebaseDoc } from "../../../../utils/firebase/firestore"
 import { deleteFolderFromFirebase, uploadImageToFirebase, downloadImageFromFirebase } from "../../../../utils/firebase/storage"
 import ImageLoader from "../../../../components/ImageLoader"
 
@@ -15,9 +15,10 @@ export default function Portfolio({profile, setProfile, COPY}) {
     async function deleteFromGallery(id) {
         try {
             setGallery(prev => prev.filter(item => item.id !== id))
-            const updatedGallery = profile?.gallery?.filter(item => item.id !== id) ?? []
+            const latestDoc = await getFirebaseDoc("profiles", user.uid)
+            const updatedGallery = (latestDoc?.gallery ?? []).filter(item => item.id !== id)
+            await overwriteFirebaseDoc("profiles", user.uid, {...latestDoc, gallery: updatedGallery})
             setProfile(prev => ({...prev, gallery: updatedGallery}))
-            await overwriteFirebaseDoc("profiles", user.uid, {...profile, gallery: updatedGallery})
             await deleteFolderFromFirebase(`users/${user.uid}/portfolio/${id}`)
         } catch (error) {
             console.error(error.message)
@@ -36,15 +37,9 @@ export default function Portfolio({profile, setProfile, COPY}) {
             const path = `users/${user.uid}/portfolio/${itemId}`
             await uploadImageToFirebase(file, path)
             const [thumb, small, large] = await downloadImageFromFirebase(path)
-            const updatedGallery = [
-                ...profile?.gallery ?? [], 
-                {
-                    id: itemId, 
-                    image: {thumb: thumb, small: small, large: large}
-                }
-            ]
-            setProfile(prev => ({...prev, gallery: updatedGallery}))
-            await overwriteFirebaseDoc("profiles", user.uid, {...profile, gallery: updatedGallery})
+            const newItem = {id: itemId, image: {thumb, small, large}}
+            await addToFirebaseArrayField("profiles", user.uid, "gallery", newItem)
+            setProfile(prev => ({...prev, gallery: [...(prev?.gallery ?? []), newItem]}))
         } catch (error) {
             console.error(error.message)
         }

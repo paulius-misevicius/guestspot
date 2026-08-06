@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, getDoc, query, orderBy, onSnapshot, doc, startAfter, deleteDoc, where, setDoc, limit, Timestamp } from "firebase/firestore"
+import { collection, addDoc, updateDoc, arrayUnion, getDocs, getDoc, query, orderBy, onSnapshot, doc, startAfter, deleteDoc, where, setDoc, limit, Timestamp } from "firebase/firestore"
 import { db } from "./config"
 import { IS_DEMO } from "../demo"
 
@@ -8,6 +8,12 @@ export async function addToFirebase(myCollection, myDocument) {
 
 export async function addToFirebaseWithId(myCollection, documentId, myDocument) {
     const docRef = await setDoc(doc(db, myCollection, documentId), myDocument)
+}
+
+export async function addToFirebaseArrayField(myCollection, documentId, field, value) {
+    await updateDoc(doc(db, myCollection, documentId), {
+        [field]: arrayUnion(value)
+    })
 }
 
 export async function deleteFromFirebase(myCollection, myDocumentId) {

@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
+import { UserContext } from "../../App"
 import { Link, useNavigate, useSearchParams } from "react-router"
 import { TailSpin } from "react-loader-spinner"
 import { signInExistingUser, signInWithGoogle, signUpNewUser, verifyEmail } from "../../utils/firebase/auth"
@@ -14,7 +15,7 @@ import Logo from "../../components/Logo"
 export default function Auth() {
 
     const [searchParams, setSearchParams] = useSearchParams()
-
+    const { setIsAuthLoading } = useContext(UserContext)
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [authType, setAuthType] = useState(searchParams.get("type") ?? "log-in")
@@ -69,7 +70,7 @@ export default function Auth() {
                 const user = userCredential.user
                 await addToFirebaseWithId("profiles", user.uid, {isProfileCompleted: false})
                 await verifyEmail()
-                navigate("/account?status=pending")
+                navigate("/account/__/auth/action?status=pending")
             } catch (error) {
                 const translatedError = checkErrorMessage(error)
                 setError(translatedError)
@@ -152,6 +153,7 @@ export default function Auth() {
                             }}
                             password={confirmPassword}
                             label="Confirm password"
+                            confirm
                         />
                         }
                 </div>

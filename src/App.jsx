@@ -109,7 +109,7 @@ export default function App() {
   }, [])
 
   return (
-    <UserContext.Provider value={{user, isAuthLoading, profile, setProfile, theme, setTheme, demoProfileType, setDemoProfileType, listings, setListings}}>
+    <UserContext.Provider value={{user, isAuthLoading, setIsAuthLoading, profile, setProfile, theme, setTheme, demoProfileType, setDemoProfileType, listings, setListings}}>
       <BrowserRouter>
         <Routes key={user?.uid ?? "logged-out"}>
 
@@ -123,6 +123,7 @@ export default function App() {
 
               <Route path="/auth" element={<Auth />}/>
               <Route path="/password-reset" element={<PasswordReset />}/>
+              <Route path="/account/__/auth/action" element={<Account />}/>
             </>
           )}
           
@@ -136,13 +137,9 @@ export default function App() {
             </Route>
 
             {!IS_DEMO && (
-              <>
-                <Route path="/account" element={<Account />}/>
-                
                 <Route element={<OnboardingGate />}>
                   <Route path="/onboarding" element={<Onboarding />}/>
                 </Route>
-              </>
             )}
           </Route>
 

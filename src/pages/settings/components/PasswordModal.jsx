@@ -83,6 +83,7 @@ export default function PasswordModal({isModalOpen, setIsModalOpen}) {
                     }}
                     password={confirmPassword}
                     label="Confirm password"
+                    confirm
                 />
             </div>
         </Modal>

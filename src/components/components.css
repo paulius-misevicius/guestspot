@@ -284,7 +284,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .date-picker .rdp-selected button{
   transition: unset;
-  color: var(--btn-text);
 }
 .rdp-range_start .rdp-day_button,
 .rdp-range_end .rdp-day_button {
