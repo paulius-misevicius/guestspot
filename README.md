@@ -1,6 +1,6 @@
 # GuestMe
 
-A guest-spotting platform for European tattoo artists and studios.
+A guest spotting platform for European tattoo artists and studios.
 
 🔗 **Live app:** [guestme.eu](https://guestme.eu/)
 🔗 **Demo version:** [guestme-demo.netlify.app](https://guestme-demo.netlify.app/)

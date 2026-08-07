@@ -32,6 +32,7 @@ export default function Browse() {
     })
     const [resetSignal, setResetSignal] = useState(0)
     const sentinelRef = useRef(null)
+    const filterGenerationRef = useRef(null)
 
     const COPY = 
     profile.type === "studio"
@@ -64,6 +65,7 @@ export default function Browse() {
     }, [isModalOpen])
 
     useEffect(() => {
+        filterGenerationRef.current += 1
         setBrowseListings([])
         setLastDoc(null)
         setHasMore(true)
@@ -73,6 +75,7 @@ export default function Browse() {
     async function loadMoreListings() {
         if (isLoading || !hasMore) return
         setIsLoading(true)
+        const requestGeneration = filterGenerationRef.current
         const fetchUserType = profile.type === "studio" ? "artist" : "studio"
 
         try {
@@ -87,6 +90,8 @@ export default function Browse() {
                 }
             )
 
+            if (requestGeneration !== filterGenerationRef.current) return
+
             const uniqueUserIds = [...new Set(listings.map(item => item.userId))]
             const profileEntries = await Promise.all(
                 uniqueUserIds.map(async userId => {
@@ -94,6 +99,9 @@ export default function Browse() {
                     return [userId, profile]
                 })
             )
+
+            if (requestGeneration !== filterGenerationRef.current) return
+
             const profileMap = new Map(profileEntries)
 
             const formattedListings = listings.map(item => {
