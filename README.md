@@ -50,8 +50,14 @@ Both artists and studios can create listings that appear in the opposite user ty
 
 ## Screenshots
 
-![1st Screenshot of Guestme app](public/preview1.png)
-![2nd Screenshot of Guestme app](public/preview2.png)
-![3rd Screenshot of Guestme app](public/preview3.png)
-![4th Screenshot of Guestme app](public/preview4.png)
-![5th Screenshot of Guestme app](public/preview5.png)
+![Listings page screenshot of Guestme app](public/previews/preview3.png)
+![Listings page modal screenshot of Guestme app](public/previews/preview10.png)
+![Browse page screenshot of Guestme app](public/previews/preview2.png)
+![Browse page with filters applied screenshot of Guestme app](public/previews/preview11.png)
+![Browse page modal screenshot of Guestme app](public/previews/preview5.png)
+![Profile page screenshot of Guestme app](public/previews/preview1.png)
+![Profile page modal screenshot of Guestme app](public/previews/preview4.png)
+![Settings page screenshot of Guestme app](public/previews/preview9.png)
+![Onboarding step screenshot of Guestme app](public/previews/preview8.png)
+![Pending email verification screenshot of Guestme app](public/previews/preview7.png)
+![Auth page screenshot of Guestme app](public/previews/preview6.png)
